@@ -376,11 +376,11 @@ final class ShieldModel: ObservableObject {
         case .authenticationMethodUnavailable:
             return "Ten krok wymaga kodu blokady iPhone’a. Ustaw go w Ustawieniach, a potem spróbuj ponownie."
         case .restricted:
-            return "Czas przed ekranem jest zablokowany na tym urządzeniu (np. przez zarządzanie rodzinne lub MDM)."
+            return "Czas przed ekranem jest ograniczony na tym iPhonie — np. przez rodzica w Chmurze rodzinnej albo przez zarządzanie urządzeniem."
         case .networkError:
             return "Brak połączenia z internetem. Spróbuj ponownie za chwilę."
         case .invalidAccountType:
-            return "To konto nie może używać Czasu przed ekranem dla siebie. Zaloguj się na konto Apple osoby dorosłej."
+            return "Ta funkcja wymaga konta Apple osoby dorosłej. Zaloguj się na nie w Ustawieniach i spróbuj ponownie."
         case .unavailable:
             return "Czas przed ekranem jest teraz niedostępny. Upewnij się, że jest włączony w Ustawieniach."
         default:

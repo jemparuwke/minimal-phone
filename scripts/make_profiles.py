@@ -20,7 +20,7 @@ PROVIDERS = [
         "name": "CleanBrowsing Family Filter",
         "url": "https://doh.cleanbrowsing.org/doh/family-filter/",
         "servers": ["185.228.168.168", "185.228.169.168", "2a0d:2a00:1::", "2a0d:2a00:2::"],
-        "blurb": "Blokuje porno, VPN-y i proxy, wymusza bezpieczne wyszukiwanie i tryb ograniczony YouTube.",
+        "blurb": "Blokuje porno, VPN-y i proxy, wymusza bezpieczne wyszukiwanie i tryb ograniczonego dostępu w YouTube.",
     },
     {
         "slug": "cleanbrowsing-adult",
@@ -34,7 +34,7 @@ PROVIDERS = [
         "name": "AdGuard DNS Family",
         "url": "https://family.adguard-dns.com/dns-query",
         "servers": ["94.140.14.15", "94.140.15.16", "2a10:50c0::bad1:ff", "2a10:50c0::bad2:ff"],
-        "blurb": "Blokuje porno, wymusza bezpieczne wyszukiwanie i tryb ograniczony YouTube.",
+        "blurb": "Blokuje porno, wymusza bezpieczne wyszukiwanie i tryb ograniczonego dostępu w YouTube.",
     },
     {
         "slug": "cloudflare-family",

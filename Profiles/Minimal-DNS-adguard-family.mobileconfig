@@ -34,7 +34,7 @@
 		</dict>
 	</array>
 	<key>PayloadDescription</key>
-	<string>Szyfrowany rodzinny DNS (AdGuard DNS Family) dla całego iPhone’a. Blokuje porno, wymusza bezpieczne wyszukiwanie i tryb ograniczony YouTube.</string>
+	<string>Szyfrowany rodzinny DNS (AdGuard DNS Family) dla całego iPhone’a. Blokuje porno, wymusza bezpieczne wyszukiwanie i tryb ograniczonego dostępu w YouTube.</string>
 	<key>PayloadDisplayName</key>
 	<string>Minimal · filtr DNS (AdGuard DNS Family)</string>
 	<key>PayloadIdentifier</key>

@@ -58,7 +58,7 @@ struct SetupGuideView: View {
 struct ShieldGuideView: View {
     private let steps: [GuideStep] = [
         GuideStep(icon: "hourglass", title: "Kod Czasu przed ekranem u zaufanej osoby",
-                  text: "Włącz Czas przed ekranem i ustaw kod, który wpisze ktoś zaufany — nie Ty. Gdy iPhone zaproponuje konto Apple do odzyskiwania kodu, pomiń ten krok. Bez kodu nie da się wyłączyć filtrów, a od iOS 26.4 także odebrać Minimal dostępu do Czasu przed ekranem.",
+                  text: "Włącz Czas przed ekranem i ustaw kod, który wpisze ktoś zaufany — nie Ty. Gdy iPhone zaproponuje konto Apple do odzyskiwania kodu, pomiń ten krok. Bez kodu nie zmienisz ograniczeń zawartości ani nie wyłączysz Czasu przed ekranem, a od iOS 26.4 nie odbierzesz też Minimal dostępu do niego.",
                   path: "Ustawienia → Czas przed ekranem → Zablokuj ustawienia Czasu przed ekranem"),
         GuideStep(icon: "nosign", title: "Blokuj witryny dla dorosłych",
                   text: "Ten sam filtr Apple co warstwa 1 tarczy — ale chroniony kodem zaufanej osoby.",

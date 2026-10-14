@@ -34,7 +34,7 @@ enum DNSProvider: String, CaseIterable, Identifiable {
     var summary: String {
         switch self {
         case .cleanBrowsingFamily:
-            return "Najszczelniejszy. Blokuje porno, VPN-y i serwery proxy, wymusza bezpieczne wyszukiwanie i tryb ograniczony YouTube. Blokuje też serwisy z mieszaną treścią, np. Reddit."
+            return "Najszczelniejszy. Blokuje porno, VPN-y i serwery proxy, wymusza bezpieczne wyszukiwanie i tryb ograniczonego dostępu w YouTube. Blokuje też serwisy z mieszaną treścią, np. Reddit."
         case .cleanBrowsingAdult:
             return "Blokuje porno i wymusza bezpieczne wyszukiwanie w Google i Bing. Nie blokuje Reddita ani VPN-ów."
         case .adGuardFamily:

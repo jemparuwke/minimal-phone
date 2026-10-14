@@ -34,7 +34,7 @@
 		</dict>
 	</array>
 	<key>PayloadDescription</key>
-	<string>Szyfrowany rodzinny DNS (CleanBrowsing Family Filter) dla całego iPhone’a. Blokuje porno, VPN-y i proxy, wymusza bezpieczne wyszukiwanie i tryb ograniczony YouTube.</string>
+	<string>Szyfrowany rodzinny DNS (CleanBrowsing Family Filter) dla całego iPhone’a. Blokuje porno, VPN-y i proxy, wymusza bezpieczne wyszukiwanie i tryb ograniczonego dostępu w YouTube.</string>
 	<key>PayloadDisplayName</key>
 	<string>Minimal · filtr DNS (CleanBrowsing Family Filter)</string>
 	<key>PayloadIdentifier</key>

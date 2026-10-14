@@ -55,16 +55,16 @@ struct SettingsView: View {
                             Text(scale.label).tag(scale)
                         }
                     } label: {
-                        SettingsRow(icon: "textformat.size", color: .white, title: "Rozmiar tekstu")
+                        SettingsRow(icon: "textformat.size", color: .white, title: "Wielkość tekstu")
                     }
                     Toggle(isOn: $use24h) {
-                        SettingsRow(icon: "clock", color: .white, title: "Zegar 24-godzinny")
+                        SettingsRow(icon: "clock", color: .white, title: "Czas 24-godzinny")
                     }
                     Toggle(isOn: $showSeconds) {
-                        SettingsRow(icon: "stopwatch", color: .white, title: "Sekundy")
+                        SettingsRow(icon: "stopwatch", color: .white, title: "Pokazuj sekundy")
                     }
                     Toggle(isOn: $hideStatusBar) {
-                        SettingsRow(icon: "rectangle.dashed", color: .white, title: "Ukryj pasek statusu")
+                        SettingsRow(icon: "rectangle.dashed", color: .white, title: "Ukryj pasek stanu")
                     }
                 }
                 .minimalRow()

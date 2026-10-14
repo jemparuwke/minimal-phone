@@ -112,6 +112,6 @@ struct PauseView: View {
     private var opensText: String? {
         let count = stats.opensToday(of: item)
         guard count > 0 else { return nil }
-        return count == 1 ? "Dziś otwierane już 1 raz." : "Dziś otwierane już \(count) razy."
+        return count == 1 ? "Dziś otwarto już raz." : "Dziś otwarto już \(count) razy."
     }
 }

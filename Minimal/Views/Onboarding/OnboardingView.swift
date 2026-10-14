@@ -118,7 +118,7 @@ private struct WelcomePage: View {
 
     private let features: [(icon: String, title: String, text: String)] = [
         ("textformat", "Tylko słowa", "Spokojny ekran z kilkoma najważniejszymi aplikacjami. Bez ikon, kolorów i czerwonych kropek."),
-        ("magnifyingglass", "Wszystko pod ręką", "Każda aplikacja jest o jedno wyszukanie dalej. Niczego nie tracisz."),
+        ("magnifyingglass", "Wszystko pod ręką", "Każdą aplikację znajdziesz w sekundę — wystarczy zacząć pisać. Niczego nie tracisz."),
         ("wind", "Pauza", "Kilka sekund oddechu przed aplikacjami, które kradną czas."),
         ("checkmark.shield", "Tarcza", "Porno zablokowane w całym telefonie — w przeglądarkach i aplikacjach."),
     ]
@@ -376,7 +376,7 @@ private struct HomeScreenPage: View {
                         GuideStepRow(number: 2, title: "Schowaj resztę",
                                      text: "Przenieś pozostałe aplikacje do biblioteki aplikacji i ukryj dodatkowe strony ekranu głównego.")
                         GuideStepRow(number: 3, title: "Minimal w Docku",
-                                     text: "Zostaw w Docku tylko Minimal — wyszukiwanie wszystkiego jest jedno stuknięcie stąd.")
+                                     text: "Zostaw w Docku tylko Minimal — stąd jednym stuknięciem dotrzesz do każdej aplikacji.")
                         GuideStepRow(number: 4, title: "Czerń i szarość",
                                      text: "Ustaw czarną tapetę i skrót do skali szarości. Pełny przewodnik znajdziesz w Ustawieniach Minimal.")
                     }

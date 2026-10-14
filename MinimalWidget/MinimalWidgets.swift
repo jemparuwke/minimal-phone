@@ -150,7 +150,7 @@ struct SearchWidget: Widget {
             SearchWidgetView()
         }
         .configurationDisplayName("Szukaj")
-        .description("Jedno stuknięcie do każdej aplikacji.")
+        .description("Wyszukaj dowolną aplikację jednym stuknięciem.")
         .supportedFamilies([.systemSmall, .accessoryCircular])
     }
 }

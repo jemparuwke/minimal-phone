@@ -23,7 +23,7 @@
 | | |
 |---|---|
 | **Tylko słowa** | Zegar, data i kilka najważniejszych aplikacji, zapisanych zwykłym tekstem. Bez ikon, kolorów i czerwonych kropek. |
-| **Wszystko pod ręką** | Każda aplikacja jest o jedno wyszukanie dalej. Niczego nie tracisz: gotowy katalog ponad 40 aplikacji, a każdą inną dodasz przez aplikację Skróty. |
+| **Wszystko pod ręką** | Każdą aplikację znajdziesz w sekundę — wystarczy zacząć pisać. Niczego nie tracisz: gotowy katalog ponad 80 aplikacji (także polskich), a każdą inną dodasz przez aplikację Skróty. |
 | **Pauza** | Przy wybranych aplikacjach (Instagram, YouTube, X…) najpierw kilka sekund oddechu i pytanie, czy na pewno. Impuls mija, a Ty decydujesz świadomie. |
 | **Tarcza** | Trzy warstwy blokady porno: filtr stron dla dorosłych Apple, szyfrowany rodzinny DNS dla całego telefonu i blokada wybranych aplikacji. Do tego opcjonalne opóźnienie, zanim tarczę da się wyłączyć. |
 | **Widżety** | „Ulubione” na ekran główny i ekran blokady oraz „Szukaj”, który otwiera wyszukiwanie jednym stuknięciem. |
@@ -39,7 +39,7 @@
 - **Mac** z aplikacją **Xcode**, darmową z App Store.
 - **Konto Apple**:
   - **płatne Apple Developer** (99 USD/rok): pełna, automatyczna tarcza, a aplikacja działa cały rok bez odświeżania. **Polecane.**
-  - **zwykłe, darmowe Apple ID**: wszystko działa, ale tarczę ustawiasz ręcznie, prowadzi Cię przewodnik w aplikacji. Aplikację trzeba odświeżać co 7 dni. Szczegóły w sekcji [Wersja Free](#wersja-free-darmowe-apple-id).
+  - **zwykłe, darmowe konto Apple**: wszystko działa, ale tarczę ustawiasz ręcznie, prowadzi Cię przewodnik w aplikacji. Aplikację trzeba odświeżać co 7 dni. Szczegóły w sekcji [Wersja Free](#wersja-free-darmowe-konto-apple).
 
 ### Krok po kroku
 
@@ -55,7 +55,7 @@
 6. **Podłącz iPhone’a** kablem i odblokuj go. Jeśli zapyta „Ufać temu komputerowi?”, stuknij **Ufaj**.
 7. **Włącz tryb dewelopera** na iPhonie: **Ustawienia → Prywatność i ochrona → Tryb dewelopera → Włącz**. iPhone uruchomi się ponownie.
 8. **Wybierz iPhone’a** na górnym pasku Xcode i naciśnij **▶︎** (⌘R).
-9. **Darmowe Apple ID?** Przy pierwszym uruchomieniu iPhone poprosi o zaufanie deweloperowi: **Ustawienia → Ogólne → VPN i urządzenia zarządzane → [Twoje Apple ID] → Ufaj**.
+9. **Darmowe konto Apple?** Przy pierwszym uruchomieniu iPhone poprosi o zaufanie deweloperowi: **Ustawienia → Ogólne → VPN i urządzenia zarządzane → Aplikacja dewelopera → [Twoje konto] → Ufaj**.
 10. **Gotowe.** Minimal przeprowadzi Cię przez resztę: wybór aplikacji, tarczę i ustawienie ekranu.
 
 ### Gdy Xcode pokaże błąd
@@ -63,7 +63,7 @@
 | Komunikat | Co zrobić |
 |---|---|
 | **Failed to register bundle identifier** / **No profiles for … were found** | Prefiks z kroku 2 jest zajęty albo nie wybrano zespołu w kroku 5. Zmień prefiks i spróbuj ponownie. |
-| **Personal development teams … do not support the Family Controls** (albo **Network Extensions**) | Masz darmowe Apple ID. Ustaw `MINIMAL_EDITION = Free` w `Config/Signing.xcconfig` (patrz [Wersja Free](#wersja-free-darmowe-apple-id)). |
+| **Personal development teams … do not support the Family Controls** (albo **Network Extensions**) | Masz darmowe konto Apple. Ustaw `MINIMAL_EDITION = Free` w `Config/Signing.xcconfig` (patrz [Wersja Free](#wersja-free-darmowe-konto-apple)). |
 | **Provisioning profile doesn't include the App Groups entitlement** | W **Signing & Capabilities → App Groups** stuknij ↻ albo zaznacz grupę `group.<prefiks>.minimal`. Zrób to dla obu targetów. |
 | **Developer Mode disabled** / iPhone nie pojawia się w Xcode | Krok 7: włącz Tryb dewelopera i odblokuj iPhone’a. |
 | **Untrusted Developer** | Krok 9: zaufaj deweloperowi w Ustawieniach. |
@@ -88,7 +88,7 @@ Dokładne ścieżki znajdziesz w aplikacji: **⋯ → Przewodnik minimalizmu**.
 | Warstwa | Co blokuje | Jak działa |
 |---|---|---|
 | **1. Filtr stron dla dorosłych** | Strony porno w Safari, Chrome, Firefoksie i przeglądarkach wewnątrz aplikacji. Wyłącza też przeglądanie prywatne. | Wbudowany filtr Apple (Screen Time API), ten sam co „Blokuj witryny dla dorosłych”. |
-| **2. Filtr DNS** | Strony porno w **każdej** aplikacji. Wymusza bezpieczne wyszukiwanie (także obrazów) i tryb ograniczony YouTube, blokuje VPN-y i proxy. | Szyfrowany rodzinny DNS ([CleanBrowsing Family](https://cleanbrowsing.org/filters/), do wyboru również AdGuard i Cloudflare). |
+| **2. Filtr DNS** | Strony porno w **każdej** aplikacji. Wymusza bezpieczne wyszukiwanie (także obrazów) i tryb ograniczonego dostępu w YouTube, blokuje VPN-y i proxy. | Szyfrowany rodzinny DNS ([CleanBrowsing Family](https://cleanbrowsing.org/filters/), do wyboru również AdGuard i Cloudflare). |
 | **3. Zablokowane aplikacje** | Aplikacje, w których łatwo trafić na porno (np. X, Reddit, Telegram), albo całe kategorie. | Osłona Screen Time na wybranych aplikacjach. |
 | **Zobowiązanie** | Wyłączenie czegokolwiek wymaga odczekania (1 h – 7 dni). Opcjonalnie blokada usuwania aplikacji. | Licznik w aplikacji i `denyAppRemoval`. |
 
@@ -107,9 +107,9 @@ Pełna lista jest w aplikacji: **Tarcza → Maksymalna ochrona**.
 
 ---
 
-## Wersja Free (darmowe Apple ID)
+## Wersja Free (darmowe konto Apple)
 
-Darmowe konto Apple nie ma dostępu do Screen Time API ani ustawień DNS, więc tarcza nie może włączyć się sama. W pliku `Config/Signing.xcconfig` ustaw:
+Darmowe konto Apple nie daje dostępu do Screen Time API ani ustawień DNS, więc tarcza nie może włączyć się sama. W pliku `Config/Signing.xcconfig` ustaw:
 
 ```
 MINIMAL_EDITION = Free

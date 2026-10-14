@@ -122,7 +122,7 @@ struct HomeView: View {
 
     private var resistedText: String {
         let count = stats.resistedToday
-        return count == 1 ? "dziś odpuszczone 1 raz" : "dziś odpuszczone \(count) razy"
+        return count == 1 ? "dziś odpuszczono raz" : "dziś odpuszczono \(count) razy"
     }
 }
 

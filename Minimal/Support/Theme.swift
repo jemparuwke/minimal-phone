@@ -46,9 +46,9 @@ enum TextScale: String, CaseIterable, Identifiable {
 
     var label: String {
         switch self {
-        case .small: return "Mały"
-        case .medium: return "Średni"
-        case .large: return "Duży"
+        case .small: return "Mała"
+        case .medium: return "Średnia"
+        case .large: return "Duża"
         }
     }
 
