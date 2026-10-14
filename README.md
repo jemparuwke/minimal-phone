@@ -58,7 +58,15 @@
 9. **Darmowe Apple ID?** Przy pierwszym uruchomieniu iPhone poprosi o zaufanie deweloperowi: **Ustawienia → Ogólne → VPN i urządzenia zarządzane → [Twoje Apple ID] → Ufaj**.
 10. **Gotowe.** Minimal przeprowadzi Cię przez resztę: wybór aplikacji, tarczę i ustawienie ekranu.
 
-> **Błąd „No profiles for … were found” albo „Failed to register bundle identifier”?** Prefiks z kroku 2 jest już zajęty albo nie wybrano zespołu w kroku 5. Zmień prefiks na inny i spróbuj ponownie.
+### Gdy Xcode pokaże błąd
+
+| Komunikat | Co zrobić |
+|---|---|
+| **Failed to register bundle identifier** / **No profiles for … were found** | Prefiks z kroku 2 jest zajęty albo nie wybrano zespołu w kroku 5. Zmień prefiks i spróbuj ponownie. |
+| **Personal development teams … do not support the Family Controls** (albo **Network Extensions**) | Masz darmowe Apple ID. Ustaw `MINIMAL_EDITION = Free` w `Config/Signing.xcconfig` (patrz [Wersja Free](#wersja-free-darmowe-apple-id)). |
+| **Provisioning profile doesn't include the App Groups entitlement** | W **Signing & Capabilities → App Groups** stuknij ↻ albo zaznacz grupę `group.<prefiks>.minimal`. Zrób to dla obu targetów. |
+| **Developer Mode disabled** / iPhone nie pojawia się w Xcode | Krok 7: włącz Tryb dewelopera i odblokuj iPhone’a. |
+| **Untrusted Developer** | Krok 9: zaufaj deweloperowi w Ustawieniach. |
 
 ### Ustaw ekran jak dumbphone (2 minuty)
 
@@ -70,6 +78,8 @@ iOS nie pozwala żadnej aplikacji zastąpić ekranu głównego. Da się go jedna
 4. **Czerń i szarość:** ustaw czarną tapetę i skrót do skali szarości (trzykrotne kliknięcie bocznego przycisku).
 
 Dokładne ścieżki znajdziesz w aplikacji: **⋯ → Przewodnik minimalizmu**.
+
+**Przycisk czynności i Spotlight:** Minimal dodaje skróty „Szukaj w Minimal” i „Tarcza Minimal”. Przypisz pierwszy do przycisku czynności (**Ustawienia → Przycisk czynności → Skrót**), a jedno naciśnięcie otworzy wyszukiwanie wszystkich aplikacji.
 
 ---
 
@@ -145,4 +155,5 @@ scripts/            generator projektu Xcode, ikona, profile, zrzuty ekranu
 
 - Projekt Xcode jest generowany skryptem: `gem install xcodeproj && ruby scripts/generate_project.rb`. Uruchom go po dodaniu lub usunięciu plików.
 - Przy każdym pushu CI (GitHub Actions, macOS) buduje aplikację na symulator i na iPhone’a oraz tworzy niepodpisany plik `.ipa`. Commit z `[shots]` w opisie dodatkowo odświeża zrzuty ekranu w `docs/screenshots`.
-- Deep linki: `minimal://search`, `minimal://shield`, `minimal://settings`, `minimal://open/<id>`. Przydają się w Skrótach i pod przyciskiem czynności.
+- Deep linki: `minimal://search`, `minimal://shield`, `minimal://settings`, `minimal://open/<id lub id-z-katalogu>`. Przydają się w Skrótach i pod przyciskiem czynności.
+- Aplikacja jest przeznaczona do instalacji z Xcode na własnym iPhonie. Publikacja w App Store wymagałaby osobnej zgody Apple na uprawnienie Family Controls (Distribution) i rezygnacji z niepublicznego adresu `prefs:` (otwieranie Ustawień).

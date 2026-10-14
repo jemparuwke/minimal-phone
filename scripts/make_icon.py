@@ -51,7 +51,8 @@ def render(background_top, background_bottom, line_color, transparent=False):
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
     render((28, 28, 30), (0, 0, 0), (255, 255, 255)).save(OUT / "AppIcon.png")
-    render((18, 18, 20), (0, 0, 0), (255, 255, 255)).save(OUT / "AppIcon-Dark.png")
+    # Dark and tinted variants have transparent backgrounds; iOS draws its own behind them.
+    render((0, 0, 0), (0, 0, 0), (255, 255, 255), transparent=True).save(OUT / "AppIcon-Dark.png")
     render((0, 0, 0), (0, 0, 0), (255, 255, 255), transparent=True).convert("LA").save(OUT / "AppIcon-Tinted.png")
     print(f"Icons written to {OUT}")
 
