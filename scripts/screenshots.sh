@@ -52,7 +52,7 @@ for step in 0 1 2 3; do
 done
 
 relaunch -pref.onboarded YES
-shot home 4
+shot home 7
 
 for route in search debug-pause shield settings; do
   relaunch -pref.onboarded YES -debug.route "$route"

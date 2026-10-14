@@ -93,7 +93,7 @@ struct ShieldView: View {
                 }
             }
         } message: { _ in
-            Text("Strony dla dorosłych znów będą dostępne w tej warstwie.")
+            Text("Strony dla dorosłych znów będą dostępne w tej warstwie.")
         }
         .alert("Tarcza", isPresented: messageBinding) {
             Button("OK", role: .cancel) {}

@@ -43,7 +43,7 @@ struct LibraryView: View {
                             if item.mindful {
                                 Image(systemName: "wind")
                                     .foregroundStyle(Theme.tertiary)
-                                    .accessibilityLabel("z pauzą")
+                                    .accessibilityLabel("z pauzą")
                             }
                             if store.isFavorite(item) {
                                 Image(systemName: "star")
@@ -190,6 +190,6 @@ struct CatalogRow: View {
             }
         }
         .accessibilityAddTraits(included ? .isSelected : [])
-        .accessibilityHint(included ? "Stuknij, aby usunąć z listy" : "Stuknij, aby dodać do listy")
+        .accessibilityHint(included ? "Stuknij, aby usunąć z listy" : "Stuknij, aby dodać do listy")
     }
 }

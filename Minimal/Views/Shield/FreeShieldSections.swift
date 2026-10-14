@@ -68,7 +68,7 @@ struct FreeShieldSections: View {
             ])
             DoneToggle(step: .appLimits)
         } footer: {
-            Text("Z płatnym kontem Apple Developer tarcza włącza się w Minimal jednym stuknięciem — instrukcja jest w pliku README projektu.")
+            Text("Z płatnym kontem Apple Developer tarcza włącza się w Minimal jednym stuknięciem — instrukcja jest w pliku README projektu.")
         }
         .minimalRow()
     }

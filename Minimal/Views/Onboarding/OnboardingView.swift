@@ -225,7 +225,7 @@ private struct ShieldPage: View {
                         .padding(.top, 72)
                     PageTitle(title: "Tarcza",
                               subtitle: shield.isFullEdition
-                                ? "Włącz obie warstwy, a porno zniknie z Twojego iPhone’a. Później możesz dodać blokadę wybranych aplikacji."
+                                ? "Włącz obie warstwy, a porno zniknie z Twojego iPhone’a. Później możesz dodać blokadę wybranych aplikacji."
                                 : "Trzy krótkie kroki w Ustawieniach iOS i porno znika z Twojego iPhone’a. Minimal poprowadzi Cię przez każdy z nich.",
                               topPadding: 20)
 
@@ -308,7 +308,7 @@ private struct ShieldStepCard: View {
     let perform: () -> Void
 
     var body: some View {
-        HStack(alignment: .center, spacing: 14) {
+        HStack(alignment: .top, spacing: 14) {
             ZStack {
                 Circle().fill(isDone ? Theme.good.opacity(0.18) : Theme.surface)
                 if isDone {
@@ -323,33 +323,37 @@ private struct ShieldStepCard: View {
             }
             .frame(width: 30, height: 30)
 
-            VStack(alignment: .leading, spacing: 3) {
-                Text(title)
-                    .font(.headline)
-                    .foregroundStyle(Theme.primary)
+            VStack(alignment: .leading, spacing: 4) {
+                HStack(alignment: .firstTextBaseline) {
+                    Text(title)
+                        .font(.headline)
+                        .foregroundStyle(Theme.primary)
+                    Spacer(minLength: 8)
+                    if isDone {
+                        Label("Gotowe", systemImage: "checkmark")
+                            .labelStyle(.titleAndIcon)
+                            .font(.subheadline.weight(.medium))
+                            .foregroundStyle(Theme.good)
+                    }
+                }
                 Text(text)
                     .font(.subheadline)
                     .foregroundStyle(Theme.secondary)
                     .fixedSize(horizontal: false, vertical: true)
-            }
-
-            Spacer(minLength: 8)
-
-            if isDone {
-                Text("Gotowe")
-                    .font(.subheadline.weight(.medium))
-                    .foregroundStyle(Theme.good)
-            } else {
-                Button(action: perform) {
-                    Text(action)
-                        .font(.subheadline.weight(.semibold))
-                        .foregroundStyle(.black)
-                        .padding(.horizontal, 14)
-                        .frame(height: 32)
-                        .background(Theme.primary, in: Capsule())
+                if !isDone {
+                    Button(action: perform) {
+                        Text(action)
+                            .font(.subheadline.weight(.semibold))
+                            .foregroundStyle(.black)
+                            .padding(.horizontal, 18)
+                            .frame(minHeight: 36)
+                            .background(Theme.primary, in: Capsule())
+                    }
+                    .buttonStyle(.dim)
+                    .padding(.top, 8)
                 }
-                .buttonStyle(.dim)
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(16)
         .background(Theme.surface, in: RoundedRectangle(cornerRadius: 18, style: .continuous))

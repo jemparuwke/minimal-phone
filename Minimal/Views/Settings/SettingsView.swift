@@ -24,7 +24,7 @@ struct SettingsView: View {
 
                 if !SharedConfig.isAppGroupAvailable {
                     Section {
-                        Label("Widżet nie widzi Twoich ulubionych. W Xcode dodaj App Group „\(SharedConfig.appGroup)” do obu targetów (Signing & Capabilities) i zainstaluj ponownie.", systemImage: "exclamationmark.triangle")
+                        Label("Widżet nie widzi Twoich ulubionych. W Xcode dodaj App Group „\(SharedConfig.appGroup)” do obu targetów (Signing & Capabilities) i zainstaluj ponownie.", systemImage: "exclamationmark.triangle")
                             .font(.footnote)
                             .foregroundStyle(Theme.warning)
                     }
@@ -157,7 +157,7 @@ struct SettingsView: View {
 
     private var footerText: String {
         let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "1.0"
-        return "Minimal \(version) · Bez kont, bez reklam, bez śledzenia. Minimal niczego nie wysyła — tylko filtr DNS pyta wybranego dostawcę o adresy stron."
+        return "Minimal \(version) · Bez kont, bez reklam, bez śledzenia. Minimal niczego nie wysyła — tylko filtr DNS pyta wybranego dostawcę o adresy stron."
     }
 }
 

@@ -166,8 +166,8 @@ struct ItemEditorView: View {
             Button("OK", role: .cancel) {}
         } message: {
             Text(kind == .shortcut
-                 ? "Sprawdź, czy w aplikacji Skróty istnieje skrót o dokładnie takiej nazwie."
-                 : "Ten adres nie otwiera żadnej aplikacji. Spróbuj skrótu — działa z każdą aplikacją.")
+                 ? "Sprawdź, czy w aplikacji Skróty istnieje skrót o dokładnie takiej nazwie."
+                 : "Ten adres nie otwiera żadnej aplikacji. Spróbuj skrótu — działa z każdą aplikacją.")
         }
         .onChange(of: kind) { _, newKind in
             if newKind == .shortcut, shortcutName.trimmed.isEmpty, !name.trimmed.isEmpty {
