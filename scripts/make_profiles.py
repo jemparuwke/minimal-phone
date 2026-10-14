@@ -59,6 +59,8 @@ def profile(provider):
                     "DNSProtocol": "HTTPS",
                     "ServerURL": provider["url"],
                     "ServerAddresses": provider["servers"],
+                    # iOS 26+: never fall back to the unfiltered system resolver.
+                    "AllowFailover": False,
                 },
                 "PayloadDisplayName": f"{provider['name']} (DNS over HTTPS)",
                 "PayloadIdentifier": f"{identifier}.dns",
@@ -75,9 +77,11 @@ def profile(provider):
         "PayloadIdentifier": identifier,
         "PayloadOrganization": "Minimal",
         "PayloadRemovalDisallowed": False,
+        "PayloadScope": "System",
         "PayloadType": "Configuration",
         "PayloadUUID": stable_uuid(identifier),
         "PayloadVersion": 1,
+        "TargetDeviceType": 1,
     }
 
 

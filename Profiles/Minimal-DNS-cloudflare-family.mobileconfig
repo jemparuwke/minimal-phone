@@ -7,6 +7,8 @@
 		<dict>
 			<key>DNSSettings</key>
 			<dict>
+				<key>AllowFailover</key>
+				<false/>
 				<key>DNSProtocol</key>
 				<string>HTTPS</string>
 				<key>ServerAddresses</key>
@@ -41,11 +43,15 @@
 	<string>Minimal</string>
 	<key>PayloadRemovalDisallowed</key>
 	<false/>
+	<key>PayloadScope</key>
+	<string>System</string>
 	<key>PayloadType</key>
 	<string>Configuration</string>
 	<key>PayloadUUID</key>
 	<string>D375F0AB-0F6A-5C9D-8EB4-80E8773CC984</string>
 	<key>PayloadVersion</key>
+	<integer>1</integer>
+	<key>TargetDeviceType</key>
 	<integer>1</integer>
 </dict>
 </plist>

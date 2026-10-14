@@ -58,7 +58,7 @@ struct SetupGuideView: View {
 struct ShieldGuideView: View {
     private let steps: [GuideStep] = [
         GuideStep(icon: "hourglass", title: "Kod Czasu przed ekranem u zaufanej osoby",
-                  text: "Włącz Czas przed ekranem i ustaw kod, który wpisze ktoś zaufany — nie Ty. Bez tego kodu nie da się wyłączyć filtrów, a od iOS 26.4 także odebrać Minimal dostępu do Czasu przed ekranem.",
+                  text: "Włącz Czas przed ekranem i ustaw kod, który wpisze ktoś zaufany — nie Ty. Gdy iPhone zaproponuje konto Apple do odzyskiwania kodu, pomiń ten krok. Bez kodu nie da się wyłączyć filtrów, a od iOS 26.4 także odebrać Minimal dostępu do Czasu przed ekranem.",
                   path: "Ustawienia → Czas przed ekranem → Zablokuj ustawienia Czasu przed ekranem"),
         GuideStep(icon: "nosign", title: "Blokuj witryny dla dorosłych",
                   text: "Ten sam filtr Apple co warstwa 1 tarczy — ale chroniony kodem zaufanej osoby.",
@@ -69,9 +69,9 @@ struct ShieldGuideView: View {
         GuideStep(icon: "eye.slash", title: "Ostrzeżenia o treściach wymagających dyskrecji",
                   text: "iPhone rozmywa nagie zdjęcia i wideo w Wiadomościach, AirDropie, FaceTimie i części aplikacji, zanim je zobaczysz.",
                   path: "Ustawienia → Prywatność i ochrona → Ostrzeżenia dotyczące treści wymagających dyskrecji"),
-        GuideStep(icon: "network.badge.shield.half.filled", title: "Uważaj na VPN-y",
-                  text: "Aplikacje VPN i proxy mogą ominąć filtr DNS. Domyślny filtr (CleanBrowsing Family) blokuje strony VPN-ów, a z kodem u zaufanej osoby możesz też zablokować instalowanie aplikacji.",
-                  path: "Ograniczaj treść i prywatność → Zakupy w iTunes Store i App Store → Instalowanie aplikacji: Nie pozwalaj"),
+        GuideStep(icon: "network.badge.shield.half.filled", title: "Bez nowych aplikacji i VPN-ów",
+                  text: "Aplikacje VPN i proxy mogą ominąć filtr DNS, a usunięcie Minimal wyłącza tarczę. Zablokuj instalowanie i usuwanie aplikacji — zmieni to tylko osoba z kodem.",
+                  path: "Ograniczaj treść i prywatność → Zakupy w iTunes Store i App Store → Instalowanie aplikacji i Usuwanie aplikacji: Nie pozwalaj"),
     ]
 
     var body: some View {
