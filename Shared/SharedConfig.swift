@@ -1,0 +1,29 @@
+import Foundation
+
+/// Values shared by the app and the widget extension.
+enum SharedConfig {
+    /// App Group identifier. Injected from build settings (`BUNDLE_ID_PREFIX`) through the
+    /// `MinimalAppGroup` key in each target's Info.plist, so it never has to be edited in code.
+    static let appGroup: String = Bundle.main.object(forInfoDictionaryKey: "MinimalAppGroup") as? String ?? ""
+
+    /// Custom URL scheme handled by the app (`minimal://open/<id>`, `minimal://search`).
+    static let urlScheme = "minimal"
+
+    /// Storage visible to both the app and the widget. Falls back to the app's own defaults
+    /// when the App Group capability is unavailable (the widget then shows its placeholder).
+    static let defaults: UserDefaults = {
+        if !appGroup.isEmpty, let shared = UserDefaults(suiteName: appGroup) {
+            return shared
+        }
+        return .standard
+    }()
+
+    static let launcherDataKey = "launcher.data.v1"
+
+    static func openURL(for id: UUID) -> URL {
+        URL(string: "\(urlScheme)://open/\(id.uuidString)")!
+    }
+
+    static let searchURL = URL(string: "\(urlScheme)://search")!
+    static let homeURL = URL(string: "\(urlScheme)://home")!
+}

@@ -1,0 +1,111 @@
+import SwiftUI
+
+/// A few seconds of breathing before a distracting app opens.
+struct PauseView: View {
+    let item: LaunchItem
+
+    @EnvironmentObject private var coordinator: LaunchCoordinator
+    @EnvironmentObject private var stats: UsageStats
+    @AppStorage(Pref.pauseSeconds) private var pauseSeconds = 5
+
+    @State private var remaining = 5
+    @State private var inhale = false
+
+    private let breath: Double = 4
+
+    var body: some View {
+        VStack(spacing: 0) {
+            Spacer()
+
+            ZStack {
+                Circle()
+                    .stroke(Theme.hairline, lineWidth: 1)
+                Circle()
+                    .fill(Color.white.opacity(0.09))
+                    .scaleEffect(inhale ? 1 : 0.42)
+                Text(remaining > 0 ? "\(remaining)" : "")
+                    .font(.minimal(44, weight: .ultraLight))
+                    .monospacedDigit()
+                    .foregroundStyle(Theme.secondary)
+                    .contentTransition(.numericText(countsDown: true))
+            }
+            .frame(width: 220, height: 220)
+            .accessibilityHidden(true)
+
+            VStack(spacing: 12) {
+                Text(inhale ? "wdech" : "wydech")
+                    .font(.minimal(15, weight: .regular))
+                    .foregroundStyle(Theme.tertiary)
+                    .contentTransition(.opacity)
+                Text(item.name)
+                    .font(.minimal(34))
+                    .foregroundStyle(Theme.primary)
+                    .multilineTextAlignment(.center)
+                Text("Czy naprawdę potrzebujesz tego teraz?")
+                    .font(.minimal(17, weight: .regular))
+                    .foregroundStyle(Theme.secondary)
+                    .multilineTextAlignment(.center)
+                if let opensText {
+                    Text(opensText)
+                        .font(.minimal(15, weight: .regular))
+                        .foregroundStyle(Theme.tertiary)
+                }
+            }
+            .padding(.top, 44)
+            .padding(.horizontal, Theme.gutter)
+
+            Spacer()
+
+            VStack(spacing: 6) {
+                Button {
+                    coordinator.resist()
+                } label: {
+                    Text("Nie teraz")
+                        .font(.system(size: 17, weight: .semibold))
+                        .foregroundStyle(.black)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 54)
+                        .background(Theme.primary, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+                }
+                .buttonStyle(.dim)
+
+                Button {
+                    coordinator.open(item)
+                } label: {
+                    Text(remaining > 0 ? "Otwórz za \(remaining) s" : "Otwórz")
+                        .font(.system(size: 17, weight: .regular))
+                        .foregroundStyle(remaining > 0 ? Theme.tertiary : Theme.secondary)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 54)
+                        .contentTransition(.numericText(countsDown: true))
+                }
+                .buttonStyle(.dim)
+                .disabled(remaining > 0)
+            }
+            .padding(.horizontal, Theme.gutter)
+            .padding(.bottom, 24)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Theme.background.ignoresSafeArea())
+        .task {
+            remaining = max(1, pauseSeconds)
+            while remaining > 0 {
+                try? await Task.sleep(for: .seconds(1))
+                if Task.isCancelled { return }
+                withAnimation(.easeOut(duration: 0.25)) { remaining -= 1 }
+            }
+        }
+        .task {
+            while !Task.isCancelled {
+                withAnimation(.easeInOut(duration: breath)) { inhale.toggle() }
+                try? await Task.sleep(for: .seconds(breath))
+            }
+        }
+    }
+
+    private var opensText: String? {
+        let count = stats.opensToday(of: item)
+        guard count > 0 else { return nil }
+        return count == 1 ? "Dziś otwierane już 1 raz." : "Dziś otwierane już \(count) razy."
+    }
+}

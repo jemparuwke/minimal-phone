@@ -1,0 +1,75 @@
+name: Build
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build iOS app
+    runs-on: macos-15
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select newest Xcode
+        run: |
+          XCODE=$(ls -d /Applications/Xcode*.app | sort -V | tail -1)
+          echo "Using $XCODE"
+          sudo xcode-select -s "$XCODE/Contents/Developer"
+          xcodebuild -version
+
+      - name: Check generated project is up to date
+        run: |
+          gem install xcodeproj --no-document --user-install
+          export PATH="$(ruby -e 'print Gem.user_dir')/bin:$PATH"
+          ruby scripts/generate_project.rb
+          git diff --stat -- Minimal.xcodeproj
+          git diff --quiet -- Minimal.xcodeproj || echo "::warning::Minimal.xcodeproj differs from scripts/generate_project.rb output — run the script and commit."
+
+      - name: Build for iOS Simulator
+        run: |
+          set -o pipefail
+          xcodebuild build \
+            -project Minimal.xcodeproj \
+            -scheme Minimal \
+            -configuration Debug \
+            -destination 'generic/platform=iOS Simulator' \
+            CODE_SIGNING_ALLOWED=NO \
+            | tee build-simulator.log | grep -E "error:|warning:|BUILD (SUCCEEDED|FAILED)" || true
+          grep -q "BUILD SUCCEEDED" build-simulator.log
+
+      - name: Build for iPhone (unsigned)
+        run: |
+          set -o pipefail
+          xcodebuild build \
+            -project Minimal.xcodeproj \
+            -scheme Minimal \
+            -configuration Release \
+            -destination 'generic/platform=iOS' \
+            -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO \
+            | tee build-device.log | grep -E "error:|warning:|BUILD (SUCCEEDED|FAILED)" || true
+          grep -q "BUILD SUCCEEDED" build-device.log
+
+      - name: Package unsigned IPA
+        run: |
+          mkdir -p Payload
+          cp -R build/Build/Products/Release-iphoneos/Minimal.app Payload/
+          zip -qry Minimal-unsigned.ipa Payload
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Minimal-unsigned-ipa
+          path: Minimal-unsigned.ipa
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: build-logs
+          path: build-*.log
