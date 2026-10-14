@@ -43,7 +43,7 @@ struct SettingsView: View {
                     NavigationLink {
                         SetupGuideView()
                     } label: {
-                        SettingsRow(icon: "sparkles", color: .white, title: "Przewodnik minimalizmu")
+                        SettingsRow(icon: "sparkles", color: .white, title: "Przewodnik po minimalizmie")
                     }
                 }
                 .minimalRow()
@@ -119,7 +119,7 @@ struct SettingsView: View {
                     .confirmationDialog("Przywrócić domyślną listę?", isPresented: $confirmReset, titleVisibility: .visible) {
                         Button("Przywróć", role: .destructive) { store.resetToStarter() }
                     } message: {
-                        Text("Twoje własne skróty i adresy zostaną usunięte.")
+                        Text("Wszystkie dodane aplikacje, skróty i adresy zostaną usunięte, a ulubione wrócą do domyślnych.")
                     }
                 } footer: {
                     Text(footerText)

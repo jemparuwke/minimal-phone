@@ -75,13 +75,13 @@ enum Formatters {
         return formatter
     }
 
-    /// "4 h 12 min", "12 min", "45 s"
+    /// "4 godz. 12 min", "12 min", "45 s" — Polish iOS style, with non-breaking spaces.
     static func duration(_ interval: TimeInterval) -> String {
         let seconds = max(0, Int(interval.rounded(.up)))
         let hours = seconds / 3600
         let minutes = (seconds % 3600) / 60
-        if hours > 0 { return minutes > 0 ? "\(hours) h \(minutes) min" : "\(hours) h" }
-        if minutes > 0 { return "\(minutes) min" }
-        return "\(seconds) s"
+        if hours > 0 { return minutes > 0 ? "\(hours)\u{00a0}godz. \(minutes)\u{00a0}min" : "\(hours)\u{00a0}godz." }
+        if minutes > 0 { return "\(minutes)\u{00a0}min" }
+        return "\(seconds)\u{00a0}s"
     }
 }

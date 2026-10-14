@@ -180,7 +180,7 @@ struct ItemEditorView: View {
             }
             if !(isNew && kind == .catalog) {
                 ToolbarItem(placement: .confirmationAction) {
-                    ConfirmToolbarButton(title: "Zapisz") { save() }
+                    ConfirmToolbarButton(title: "Zachowaj") { save() }
                         .disabled(!isValid)
                 }
             }
@@ -231,7 +231,7 @@ struct ItemEditorView: View {
             HStack(spacing: 10) {
                 Image(systemName: "magnifyingglass")
                     .foregroundStyle(Theme.tertiary)
-                TextField("Szukaj w katalogu", text: $catalogQuery)
+                TextField("Szukaj w katalogu", text: $catalogQuery)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
             }

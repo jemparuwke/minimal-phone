@@ -41,7 +41,7 @@ struct SetupGuideView: View {
                   text: "Utwórz tryb skupienia, który przepuszcza tylko ważne osoby i aplikacje. Możesz go włączać automatycznie o stałych porach.",
                   path: "Ustawienia → Tryb skupienia"),
         GuideStep(icon: "bell.badge", title: "Podsumowanie powiadomień",
-                  text: "Zbierz mniej pilne powiadomienia w zaplanowane podsumowanie — raz lub dwa razy dziennie.",
+                  text: "Zbierz mniej pilne powiadomienia w zaplanowane podsumowanie — raz lub dwa razy dziennie.",
                   path: "Ustawienia → Powiadomienia"),
         GuideStep(icon: "wind", title: "Pauza dla pożeraczy czasu",
                   text: "W Minimal przytrzymaj nazwę aplikacji i wybierz „Pauza przed otwarciem”. Kilka sekund wystarczy, by impuls minął."),
@@ -60,7 +60,7 @@ struct SetupGuideView: View {
         List {
             GuideSection(title: "Ekran główny iPhone’a", steps: homeScreen)
             GuideSection(title: "Spokój", steps: calm)
-            GuideSection(title: "Czego iOS nie pozwala", steps: limits)
+            GuideSection(title: "Na co iOS nie pozwala", steps: limits)
         }
         .navigationTitle("Przewodnik")
         .navigationBarTitleDisplayMode(.inline)
@@ -71,13 +71,13 @@ struct SetupGuideView: View {
 /// iOS settings that close the remaining gaps around the shield.
 struct ShieldGuideView: View {
     private let steps: [GuideStep] = [
-        GuideStep(icon: "hourglass", title: "Kod Czasu przed ekranem u zaufanej osoby",
+        GuideStep(icon: "hourglass", title: "Kod Czasu przed ekranem u zaufanej osoby",
                   text: "Włącz Czas przed ekranem i ustaw kod, który wpisze ktoś zaufany — nie Ty. Gdy iPhone zaproponuje konto Apple do odzyskiwania kodu, pomiń ten krok. Bez kodu nie zmienisz ograniczeń zawartości ani nie wyłączysz Czasu przed ekranem, a od iOS 26.4 nie odbierzesz też Minimal dostępu do niego.",
                   path: "Ustawienia → Czas przed ekranem → Zablokuj ustawienia Czasu przed ekranem"),
         GuideStep(icon: "nosign", title: "Blokuj witryny dla dorosłych",
                   text: "Ten sam filtr Apple co warstwa 1 tarczy — ale chroniony kodem zaufanej osoby.",
                   path: "Ustawienia → Czas przed ekranem → Ograniczaj treść i prywatność → App Store, multimedia, Internet i gry → Zawartość www → Blokuj witryny dla dorosłych"),
-        GuideStep(icon: "person.badge.key", title: "Zablokuj zmiany kodu i konta",
+        GuideStep(icon: "person.badge.key", title: "Zablokuj zmiany kodu i konta",
                   text: "Uniemożliwia obejście ograniczeń przez zmianę kodu lub konta Apple.",
                   path: "Ograniczaj treść i prywatność → Zmiany kodu: Nie pozwalaj, Zmiany danych konta: Nie pozwalaj"),
         GuideStep(icon: "eye.slash", title: "Ostrzeżenia o treściach wymagających dyskrecji",

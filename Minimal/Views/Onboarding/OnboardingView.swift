@@ -102,7 +102,7 @@ private struct PageDots: View {
             }
         }
         .accessibilityElement()
-        .accessibilityLabel("Krok \(current + 1) z \(count)")
+        .accessibilityLabel("Krok \(current + 1) z \(count)")
     }
 }
 
@@ -252,8 +252,8 @@ private struct ShieldPage: View {
                         } else {
                             ShieldStepCard(
                                 number: 1,
-                                title: "Tarcza w trzech krokach",
-                                text: "Filtr Apple, profil DNS i blokada aplikacji — krok po kroku, w Ustawieniach iOS.",
+                                title: "Tarcza w trzech krokach",
+                                text: "Filtr Apple, profil DNS i blokada aplikacji — krok po kroku, w Ustawieniach iOS.",
                                 isDone: shield.activeLayers == ShieldModel.FreeStep.allCases.count,
                                 action: "Ustaw"
                             ) {
@@ -290,7 +290,7 @@ private struct ShieldPage: View {
     private var fullEditionCards: some View {
         ShieldStepCard(
             number: 1,
-            title: "Filtr stron dla dorosłych",
+            title: "Filtr witryn dla dorosłych",
             text: "Wbudowany filtr Apple w Safari i innych przeglądarkach.",
             isDone: shield.webFilterActive,
             action: "Włącz"
@@ -397,10 +397,10 @@ private struct HomeScreenPage: View {
                                      text: "Przytrzymaj ekran główny → Edytuj → Dodaj widżet → Minimal → Ulubione (duży).")
                         GuideStepRow(number: 2, title: "Schowaj resztę",
                                      text: "Przenieś pozostałe aplikacje do biblioteki aplikacji i ukryj dodatkowe strony ekranu głównego.")
-                        GuideStepRow(number: 3, title: "Minimal w Docku",
+                        GuideStepRow(number: 3, title: "Minimal w Docku",
                                      text: "Zostaw w Docku tylko Minimal — stąd jednym stuknięciem dotrzesz do każdej aplikacji.")
                         GuideStepRow(number: 4, title: "Czerń i szarość",
-                                     text: "Ustaw czarną tapetę i skrót do skali szarości. Pełny przewodnik znajdziesz w Ustawieniach Minimal.")
+                                     text: "Ustaw czarną tapetę i skrót do skali szarości. Pełny przewodnik znajdziesz w aplikacji: ⋯ → Przewodnik po minimalizmie.")
                     }
                     .padding(.top, 32)
                 }

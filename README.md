@@ -25,7 +25,7 @@
 | **Tylko słowa** | Zegar, data i kilka najważniejszych aplikacji, zapisanych zwykłym tekstem. Bez ikon, kolorów i czerwonych kropek. |
 | **Wszystko pod ręką** | Każdą aplikację znajdziesz w sekundę — wystarczy zacząć pisać. Niczego nie tracisz: gotowy katalog ponad 80 aplikacji (także polskich), a każdą inną dodasz przez aplikację Skróty. |
 | **Pauza** | Przy wybranych aplikacjach (Instagram, YouTube, X…) najpierw kilka sekund oddechu i pytanie, czy na pewno. Impuls mija, a Ty decydujesz świadomie. |
-| **Tarcza** | Trzy warstwy blokady porno: filtr stron dla dorosłych Apple, szyfrowany rodzinny DNS dla całego telefonu i blokada wybranych aplikacji. Do tego opcjonalne opóźnienie, zanim tarczę da się wyłączyć. |
+| **Tarcza** | Trzy warstwy blokady porno: filtr witryn dla dorosłych Apple, szyfrowany rodzinny DNS dla całego telefonu i blokada wybranych aplikacji. Do tego opcjonalne opóźnienie, zanim tarczę da się wyłączyć. |
 | **Widżety** | „Ulubione” na ekran główny i ekran blokady oraz „Szukaj”, który otwiera wyszukiwanie jednym stuknięciem. |
 | **Prywatność** | Bez kont, reklam i śledzenia. Twoje dane zostają na iPhonie — tylko filtr DNS wysyła (zaszyfrowane) zapytania o adresy stron do wybranego dostawcy. |
 
@@ -39,7 +39,7 @@
 - **Mac** z najnowszą aplikacją **Xcode** (darmowa w App Store; Xcode 26 wymaga macOS 15.6 lub nowszego).
 - **Konto Apple**:
   - **płatne Apple Developer** (99 USD/rok): pełna, automatyczna tarcza, a aplikacja działa cały rok bez odświeżania. **Polecane.**
-  - **zwykłe, darmowe konto Apple**: wszystko działa, ale tarczę ustawiasz ręcznie, prowadzi Cię przewodnik w aplikacji. Aplikację trzeba odświeżać co 7 dni. Szczegóły w sekcji [Wersja Free](#wersja-free-darmowe-konto-apple).
+  - **zwykłe, darmowe konto Apple**: wszystko działa, ale tarczę ustawiasz ręcznie — poprowadzi Cię przewodnik w aplikacji. Aplikację trzeba odświeżać co 7 dni. Szczegóły w sekcji [Wersja Free](#wersja-free-darmowe-konto-apple).
 
 ### Krok po kroku
 
@@ -77,9 +77,9 @@ iOS nie pozwala żadnej aplikacji zastąpić ekranu głównego. Da się go jedna
 3. **Dock:** zostaw w nim tylko Minimal.
 4. **Czerń i szarość:** ustaw czarną tapetę i skrót do skali szarości (trzykrotne kliknięcie bocznego przycisku).
 
-Dokładne ścieżki znajdziesz w aplikacji: **⋯ → Przewodnik minimalizmu**.
+Dokładne ścieżki znajdziesz w aplikacji: **⋯ → Przewodnik po minimalizmie**.
 
-**Przycisk czynności i Spotlight:** Minimal dodaje skróty „Szukaj w Minimal” i „Tarcza Minimal”. Przypisz pierwszy do przycisku czynności (**Ustawienia → Przycisk czynności → Skrót**), a jedno naciśnięcie otworzy wyszukiwanie wszystkich aplikacji.
+**Przycisk czynności i Spotlight:** Minimal dodaje skróty „Szukaj w Minimal” i „Pokaż tarczę Minimal”. Przypisz pierwszy do przycisku czynności (**Ustawienia → Przycisk czynności → Skrót**), a jedno naciśnięcie otworzy wyszukiwanie wszystkich aplikacji.
 
 ---
 
@@ -87,12 +87,12 @@ Dokładne ścieżki znajdziesz w aplikacji: **⋯ → Przewodnik minimalizmu**.
 
 | Warstwa | Co blokuje | Jak działa |
 |---|---|---|
-| **1. Filtr stron dla dorosłych** | Strony porno w Safari, Chrome, Firefoksie i przeglądarkach wewnątrz aplikacji. Wyłącza też przeglądanie prywatne. | Wbudowany filtr Apple (Screen Time API), ten sam co „Blokuj witryny dla dorosłych”. |
+| **1. Filtr witryn dla dorosłych** | Strony porno w Safari, Chrome, Firefoksie i przeglądarkach wewnątrz aplikacji. Wyłącza też przeglądanie prywatne. | Wbudowany filtr Apple (Screen Time API), ten sam co „Blokuj witryny dla dorosłych”. |
 | **2. Filtr DNS** | Strony porno w **każdej** aplikacji. Wymusza bezpieczne wyszukiwanie (także obrazów) i tryb ograniczonego dostępu w YouTube, blokuje VPN-y i proxy. | Szyfrowany rodzinny DNS ([CleanBrowsing Family](https://cleanbrowsing.org/filters/), do wyboru również AdGuard i Cloudflare). |
 | **3. Zablokowane aplikacje** | Aplikacje, w których łatwo trafić na porno (np. X, Reddit, Telegram), albo całe kategorie. | Osłona Screen Time na wybranych aplikacjach. |
-| **Zobowiązanie** | Wyłączenie czegokolwiek wymaga odczekania (1 h – 7 dni). Opcjonalnie blokada usuwania aplikacji. | Licznik w aplikacji i `denyAppRemoval`. |
+| **Zobowiązanie** | Wyłączenie czegokolwiek wymaga odczekania (od 1 godz. do 7 dni). Opcjonalnie blokada usuwania aplikacji. | Licznik w aplikacji i `denyAppRemoval`. |
 
-**Po instalacji filtra DNS** włącz go jeszcze raz ręcznie: **Ustawienia → Ogólne → VPN i urządzenia zarządzane → DNS → Minimal**. iOS wymaga, żeby ten jeden krok zrobił człowiek.
+**Po instalacji filtra DNS** trzeba go jeszcze włączyć ręcznie: **Ustawienia → Ogólne → VPN i urządzenia zarządzane → DNS → Minimal**. iOS wymaga, żeby ten jeden krok zrobił człowiek.
 
 ### Uczciwie: czy da się to obejść?
 
@@ -115,7 +115,7 @@ Darmowe konto Apple nie daje dostępu do Screen Time API ani ustawień DNS, wię
 MINIMAL_EDITION = Free
 ```
 
-Wszystko inne działa tak samo. W zakładce **Tarcza** aplikacja poprowadzi Cię przez:
+Wszystko inne działa tak samo. Na ekranie **Tarcza** aplikacja poprowadzi Cię przez:
 
 1. wbudowany filtr Apple („Blokuj witryny dla dorosłych”),
 2. instalację **profilu DNS**: gotowe pliki są w folderze [`Profiles/`](Profiles), a aplikacja może je od razu zapisać w Plikach,

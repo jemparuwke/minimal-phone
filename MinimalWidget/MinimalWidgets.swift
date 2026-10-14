@@ -223,7 +223,7 @@ struct SearchWidgetView: View {
     var body: some View {
         content
             .accessibilityElement(children: .ignore)
-            .accessibilityLabel("Szukaj w Minimal")
+            .accessibilityLabel("Szukaj w Minimal")
             .accessibilityAddTraits(.isButton)
             .widgetURL(SharedConfig.searchURL)
     }

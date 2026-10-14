@@ -9,7 +9,7 @@ struct FreeShieldSections: View {
     var body: some View {
         Section {
             LayerHeader(number: 1,
-                        title: "Filtr stron dla dorosłych",
+                        title: "Filtr witryn dla dorosłych",
                         detail: "Wbudowany filtr Apple w Safari, innych przeglądarkach i aplikacjach.",
                         isActive: shield.isFreeStepDone(.webFilter))
             StepList(steps: [
@@ -22,7 +22,7 @@ struct FreeShieldSections: View {
             } label: {
                 Text("Otwórz Ustawienia").fontWeight(.semibold)
             }
-            DoneToggle(step: .webFilter, title: "Filtr stron dla dorosłych")
+            DoneToggle(step: .webFilter, title: "Filtr witryn dla dorosłych")
         }
         .minimalRow()
 
@@ -40,13 +40,13 @@ struct FreeShieldSections: View {
                 .font(.footnote)
                 .foregroundStyle(Theme.secondary)
             StepList(steps: [
-                "Stuknij „Zapisz profil” i wybierz „Zachowaj w Plikach”.",
+                "Stuknij „Zachowaj profil” i wybierz „Zachowaj w Plikach”.",
                 "Otwórz Pliki i stuknij zapisany profil.",
                 "Ustawienia → Profil pobrany → Instaluj. iOS oznaczy profil jako niezweryfikowany — to normalne dla profilu bez podpisu.",
             ])
             if let url = provider.profileURL {
                 ShareLink(item: url, preview: SharePreview("Minimal · filtr DNS (\(provider.name))")) {
-                    Label("Zapisz profil", systemImage: "square.and.arrow.down")
+                    Label("Zachowaj profil", systemImage: "square.and.arrow.down")
                         .fontWeight(.semibold)
                 }
             }
@@ -63,7 +63,7 @@ struct FreeShieldSections: View {
                         isActive: shield.isFreeStepDone(.appLimits))
             StepList(steps: [
                 "Ustawienia → Czas przed ekranem → Limity aplikacji → Dodaj limit.",
-                "Wybierz aplikacje i ustaw limit 1 minuty.",
+                "Wybierz aplikacje i ustaw limit 1 minuty.",
                 "Włącz „Blokuj po osiągnięciu limitu” (opcja pojawia się po ustawieniu kodu Czasu przed ekranem).",
             ])
             DoneToggle(step: .appLimits, title: "Blokada wybranych aplikacji")

@@ -21,7 +21,7 @@ struct ShieldView: View {
         var id: String { rawValue }
         var title: String {
             switch self {
-            case .webFilter: return "Wyłączyć filtr stron dla dorosłych?"
+            case .webFilter: return "Wyłączyć filtr witryn dla dorosłych?"
             case .dns: return "Usunąć filtr DNS?"
             }
         }
@@ -33,8 +33,8 @@ struct ShieldView: View {
         }
         var consequence: String {
             switch self {
-            case .webFilter: return "Safari i inne przeglądarki przestaną blokować strony dla dorosłych."
-            case .dns: return "Strony dla dorosłych znów będą się otwierać w aplikacjach, o ile nie zablokuje ich inna warstwa."
+            case .webFilter: return "Safari i inne przeglądarki przestaną blokować witryny dla dorosłych."
+            case .dns: return "Witryny dla dorosłych znów będą się otwierać w aplikacjach, o ile nie zablokuje ich inna warstwa."
             }
         }
     }
@@ -109,7 +109,7 @@ struct ShieldView: View {
                 }
                 .padding(.top, 4)
                 .accessibilityElement()
-                .accessibilityLabel("Aktywne warstwy: \(shield.activeLayers) z 3")
+                .accessibilityLabel("Aktywne warstwy: \(shield.activeLayers) z 3")
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, 16)
@@ -127,7 +127,7 @@ struct ShieldView: View {
             return "Minimal nie widzi ustawień iOS, więc zaznacz każdy krok, gdy go wykonasz."
         }
         switch shield.activeLayers {
-        case 3: return "Wszystkie trzy warstwy działają. Strony dla dorosłych są blokowane w przeglądarkach i aplikacjach."
+        case 3: return "Wszystkie trzy warstwy działają. Witryny dla dorosłych są blokowane w przeglądarkach i aplikacjach."
         case 0: return "Włącz warstwy poniżej. Każda zamyka inną furtkę."
         default: return "Aktywne warstwy: \(shield.activeLayers) z 3. Włącz pozostałe, by zamknąć wszystkie furtki."
         }
@@ -138,8 +138,8 @@ struct ShieldView: View {
     private var webFilterSection: some View {
         Section {
             LayerHeader(number: 1,
-                        title: "Filtr stron dla dorosłych",
-                        detail: "Wbudowany filtr Apple. Blokuje strony dla dorosłych w Safari, innych przeglądarkach i aplikacjach, a także archiwa stron i tłumacza Google, przez które da się je obejść. Wyłącza przeglądanie prywatne.",
+                        title: "Filtr witryn dla dorosłych",
+                        detail: "Wbudowany filtr Apple. Blokuje witryny dla dorosłych w Safari, innych przeglądarkach i aplikacjach, a także archiwa stron i tłumacza Google, przez które da się je obejść. Wyłącza przeglądanie prywatne.",
                         isActive: shield.webFilterActive)
             if shield.webFilterActive {
                 weakenButton(.webFilter)
@@ -251,7 +251,7 @@ struct ShieldView: View {
                     pendingDelay = nil
                 }
             } message: {
-                Text("Każde osłabienie tarczy będzie wymagało odczekania \(pendingDelay?.waitLabel ?? ""). Skrócić ten czas można dopiero po odczekaniu.")
+                Text("Przed każdym osłabieniem tarczy trzeba będzie odczekać \(pendingDelay?.waitLabel ?? ""). Skrócić ten czas można dopiero po odczekaniu.")
             }
             Toggle("Blokuj usuwanie aplikacji", isOn: preventRemovalBinding)
                 .confirmationDialog("Zablokować usuwanie aplikacji?", isPresented: $confirmPreventRemoval,
@@ -285,7 +285,7 @@ struct ShieldView: View {
             } label: {
                 Label("Poproś o odblokowanie", systemImage: "lock")
             }
-            .confirmationDialog("Poprosić o odblokowanie?", isPresented: $confirmUnlock, titleVisibility: .visible) {
+            .confirmationDialog("Poprosić o odblokowanie?", isPresented: $confirmUnlock, titleVisibility: .visible) {
                 Button("Rozpocznij odliczanie") { shield.requestUnlock() }
             } message: {
                 Text("Odblokowanie nastąpi za \(shield.lockDelay.waitLabel). Potem przez 30 minut możesz osłabić tarczę.")

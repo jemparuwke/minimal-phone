@@ -122,7 +122,7 @@ struct SearchView: View {
                 close()
             }
         } label: {
-            suggestion(icon: "globe", text: "Szukaj „\(trimmed)” w sieci")
+            suggestion(icon: "globe", text: "Szukaj „\(trimmed)” w sieci")
         }
         .buttonStyle(.dim)
 
