@@ -34,13 +34,13 @@ enum DNSProvider: String, CaseIterable, Identifiable {
     var summary: String {
         switch self {
         case .cleanBrowsingFamily:
-            return "Najszczelniejszy. Blokuje porno, VPN-y i serwery proxy, wymusza bezpieczne wyszukiwanie i tryb ograniczony YouTube. Blokuje też serwisy z mieszaną treścią, np. Reddit."
+            return "Najszczelniejszy. Blokuje porno, VPN-y i serwery proxy, wymusza bezpieczne wyszukiwanie i tryb ograniczony YouTube. Blokuje też serwisy z mieszaną treścią, np. Reddit."
         case .cleanBrowsingAdult:
-            return "Blokuje porno i wymusza bezpieczne wyszukiwanie w Google i Bing. Nie blokuje Reddita ani VPN-ów."
+            return "Blokuje porno i wymusza bezpieczne wyszukiwanie w Google i Bing. Nie blokuje Reddita ani VPN-ów."
         case .adGuardFamily:
-            return "Blokuje porno, reklamy i śledzenie, wymusza bezpieczne wyszukiwanie. Może psuć reklamy w niektórych aplikacjach."
+            return "Blokuje porno, reklamy i śledzenie, wymusza bezpieczne wyszukiwanie. Może psuć reklamy w niektórych aplikacjach."
         case .cloudflareFamily:
-            return "Blokuje porno i złośliwe strony. Najszybszy, ale nie wymusza bezpiecznego wyszukiwania."
+            return "Blokuje porno i złośliwe strony. Najszybszy, ale nie wymusza bezpiecznego wyszukiwania."
         }
     }
 

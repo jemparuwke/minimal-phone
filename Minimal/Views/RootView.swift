@@ -94,8 +94,8 @@ struct RootView: View {
 
     private func failureMessage(for item: LaunchItem) -> String {
         if item.isShortcut {
-            return "Sprawdź, czy w aplikacji Skróty istnieje skrót o dokładnie takiej nazwie jak w „\(item.name)”."
+            return "Sprawdź, czy w aplikacji Skróty istnieje skrót o dokładnie takiej nazwie jak w „\(item.name)”."
         }
-        return "„\(item.name)” nie otwiera się — może nie jest zainstalowana albo jest ukryta. Stuknij „Edytuj” i wybierz „Skrót”: przez aplikację Skróty otworzysz każdą aplikację."
+        return "„\(item.name)” nie otwiera się — może nie jest zainstalowana albo jest ukryta. Stuknij „Edytuj” i wybierz „Skrót”: przez aplikację Skróty otworzysz każdą aplikację."
     }
 }

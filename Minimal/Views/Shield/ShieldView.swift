@@ -54,7 +54,7 @@ struct ShieldView: View {
             }
         }
         .confirmationDialog(
-            "Dopóki ta opcja jest włączona, nie usuniesz z iPhone’a żadnej aplikacji — także Minimal.",
+            "Dopóki ta opcja jest włączona, nie usuniesz z iPhone’a żadnej aplikacji — także Minimal.",
             isPresented: $confirmPreventRemoval,
             titleVisibility: .visible
         ) {
@@ -111,7 +111,7 @@ struct ShieldView: View {
     }
 
     private var heroTitle: String {
-        if !shield.isFullEdition { return "Tarcza: \(shield.activeLayers) z 3 kroków" }
+        if !shield.isFullEdition { return "Tarcza: \(shield.activeLayers) z 3 kroków" }
         return shield.isProtecting ? "Tarcza włączona" : "Tarcza wyłączona"
     }
 
@@ -120,9 +120,9 @@ struct ShieldView: View {
             return "Minimal nie widzi ustawień iOS, więc zaznacz każdy krok, gdy go wykonasz."
         }
         switch shield.activeLayers {
-        case 3: return "Wszystkie trzy warstwy działają. Porno jest zablokowane w całym telefonie."
+        case 3: return "Wszystkie trzy warstwy działają. Porno jest zablokowane w całym telefonie."
         case 0: return "Włącz warstwy poniżej. Każda zamyka inną furtkę."
-        default: return "Aktywne warstwy: \(shield.activeLayers) z 3. Włącz pozostałe, by zamknąć wszystkie furtki."
+        default: return "Aktywne warstwy: \(shield.activeLayers) z 3. Włącz pozostałe, by zamknąć wszystkie furtki."
         }
     }
 
@@ -132,7 +132,7 @@ struct ShieldView: View {
         Section {
             LayerHeader(number: 1,
                         title: "Filtr stron dla dorosłych",
-                        detail: "Wbudowany filtr Apple. Blokuje strony dla dorosłych w Safari, innych przeglądarkach i aplikacjach oraz wyłącza przeglądanie prywatne.",
+                        detail: "Wbudowany filtr Apple. Blokuje strony dla dorosłych w Safari, innych przeglądarkach i aplikacjach oraz wyłącza przeglądanie prywatne.",
                         isActive: shield.webFilterActive)
             if shield.webFilterActive {
                 weakenButton("Wyłącz filtr") { shield.disableWebFilter() }
@@ -144,7 +144,7 @@ struct ShieldView: View {
                 }
             }
         } footer: {
-            Text("iOS poprosi o zgodę na dostęp do Czasu przed ekranem. Wszystko zostaje na Twoim iPhonie.")
+            Text("iOS poprosi o zgodę na dostęp do Czasu przed ekranem. Wszystko zostaje na Twoim iPhonie.")
         }
         .minimalRow()
     }
@@ -155,7 +155,7 @@ struct ShieldView: View {
         Section {
             LayerHeader(number: 2,
                         title: "Filtr DNS dla całego telefonu",
-                        detail: "Szyfrowany rodzinny DNS. Strony porno przestają się otwierać — w każdej aplikacji i przeglądarce.",
+                        detail: "Szyfrowany rodzinny DNS. Strony porno przestają się otwierać — w każdej aplikacji i przeglądarce.",
                         isActive: shield.dnsEnabled)
 
             if shield.dnsInstalled && !shield.dnsEnabled {
@@ -196,7 +196,7 @@ struct ShieldView: View {
                 weakenButton("Usuń filtr DNS") { Task { await shield.removeDNS() } }
             }
         } footer: {
-            Text("Po instalacji włącz filtr w Ustawieniach: Ogólne → VPN i urządzenia zarządzane → DNS → Minimal. Włączona aplikacja VPN omija filtr DNS — filtr Apple (warstwa 1) działa nadal.")
+            Text("Po instalacji włącz filtr w Ustawieniach: Ogólne → VPN i urządzenia zarządzane → DNS → Minimal. Włączona aplikacja VPN omija filtr DNS — filtr Apple (warstwa 1) działa nadal.")
         }
         .minimalRow()
     }
@@ -207,7 +207,7 @@ struct ShieldView: View {
         Section {
             LayerHeader(number: 3,
                         title: "Zablokowane aplikacje",
-                        detail: "Zablokuj aplikacje, w których łatwo trafić na porno — np. X, Reddit, Telegram, Tumblr — albo całe kategorie.",
+                        detail: "Zablokuj aplikacje, w których łatwo trafić na porno — np. X, Reddit, Telegram, Tumblr — albo całe kategorie.",
                         isActive: shield.blockedAppsActive)
             Button {
                 pickerSelection = shield.blockedSelection
@@ -240,7 +240,7 @@ struct ShieldView: View {
         } header: {
             Text("Zobowiązanie")
         } footer: {
-            Text("Wyłączenie lub osłabienie warstw w Minimal wymaga odczekania wybranego czasu, a data i godzina iPhone’a muszą się wtedy ustawiać automatycznie. Impuls mija, decyzja zostaje. Ustawienia iOS nadal pozwalają wyłączyć filtry — dlatego kod Czasu przed ekranem warto oddać zaufanej osobie. „Blokuj usuwanie aplikacji” nie pozwala usunąć z iPhone’a żadnej aplikacji, także Minimal.")
+            Text("Wyłączenie lub osłabienie warstw w Minimal wymaga odczekania wybranego czasu, a data i godzina iPhone’a muszą się wtedy ustawiać automatycznie. Impuls mija, decyzja zostaje. Ustawienia iOS nadal pozwalają wyłączyć filtry — dlatego kod Czasu przed ekranem warto oddać zaufanej osobie. „Blokuj usuwanie aplikacji” nie pozwala usunąć z iPhone’a żadnej aplikacji, także Minimal.")
         }
         .minimalRow()
     }
@@ -255,7 +255,7 @@ struct ShieldView: View {
             Button {
                 confirmUnlock = true
             } label: {
-                Label("Poproś o odblokowanie", systemImage: "lock")
+                Label("Poproś o odblokowanie", systemImage: "lock")
             }
             .confirmationDialog("Odblokowanie nastąpi za \(shield.lockDelay.waitLabel). Potem przez 30 minut możesz osłabić tarczę.",
                                 isPresented: $confirmUnlock, titleVisibility: .visible) {
@@ -298,7 +298,7 @@ struct ShieldView: View {
                 Label("Maksymalna ochrona", systemImage: "lock.shield")
             }
         } footer: {
-            Text("Kilka ustawień iOS, które domykają tarczę — np. kod Czasu przed ekranem u zaufanej osoby.")
+            Text("Kilka ustawień iOS, które domykają tarczę — np. kod Czasu przed ekranem u zaufanej osoby.")
         }
         .minimalRow()
     }
@@ -391,13 +391,13 @@ struct LayerHeader: View {
 struct ActivationSteps: View {
     private let steps = [
         "Otwórz Ustawienia → Ogólne.",
-        "Stuknij VPN i urządzenia zarządzane → DNS.",
+        "Stuknij VPN i urządzenia zarządzane → DNS.",
         "Wybierz „Minimal”.",
     ]
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text("Ostatni krok — włącz w Ustawieniach")
+            Text("Ostatni krok — włącz w Ustawieniach")
                 .font(.subheadline.weight(.semibold))
                 .foregroundStyle(Theme.warning)
             ForEach(Array(steps.enumerated()), id: \.offset) { index, step in

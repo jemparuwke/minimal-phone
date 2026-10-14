@@ -10,12 +10,12 @@ struct FreeShieldSections: View {
         Section {
             LayerHeader(number: 1,
                         title: "Filtr stron dla dorosłych",
-                        detail: "Wbudowany filtr Apple w Safari, innych przeglądarkach i aplikacjach.",
+                        detail: "Wbudowany filtr Apple w Safari, innych przeglądarkach i aplikacjach.",
                         isActive: shield.isFreeStepDone(.webFilter))
             StepList(steps: [
-                "Otwórz Ustawienia → Czas przed ekranem i włącz go.",
-                "Ograniczaj treść i prywatność → włącz.",
-                "App Store, multimedia, Internet i gry → Zawartość www → Blokuj witryny dla dorosłych.",
+                "Otwórz Ustawienia → Czas przed ekranem i włącz go.",
+                "Ograniczaj treść i prywatność → włącz.",
+                "App Store, multimedia, Internet i gry → Zawartość www → Blokuj witryny dla dorosłych.",
             ])
             Button {
                 SystemSettings.open()
@@ -29,7 +29,7 @@ struct FreeShieldSections: View {
         Section {
             LayerHeader(number: 2,
                         title: "Filtr DNS dla całego telefonu",
-                        detail: "Profil szyfrowanego, rodzinnego DNS. Blokuje porno w każdej aplikacji.",
+                        detail: "Profil szyfrowanego, rodzinnego DNS. Blokuje porno w każdej aplikacji.",
                         isActive: shield.isFreeStepDone(.dnsProfile))
             Picker("Dostawca", selection: $provider) {
                 ForEach(DNSProvider.allCases) { provider in
@@ -41,7 +41,7 @@ struct FreeShieldSections: View {
                 .foregroundStyle(Theme.secondary)
             StepList(steps: [
                 "Stuknij „Zapisz profil” i wybierz „Zapisz w Plikach”.",
-                "Otwórz Pliki i stuknij zapisany profil.",
+                "Otwórz Pliki i stuknij zapisany profil.",
                 "Ustawienia → Profil pobrany → Instaluj.",
             ])
             if let url = provider.profileURL {
@@ -52,14 +52,14 @@ struct FreeShieldSections: View {
             }
             DoneToggle(step: .dnsProfile)
         } footer: {
-            Text("Profil możesz też przesłać na iPhone’a AirDropem z folderu Profiles w projekcie.")
+            Text("Profil możesz też przesłać na iPhone’a AirDropem z folderu Profiles w projekcie.")
         }
         .minimalRow()
 
         Section {
             LayerHeader(number: 3,
                         title: "Blokada wybranych aplikacji",
-                        detail: "Zablokuj aplikacje, w których łatwo trafić na porno — np. X, Reddit, Telegram.",
+                        detail: "Zablokuj aplikacje, w których łatwo trafić na porno — np. X, Reddit, Telegram.",
                         isActive: shield.isFreeStepDone(.appLimits))
             StepList(steps: [
                 "Ustawienia → Czas przed ekranem → Limity aplikacji → Dodaj limit.",
@@ -68,7 +68,7 @@ struct FreeShieldSections: View {
             ])
             DoneToggle(step: .appLimits)
         } footer: {
-            Text("Masz płatne konto Apple Developer? Ustaw MINIMAL_EDITION = Full w Config/Signing.xcconfig — wtedy tarcza włącza się jednym stuknięciem.")
+            Text("Masz płatne konto Apple Developer? Ustaw MINIMAL_EDITION = Full w Config/Signing.xcconfig — wtedy tarcza włącza się jednym stuknięciem.")
         }
         .minimalRow()
     }

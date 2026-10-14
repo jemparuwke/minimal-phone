@@ -117,10 +117,10 @@ private struct WelcomePage: View {
     @State private var appeared = false
 
     private let features: [(icon: String, title: String, text: String)] = [
-        ("textformat", "Tylko słowa", "Spokojny ekran z kilkoma najważniejszymi aplikacjami. Bez ikon, kolorów i czerwonych kropek."),
-        ("magnifyingglass", "Wszystko pod ręką", "Każda aplikacja jest o jedno wyszukanie dalej. Niczego nie tracisz."),
+        ("textformat", "Tylko słowa", "Spokojny ekran z kilkoma najważniejszymi aplikacjami. Bez ikon, kolorów i czerwonych kropek."),
+        ("magnifyingglass", "Wszystko pod ręką", "Każda aplikacja jest o jedno wyszukanie dalej. Niczego nie tracisz."),
         ("wind", "Pauza", "Kilka sekund oddechu przed aplikacjami, które kradną czas."),
-        ("checkmark.shield", "Tarcza", "Porno zablokowane w całym telefonie — w przeglądarkach i aplikacjach."),
+        ("checkmark.shield", "Tarcza", "Porno zablokowane w całym telefonie — w przeglądarkach i aplikacjach."),
     ]
 
     var body: some View {
@@ -181,7 +181,7 @@ private struct AppsPage: View {
         OnboardingPage {
             VStack(alignment: .leading, spacing: 0) {
                 PageTitle(title: "Twoje aplikacje",
-                          subtitle: "Zaznacz te, których używasz. Resztę dodasz później — każdą aplikację z iPhone’a.")
+                          subtitle: "Zaznacz te, których używasz. Resztę dodasz później — każdą aplikację z iPhone’a.")
                     .padding(.horizontal, Theme.gutter)
                 List {
                     ForEach(CatalogApp.Kind.allCases) { group in
@@ -225,8 +225,8 @@ private struct ShieldPage: View {
                         .padding(.top, 72)
                     PageTitle(title: "Tarcza",
                               subtitle: shield.isFullEdition
-                                ? "Dwa stuknięcia i porno znika z Twojego iPhone’a. Później możesz dodać blokadę wybranych aplikacji."
-                                : "Trzy krótkie kroki w Ustawieniach iOS i porno znika z Twojego iPhone’a. Minimal poprowadzi Cię przez każdy z nich.",
+                                ? "Dwa stuknięcia i porno znika z Twojego iPhone’a. Później możesz dodać blokadę wybranych aplikacji."
+                                : "Trzy krótkie kroki w Ustawieniach iOS i porno znika z Twojego iPhone’a. Minimal poprowadzi Cię przez każdy z nich.",
                               topPadding: 20)
 
                     VStack(spacing: 12) {
@@ -269,7 +269,7 @@ private struct ShieldPage: View {
         ShieldStepCard(
             number: 1,
             title: "Filtr stron dla dorosłych",
-            text: "Wbudowany filtr Apple w Safari i innych przeglądarkach.",
+            text: "Wbudowany filtr Apple w Safari i innych przeglądarkach.",
             isDone: shield.webFilterActive,
             action: "Włącz"
         ) {
@@ -280,8 +280,8 @@ private struct ShieldPage: View {
             number: 2,
             title: "Filtr DNS",
             text: shield.dnsInstalled && !shield.dnsEnabled
-                ? "Zainstalowany. Włącz go: Ustawienia → Ogólne → VPN i urządzenia zarządzane → DNS → Minimal."
-                : "Blokuje porno w każdej aplikacji i wymusza bezpieczne wyszukiwanie.",
+                ? "Zainstalowany. Włącz go: Ustawienia → Ogólne → VPN i urządzenia zarządzane → DNS → Minimal."
+                : "Blokuje porno w każdej aplikacji i wymusza bezpieczne wyszukiwanie.",
             isDone: shield.dnsEnabled,
             action: shield.dnsInstalled ? "Ustawienia" : "Zainstaluj"
         ) {
@@ -361,19 +361,19 @@ private struct HomeScreenPage: View {
         OnboardingPage {
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
-                    PageTitle(title: "Zrób z tego swój ekran",
-                              subtitle: "iOS nie pozwala aplikacjom zastąpić ekranu głównego, ale w minutę ustawisz go tak, że Minimal stanie się wszystkim, co widzisz.",
+                    PageTitle(title: "Zrób z tego swój ekran",
+                              subtitle: "iOS nie pozwala aplikacjom zastąpić ekranu głównego, ale w minutę ustawisz go tak, że Minimal stanie się wszystkim, co widzisz.",
                               topPadding: 72)
 
                     VStack(alignment: .leading, spacing: 22) {
                         GuideStepRow(number: 1, title: "Dodaj widżet",
                                      text: "Przytrzymaj ekran główny → Edytuj → Dodaj widżet → Minimal → Ulubione (duży).")
                         GuideStepRow(number: 2, title: "Schowaj resztę",
-                                     text: "Przenieś pozostałe aplikacje do biblioteki aplikacji i ukryj dodatkowe strony ekranu głównego.")
+                                     text: "Przenieś pozostałe aplikacje do biblioteki aplikacji i ukryj dodatkowe strony ekranu głównego.")
                         GuideStepRow(number: 3, title: "Minimal w Docku",
-                                     text: "Zostaw w Docku tylko Minimal — wyszukiwanie wszystkiego jest jedno stuknięcie stąd.")
-                        GuideStepRow(number: 4, title: "Czerń i szarość",
-                                     text: "Ustaw czarną tapetę i skrót do skali szarości. Pełny przewodnik znajdziesz w Ustawieniach Minimal.")
+                                     text: "Zostaw w Docku tylko Minimal — wyszukiwanie wszystkiego jest jedno stuknięcie stąd.")
+                        GuideStepRow(number: 4, title: "Czerń i szarość",
+                                     text: "Ustaw czarną tapetę i skrót do skali szarości. Pełny przewodnik znajdziesz w Ustawieniach Minimal.")
                     }
                     .padding(.top, 32)
                 }

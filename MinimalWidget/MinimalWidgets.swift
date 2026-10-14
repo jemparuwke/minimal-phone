@@ -84,7 +84,7 @@ struct FavoritesWidgetView: View {
             }
 
             if entry.items.isEmpty {
-                Text("Otwórz Minimal i wybierz ulubione.")
+                Text("Otwórz Minimal i wybierz ulubione.")
                     .font(.system(size: 15, weight: .regular))
                     .foregroundStyle(.white.opacity(0.5))
             }

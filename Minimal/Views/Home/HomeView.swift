@@ -136,7 +136,7 @@ struct ItemLabel: View {
                 Circle()
                     .fill(Theme.tertiary)
                     .frame(width: 5, height: 5)
-                    .accessibilityLabel("z pauzą")
+                    .accessibilityLabel("z pauzą")
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -154,7 +154,7 @@ struct ItemMenu: View {
             Button {
                 store.setFavorite(item, false)
             } label: {
-                Label("Usuń z ulubionych", systemImage: "minus.circle")
+                Label("Usuń z ulubionych", systemImage: "minus.circle")
             }
         } else {
             Button {

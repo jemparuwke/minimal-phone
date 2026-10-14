@@ -177,7 +177,7 @@ struct ItemEditorView: View {
         } header: {
             Text("Nazwa")
         } footer: {
-            Text("Gotowe połączenie z katalogu Minimal. Jeśli „\(editedCatalogApp?.name ?? name)” nie otwiera się na Twoim iPhonie, wybierz „Skrót” — zadziała z każdą aplikacją.")
+            Text("Gotowe połączenie z katalogu Minimal. Jeśli „\(editedCatalogApp?.name ?? name)” nie otwiera się na Twoim iPhonie, wybierz „Skrót” — zadziała z każdą aplikacją.")
         }
         .minimalRow()
     }
@@ -231,7 +231,7 @@ struct ItemEditorView: View {
                 Label("Inna aplikacja — użyj skrótu", systemImage: "square.on.square")
             }
         } footer: {
-            Text("Każdą aplikację z iPhone’a można dodać przez aplikację Skróty — nawet jeśli nie ma jej w katalogu.")
+            Text("Każdą aplikację z iPhone’a można dodać przez aplikację Skróty — nawet jeśli nie ma jej w katalogu.")
         }
         .minimalRow()
     }
@@ -247,7 +247,7 @@ struct ItemEditorView: View {
         } header: {
             Text("Skrót")
         } footer: {
-            Text("W aplikacji Skróty: ＋ → Dodaj czynność → „Otwórz aplikację” → wybierz aplikację → nazwij skrót dokładnie tak jak powyżej. Działa z każdą aplikacją.")
+            Text("W aplikacji Skróty: ＋ → Dodaj czynność → „Otwórz aplikację” → wybierz aplikację → nazwij skrót dokładnie tak jak powyżej. Działa z każdą aplikacją.")
         }
         .minimalRow()
 

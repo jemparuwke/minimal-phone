@@ -90,7 +90,7 @@ struct SettingsView: View {
                 } header: {
                     Text("Zachowanie")
                 } footer: {
-                    Text("Wyszukiwanie w sieci zawsze używa ścisłego filtra SafeSearch.")
+                    Text("Wyszukiwanie w sieci zawsze używa ścisłego filtra SafeSearch.")
                 }
                 .minimalRow()
 

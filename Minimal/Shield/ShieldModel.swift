@@ -347,7 +347,7 @@ final class ShieldModel: ObservableObject {
         if case .waiting(let until) = lockState() {
             message = "Tarcza odblokuje się za \(Formatters.duration(until.timeIntervalSinceNow)). Wtedy przez 30 minut możesz ją osłabić."
         } else {
-            message = "Tarcza jest zablokowana. Poproś o odblokowanie w sekcji „Zobowiązanie” i odczekaj \(lockDelay.waitLabel)."
+            message = "Tarcza jest zablokowana. Poproś o odblokowanie w sekcji „Zobowiązanie” i odczekaj \(lockDelay.waitLabel)."
         }
         return false
     }
@@ -374,15 +374,15 @@ final class ShieldModel: ObservableObject {
         case .authorizationCanceled:
             return nil
         case .authenticationMethodUnavailable:
-            return "Ustaw kod blokady iPhone’a (Ustawienia → Face ID i kod), a potem spróbuj ponownie."
+            return "Ten krok wymaga kodu blokady iPhone’a. Ustaw go w Ustawieniach, a potem spróbuj ponownie."
         case .restricted:
             return "Czas przed ekranem jest zablokowany na tym urządzeniu (np. przez zarządzanie rodzinne lub MDM)."
         case .networkError:
-            return "Brak połączenia z internetem. Spróbuj ponownie za chwilę."
+            return "Brak połączenia z internetem. Spróbuj ponownie za chwilę."
         case .invalidAccountType:
             return "To konto nie może używać Czasu przed ekranem dla siebie. Zaloguj się na konto Apple osoby dorosłej."
         case .unavailable:
-            return "Czas przed ekranem jest teraz niedostępny. Upewnij się, że jest włączony w Ustawieniach."
+            return "Czas przed ekranem jest teraz niedostępny. Upewnij się, że jest włączony w Ustawieniach."
         default:
             return "Nie udało się uzyskać dostępu do Czasu przed ekranem. Spróbuj ponownie."
         }
