@@ -51,6 +51,7 @@ jobs:
             -destination 'generic/platform=iOS' \
             -derivedDataPath build \
             MINIMAL_EDITION=Free \
+            BUNDLE_ID_PREFIX=pl.minimal.unsigned \
             CODE_SIGNING_ALLOWED=NO \
             | tee build-device.log | grep -E "error:|warning:|BUILD (SUCCEEDED|FAILED)" || true
           grep -q "BUILD SUCCEEDED" build-device.log
