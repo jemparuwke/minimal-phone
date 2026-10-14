@@ -15,6 +15,7 @@ struct RootView: View {
             if coordinator.isSearching {
                 SearchView()
                     .transition(reduceMotion ? .opacity : .move(edge: .bottom))
+                    .accessibilityAddTraits(.isModal)
                     .zIndex(1)
             }
 
@@ -29,8 +30,6 @@ struct RootView: View {
         .animation(.easeInOut(duration: 0.25), value: coordinator.pausing?.id)
         .statusBarHidden(hideStatusBar && !coordinator.isSearching)
         .preferredColorScheme(.dark)
-        // Huge accessibility sizes would push the home screen off-screen; cap them.
-        .dynamicTypeSize(...DynamicTypeSize.accessibility2)
         .sheet(item: $coordinator.sheet) { sheet in
             sheetContent(sheet)
         }
@@ -59,6 +58,9 @@ struct RootView: View {
                 Task { await shield.refresh() }
             }
         }
+        // Huge accessibility sizes would break the one-screen layouts; cap them everywhere,
+        // including sheets and the welcome screens presented above.
+        .dynamicTypeSize(...DynamicTypeSize.accessibility2)
     }
 
     @ViewBuilder

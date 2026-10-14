@@ -13,11 +13,19 @@ struct HomeView: View {
             ClockView()
                 .padding(.top, 28)
 
-            Spacer(minLength: 28)
-
-            favorites
-
-            Spacer(minLength: 28)
+            ViewThatFits(in: .vertical) {
+                // Normal case: favorites float in the middle of the screen.
+                VStack(spacing: 0) {
+                    Spacer(minLength: 28)
+                    favorites
+                    Spacer(minLength: 28)
+                }
+                // Large text or many favorites: scroll instead of pushing the footer away.
+                ScrollView {
+                    favorites.padding(.vertical, 20)
+                }
+                .scrollIndicators(.hidden)
+            }
 
             footer
         }

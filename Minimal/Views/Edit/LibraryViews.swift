@@ -43,10 +43,12 @@ struct LibraryView: View {
                             if item.mindful {
                                 Image(systemName: "wind")
                                     .foregroundStyle(Theme.tertiary)
+                                    .accessibilityLabel("z pauzą")
                             }
                             if store.isFavorite(item) {
                                 Image(systemName: "star")
                                     .foregroundStyle(Theme.tertiary)
+                                    .accessibilityLabel("w ulubionych")
                             }
                         }
                     }
@@ -115,6 +117,8 @@ struct FavoritesEditorView: View {
                                 .foregroundStyle(store.canAddFavorite ? Theme.primary : Theme.tertiary)
                         }
                     }
+                    // Borderless keeps the row tappable while the list is in edit mode.
+                    .buttonStyle(.borderless)
                     .disabled(!store.canAddFavorite)
                 }
             }
@@ -172,6 +176,7 @@ struct CatalogRow: View {
     var body: some View {
         let included = store.item(forCatalogID: app.id) != nil
         Button {
+            Haptics.selection()
             withAnimation(.snappy) { store.setCatalogApp(app, included: !included) }
         } label: {
             HStack {
@@ -184,6 +189,7 @@ struct CatalogRow: View {
                     .contentTransition(.symbolEffect(.replace))
             }
         }
-        .sensoryFeedback(.selection, trigger: included)
+        .accessibilityAddTraits(included ? .isSelected : [])
+        .accessibilityHint(included ? "Stuknij, aby usunąć z listy" : "Stuknij, aby dodać do listy")
     }
 }

@@ -64,9 +64,7 @@ final class LaunchCoordinator: ObservableObject {
             failedItem = item
             return
         }
-        if UserDefaults.standard.object(forKey: Pref.haptics) as? Bool ?? true {
-            UIImpactFeedbackGenerator(style: .light).impactOccurred()
-        }
+        Haptics.tap()
         stats.recordOpen(item)
         guard isActive else {
             pendingItem = item
@@ -81,6 +79,7 @@ final class LaunchCoordinator: ObservableObject {
     }
 
     func resist() {
+        Haptics.success()
         stats.recordResisted()
         pausing = nil
     }
@@ -125,6 +124,8 @@ final class LaunchCoordinator: ObservableObject {
     /// `minimal://settings`, `minimal://home`.
     func handle(_ url: URL) {
         guard url.scheme?.lowercased() == SharedConfig.urlScheme else { return }
+        // Nothing can be presented over the welcome screens; ignore links until setup is done.
+        guard UserDefaults.standard.bool(forKey: Pref.onboarded) else { return }
         if let last = lastDeepLink, last.url == url, Date().timeIntervalSince(last.at) < 1 { return }
         lastDeepLink = (url, Date())
         switch url.host?.lowercased() {
@@ -173,6 +174,8 @@ final class LaunchCoordinator: ObservableObject {
             }
         case .background:
             isActive = false
+            // An app that was about to open should not pop up hours later.
+            pendingItem = nil
             // Coming back should always land on a calm home screen.
             isSearching = false
             pausing = nil

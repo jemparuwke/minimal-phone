@@ -41,8 +41,24 @@ enum SearchEngine: String, CaseIterable, Identifiable {
     }
 }
 
+extension String {
+    /// Lowercased, without diacritics, with "ł" folded to "l" (which diacritic folding keeps).
+    var searchFolded: String {
+        folding(options: [.caseInsensitive, .diacriticInsensitive], locale: Formatters.polish)
+            .replacingOccurrences(of: "ł", with: "l")
+            .replacingOccurrences(of: "Ł", with: "l")
+            .lowercased()
+    }
+}
+
 enum Formatters {
     static let polish = Locale(identifier: "pl_PL")
+
+    /// Whether the user's iOS region settings use a 24-hour clock.
+    static var systemUses24h: Bool {
+        let format = DateFormatter.dateFormat(fromTemplate: "j", options: 0, locale: .autoupdatingCurrent) ?? "HH"
+        return !format.contains("a")
+    }
 
     static let time24: DateFormatter = make("HH:mm")
     static let time24Seconds: DateFormatter = make("HH:mm:ss")
@@ -54,6 +70,7 @@ enum Formatters {
     private static func make(_ format: String) -> DateFormatter {
         let formatter = DateFormatter()
         formatter.locale = polish
+        formatter.timeZone = .autoupdatingCurrent
         formatter.dateFormat = format
         return formatter
     }

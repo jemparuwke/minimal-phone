@@ -225,7 +225,7 @@ private struct ShieldPage: View {
                         .padding(.top, 72)
                     PageTitle(title: "Tarcza",
                               subtitle: shield.isFullEdition
-                                ? "Dwa stuknięcia i porno znika z Twojego iPhone’a. Później możesz dodać blokadę wybranych aplikacji."
+                                ? "Włącz obie warstwy, a porno zniknie z Twojego iPhone’a. Później możesz dodać blokadę wybranych aplikacji."
                                 : "Trzy krótkie kroki w Ustawieniach iOS i porno znika z Twojego iPhone’a. Minimal poprowadzi Cię przez każdy z nich.",
                               topPadding: 20)
 
@@ -250,8 +250,13 @@ private struct ShieldPage: View {
             }
             .scrollIndicators(.hidden)
         } buttons: {
-            Button(shield.isProtecting ? "Dalej" : "Dalej bez tarczy", action: next)
-                .buttonStyle(.primary)
+            if shield.isProtecting {
+                Button("Dalej", action: next)
+                    .buttonStyle(.primary)
+            } else {
+                Button("Pomiń na razie", action: next)
+                    .buttonStyle(.secondary)
+            }
         }
         .sheet(isPresented: $showFreeShield) {
             NavigationStack { ShieldView(showsDone: true) }

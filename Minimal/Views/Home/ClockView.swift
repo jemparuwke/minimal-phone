@@ -3,7 +3,7 @@ import UIKit
 
 /// Big quiet clock with the date (and battery when the status bar is hidden).
 struct ClockView: View {
-    @AppStorage(Pref.use24h) private var use24h = true
+    @AppStorage(Pref.use24h) private var use24h = Formatters.systemUses24h
     @AppStorage(Pref.showSeconds) private var showSeconds = false
     @AppStorage(Pref.hideStatusBar) private var hideStatusBar = true
     @AppStorage(Pref.textScale) private var textScale: TextScale = .medium
@@ -12,19 +12,12 @@ struct ClockView: View {
     @State private var isCharging = false
 
     var body: some View {
-        TimelineView(.periodic(from: .now, by: 1)) { context in
-            VStack(alignment: .leading, spacing: 4) {
-                Text(time(context.date))
-                    .minimalFont(textScale.clockSize, weight: .thin)
-                    .monospacedDigit()
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.5)
-                    .foregroundStyle(Theme.primary)
-                Text(detail(context.date))
-                    .font(.body)
-                    .foregroundStyle(Theme.secondary)
+        Group {
+            if showSeconds {
+                TimelineView(.periodic(from: .now, by: 1)) { context in clock(context.date) }
+            } else {
+                TimelineView(.everyMinute) { context in clock(context.date) }
             }
-            .accessibilityElement(children: .combine)
         }
         .onAppear {
             UIDevice.current.isBatteryMonitoringEnabled = true
@@ -36,6 +29,31 @@ struct ClockView: View {
         .onReceive(NotificationCenter.default.publisher(for: UIDevice.batteryStateDidChangeNotification)) { _ in
             updateBattery()
         }
+    }
+
+    private func clock(_ date: Date) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(time(date))
+                .minimalFont(textScale.clockSize, weight: .thin)
+                .monospacedDigit()
+                .lineLimit(1)
+                .minimumScaleFactor(0.5)
+                .foregroundStyle(Theme.primary)
+            Text(detail(date))
+                .font(.body)
+                .foregroundStyle(Theme.secondary)
+        }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(accessibilityText(date))
+    }
+
+    private func accessibilityText(_ date: Date) -> String {
+        var text = "\(time(date)), \(Formatters.longDate.string(from: date))"
+        if hideStatusBar, let batteryLevel {
+            text += ", bateria \(batteryLevel)%"
+            if isCharging { text += ", ładowanie" }
+        }
+        return text
     }
 
     private func time(_ date: Date) -> String {

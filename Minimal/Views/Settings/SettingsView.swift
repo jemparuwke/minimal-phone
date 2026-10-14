@@ -7,7 +7,7 @@ struct SettingsView: View {
     @Environment(\.dismiss) private var dismiss
 
     @AppStorage(Pref.textScale) private var textScale: TextScale = .medium
-    @AppStorage(Pref.use24h) private var use24h = true
+    @AppStorage(Pref.use24h) private var use24h = Formatters.systemUses24h
     @AppStorage(Pref.showSeconds) private var showSeconds = false
     @AppStorage(Pref.hideStatusBar) private var hideStatusBar = true
     @AppStorage(Pref.pauseSeconds) private var pauseSeconds = 5
@@ -148,7 +148,7 @@ struct SettingsView: View {
 
     private var footerText: String {
         let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "1.0"
-        return "Minimal \(version) · Wszystko zostaje na telefonie. Bez kont, bez śledzenia."
+        return "Minimal \(version) · Bez kont, bez reklam, bez śledzenia. Minimal niczego nie wysyła — tylko filtr DNS pyta wybranego dostawcę o adresy stron."
     }
 }
 

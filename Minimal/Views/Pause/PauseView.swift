@@ -6,11 +6,16 @@ struct PauseView: View {
 
     @EnvironmentObject private var coordinator: LaunchCoordinator
     @EnvironmentObject private var stats: UsageStats
-    @AppStorage(Pref.pauseSeconds) private var pauseSeconds = 5
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
-    @State private var remaining = 5
+    @State private var remaining: Int
     @State private var inhale = false
+
+    init(item: LaunchItem) {
+        self.item = item
+        let seconds = UserDefaults.standard.integer(forKey: Pref.pauseSeconds)
+        _remaining = State(initialValue: seconds > 0 ? seconds : 5)
+    }
 
     private let breath: Double = 4
 
@@ -88,8 +93,8 @@ struct PauseView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Theme.background.ignoresSafeArea())
+        .accessibilityAddTraits(.isModal)
         .task {
-            remaining = max(1, pauseSeconds)
             while remaining > 0 {
                 try? await Task.sleep(for: .seconds(1))
                 if Task.isCancelled { return }

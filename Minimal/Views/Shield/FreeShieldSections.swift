@@ -68,7 +68,7 @@ struct FreeShieldSections: View {
             ])
             DoneToggle(step: .appLimits)
         } footer: {
-            Text("Masz płatne konto Apple Developer? Ustaw MINIMAL_EDITION = Full w Config/Signing.xcconfig — wtedy tarcza włącza się jednym stuknięciem.")
+            Text("Z płatnym kontem Apple Developer tarcza włącza się w Minimal jednym stuknięciem — instrukcja jest w pliku README projektu.")
         }
         .minimalRow()
     }

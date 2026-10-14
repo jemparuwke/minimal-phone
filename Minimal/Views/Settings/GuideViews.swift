@@ -22,8 +22,8 @@ struct SetupGuideView: View {
                   text: "Nowo pobrane aplikacje nie pojawią się na ekranie głównym.",
                   path: "Ustawienia → Ekran główny i biblioteka aplikacji → Tylko biblioteka aplikacji"),
         GuideStep(icon: "app.badge", title: "Bez czerwonych kropek",
-                  text: "Wyłącz plakietki — liczniki powiadomień to najsilniejszy wabik.",
-                  path: "Ustawienia → Ekran główny i biblioteka aplikacji → Plakietki powiadomień"),
+                  text: "Liczniki powiadomień to najsilniejszy wabik. Wyłącz je w bibliotece aplikacji, a dla najbardziej natarczywych aplikacji także w ich powiadomieniach.",
+                  path: "Ustawienia → Ekran główny i biblioteka aplikacji → Pokaż w bibliotece aplikacji (wyłącz), oraz Ustawienia → Powiadomienia → aplikacja → Plakietki"),
     ]
 
     private let calm: [GuideStep] = [

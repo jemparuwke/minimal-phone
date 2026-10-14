@@ -59,8 +59,9 @@ struct SearchView: View {
                 .autocorrectionDisabled()
                 .submitLabel(.go)
                 .onSubmit(openBestMatch)
+                .accessibilityLabel("Szukaj aplikacji")
 
-            Button("Gotowe") { close() }
+            Button("Anuluj") { close() }
                 .font(.body)
                 .foregroundStyle(Theme.secondary)
                 .frame(minWidth: 44, minHeight: 44)
@@ -128,6 +129,7 @@ struct SearchView: View {
         }
         .labelStyle(.titleAndIcon)
         .font(.subheadline)
+        .frame(minHeight: 44)
         .foregroundStyle(Theme.tertiary)
         .buttonStyle(.dim)
         .padding(.horizontal, Theme.gutter)

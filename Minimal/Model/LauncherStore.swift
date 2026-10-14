@@ -17,6 +17,10 @@ final class LauncherStore: ObservableObject {
         if let stored = LauncherData.load(from: defaults) {
             data = stored
         } else {
+            if let unreadable = defaults.data(forKey: SharedConfig.launcherDataKey) {
+                // Never destroy a list we failed to read: keep a copy for a future version.
+                defaults.set(unreadable, forKey: SharedConfig.launcherDataKey + ".backup")
+            }
             data = AppCatalog.starterData()
             data.save(to: defaults)
         }
@@ -47,11 +51,10 @@ final class LauncherStore: ObservableObject {
 
     /// Items whose name matches the query, best matches (prefix) first.
     func search(_ query: String) -> [LaunchItem] {
-        let needle = query.trimmingCharacters(in: .whitespacesAndNewlines)
+        let needle = query.trimmingCharacters(in: .whitespacesAndNewlines).searchFolded
         guard !needle.isEmpty else { return sortedItems }
-        let options: String.CompareOptions = [.caseInsensitive, .diacriticInsensitive]
-        let matches = sortedItems.filter { $0.name.range(of: needle, options: options, locale: Formatters.polish) != nil }
-        let prefix = matches.filter { $0.name.range(of: needle, options: options.union(.anchored), locale: Formatters.polish) != nil }
+        let matches = sortedItems.filter { $0.name.searchFolded.contains(needle) }
+        let prefix = matches.filter { $0.name.searchFolded.hasPrefix(needle) }
         let rest = matches.filter { item in !prefix.contains(where: { $0.id == item.id }) }
         return prefix + rest
     }

@@ -31,7 +31,7 @@ struct LaunchItem: Codable, Identifiable, Hashable {
         case .url(let string):
             let trimmed = string.trimmingCharacters(in: .whitespacesAndNewlines)
             guard !trimmed.isEmpty else { return nil }
-            return URL(string: trimmed)
+            return URL(string: Self.normalized(trimmed))
         case .shortcut(let name):
             let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
             guard !trimmed.isEmpty,
@@ -39,6 +39,16 @@ struct LaunchItem: Codable, Identifiable, Hashable {
             else { return nil }
             return URL(string: "shortcuts://run-shortcut?name=\(encoded)")
         }
+    }
+
+    /// "youtube.com" → "https://youtube.com", "spotify" → "spotify://"; anything with a
+    /// scheme is left alone.
+    static func normalized(_ address: String) -> String {
+        if address.range(of: "^[A-Za-z][A-Za-z0-9+.-]*:", options: .regularExpression) != nil {
+            return address
+        }
+        if address.contains(".") { return "https://" + address }
+        return address + "://"
     }
 
     var isShortcut: Bool {

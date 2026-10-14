@@ -14,6 +14,24 @@ struct ShieldView: View {
     @State private var confirmUnlock = false
     @State private var pendingDelay: ShieldModel.LockDelay?
     @State private var confirmPreventRemoval = false
+    @State private var pendingWeaken: WeakenAction?
+
+    private enum WeakenAction: String, Identifiable {
+        case webFilter, dns
+        var id: String { rawValue }
+        var title: String {
+            switch self {
+            case .webFilter: return "Wyłączyć filtr stron dla dorosłych?"
+            case .dns: return "Usunąć filtr DNS?"
+            }
+        }
+        var button: String {
+            switch self {
+            case .webFilter: return "Wyłącz filtr"
+            case .dns: return "Usuń filtr DNS"
+            }
+        }
+    }
 
     var body: some View {
         List {
@@ -61,6 +79,21 @@ struct ShieldView: View {
             Button("Blokuj usuwanie aplikacji") {
                 Task { await shield.setPreventAppRemoval(true) }
             }
+        }
+        .confirmationDialog(
+            pendingWeaken?.title ?? "",
+            isPresented: Binding(get: { pendingWeaken != nil }, set: { if !$0 { pendingWeaken = nil } }),
+            titleVisibility: .visible,
+            presenting: pendingWeaken
+        ) { action in
+            Button(action.button, role: .destructive) {
+                switch action {
+                case .webFilter: shield.disableWebFilter()
+                case .dns: Task { await shield.removeDNS() }
+                }
+            }
+        } message: { _ in
+            Text("Strony dla dorosłych znów będą dostępne w tej warstwie.")
         }
         .alert("Tarcza", isPresented: messageBinding) {
             Button("OK", role: .cancel) {}
@@ -135,7 +168,7 @@ struct ShieldView: View {
                         detail: "Wbudowany filtr Apple. Blokuje strony dla dorosłych w Safari, innych przeglądarkach i aplikacjach oraz wyłącza przeglądanie prywatne.",
                         isActive: shield.webFilterActive)
             if shield.webFilterActive {
-                weakenButton("Wyłącz filtr") { shield.disableWebFilter() }
+                weakenButton("Wyłącz filtr") { pendingWeaken = .webFilter }
             } else {
                 Button {
                     Task { await shield.enableWebFilter() }
@@ -193,7 +226,7 @@ struct ShieldView: View {
             }
 
             if shield.dnsInstalled {
-                weakenButton("Usuń filtr DNS") { Task { await shield.removeDNS() } }
+                weakenButton("Usuń filtr DNS") { pendingWeaken = .dns }
             }
         } footer: {
             Text("Po instalacji włącz filtr w Ustawieniach: Ogólne → VPN i urządzenia zarządzane → DNS → Minimal. Włączona aplikacja VPN omija filtr DNS — filtr Apple (warstwa 1) działa nadal.")

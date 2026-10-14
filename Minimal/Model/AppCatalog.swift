@@ -163,11 +163,9 @@ enum AppCatalog {
 
     static func search(_ query: String, kind: CatalogApp.Kind? = nil) -> [CatalogApp] {
         let pool = kind.map { kind in all.filter { $0.kind == kind } } ?? all
-        let needle = query.trimmingCharacters(in: .whitespacesAndNewlines)
+        let needle = query.trimmingCharacters(in: .whitespacesAndNewlines).searchFolded
         let sorted = pool.sorted { $0.name.compare($1.name, locale: Formatters.polish) == .orderedAscending }
         guard !needle.isEmpty else { return sorted }
-        return sorted.filter {
-            $0.name.range(of: needle, options: [.caseInsensitive, .diacriticInsensitive], locale: Formatters.polish) != nil
-        }
+        return sorted.filter { $0.name.searchFolded.contains(needle) }
     }
 }

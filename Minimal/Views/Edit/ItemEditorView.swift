@@ -36,6 +36,7 @@ struct ItemEditorView: View {
     @State private var favorite = false
     @State private var catalogQuery: String
     @State private var confirmDelete = false
+    @State private var testFailed = false
 
     init(mode: Mode, showsCancel: Bool = true) {
         self.mode = mode
@@ -160,6 +161,13 @@ struct ItemEditorView: View {
         }
         .onAppear {
             if case .edit(let item) = mode { favorite = store.isFavorite(item) }
+        }
+        .alert("Nie udało się otworzyć", isPresented: $testFailed) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text(kind == .shortcut
+                 ? "Sprawdź, czy w aplikacji Skróty istnieje skrót o dokładnie takiej nazwie."
+                 : "Ten adres nie otwiera żadnej aplikacji. Spróbuj skrótu — działa z każdą aplikacją.")
         }
         .onChange(of: kind) { _, newKind in
             if newKind == .shortcut, shortcutName.trimmed.isEmpty, !name.trimmed.isEmpty {
@@ -297,7 +305,9 @@ struct ItemEditorView: View {
                 if kind == .catalog, case .edit(let item) = mode {
                     coordinator.tryOpen(item)
                 } else if let url = draftURL {
-                    coordinator.openURL(url)
+                    Task {
+                        if !(await UIApplication.shared.open(url)) { testFailed = true }
+                    }
                 }
             } label: {
                 Label("Wypróbuj", systemImage: "play")

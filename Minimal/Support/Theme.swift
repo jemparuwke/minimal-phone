@@ -1,10 +1,12 @@
 import SwiftUI
+import UIKit
 
 enum Theme {
     static let background = Color.black
     static let primary = Color.white
-    static let secondary = Color.white.opacity(0.55)
-    static let tertiary = Color.white.opacity(0.3)
+    // Secondary ≈ 7:1 and tertiary ≈ 4.7:1 contrast on black (WCAG AA for text).
+    static let secondary = Color.white.opacity(0.62)
+    static let tertiary = Color.white.opacity(0.47)
     static let hairline = Color.white.opacity(0.12)
     static let surface = Color.white.opacity(0.07)
     static let good = Color(red: 0.40, green: 0.86, blue: 0.58)
@@ -81,6 +83,26 @@ extension ButtonStyle where Self == DimOnPressStyle {
     static var dim: DimOnPressStyle { DimOnPressStyle() }
 }
 
+/// Haptics that respect the in-app "Haptyka" switch.
+enum Haptics {
+    static var isEnabled: Bool { UserDefaults.standard.object(forKey: Pref.haptics) as? Bool ?? true }
+
+    static func tap() {
+        guard isEnabled else { return }
+        UIImpactFeedbackGenerator(style: .light).impactOccurred()
+    }
+
+    static func success() {
+        guard isEnabled else { return }
+        UINotificationFeedbackGenerator().notificationOccurred(.success)
+    }
+
+    static func selection() {
+        guard isEnabled else { return }
+        UISelectionFeedbackGenerator().selectionChanged()
+    }
+}
+
 /// Big white call-to-action, as on Apple's own welcome screens.
 struct PrimaryButtonStyle: ButtonStyle {
     @Environment(\.isEnabled) private var isEnabled
@@ -89,8 +111,9 @@ struct PrimaryButtonStyle: ButtonStyle {
         configuration.label
             .font(.headline)
             .foregroundStyle(Color.black)
-            .frame(maxWidth: .infinity)
-            .frame(height: 52)
+            .multilineTextAlignment(.center)
+            .padding(.vertical, 14)
+            .frame(maxWidth: .infinity, minHeight: 52)
             .background(Color.white.opacity(isEnabled ? 1 : 0.4), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
             .scaleEffect(configuration.isPressed ? 0.98 : 1)
             .opacity(configuration.isPressed ? 0.8 : 1)
@@ -104,8 +127,7 @@ struct SecondaryButtonStyle: ButtonStyle {
         configuration.label
             .font(.body)
             .foregroundStyle(Theme.secondary)
-            .frame(maxWidth: .infinity)
-            .frame(height: 44)
+            .frame(maxWidth: .infinity, minHeight: 44)
             .contentShape(Rectangle())
             .opacity(configuration.isPressed ? 0.4 : 1)
     }
