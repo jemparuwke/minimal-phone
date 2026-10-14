@@ -64,7 +64,7 @@ struct FreeShieldSections: View {
             StepList(steps: [
                 "Ustawienia → Czas przed ekranem → Limity aplikacji → Dodaj limit.",
                 "Wybierz aplikacje i ustaw limit 1 minuty.",
-                "Włącz „Blokuj po osiągnięciu limitu”.",
+                "Włącz „Blokuj po osiągnięciu limitu” (opcja pojawia się po ustawieniu kodu Czasu przed ekranem).",
             ])
             DoneToggle(step: .appLimits)
         } footer: {

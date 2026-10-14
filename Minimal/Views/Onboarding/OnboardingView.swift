@@ -224,7 +224,9 @@ private struct ShieldPage: View {
                         .contentTransition(.symbolEffect(.replace))
                         .padding(.top, 72)
                     PageTitle(title: "Tarcza",
-                              subtitle: "Dwa stuknięcia i porno znika z Twojego iPhone’a. Później możesz dodać blokadę wybranych aplikacji.",
+                              subtitle: shield.isFullEdition
+                                ? "Dwa stuknięcia i porno znika z Twojego iPhone’a. Później możesz dodać blokadę wybranych aplikacji."
+                                : "Trzy krótkie kroki w Ustawieniach iOS i porno znika z Twojego iPhone’a. Minimal poprowadzi Cię przez każdy z nich.",
                               topPadding: 20)
 
                     VStack(spacing: 12) {

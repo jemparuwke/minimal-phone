@@ -12,6 +12,8 @@ struct ShieldView: View {
     @State private var pickerSelection = FamilyActivitySelection()
     @State private var showPicker = false
     @State private var confirmUnlock = false
+    @State private var pendingDelay: ShieldModel.LockDelay?
+    @State private var confirmPreventRemoval = false
 
     var body: some View {
         List {
@@ -41,6 +43,25 @@ struct ShieldView: View {
             guard !presented else { return }
             Task { pickerSelection = await shield.updateBlocked(pickerSelection) }
         }
+        .confirmationDialog(
+            "Każde osłabienie tarczy będzie wymagało odczekania \(pendingDelay?.waitLabel ?? ""). Skrócić ten czas można tylko po odczekaniu.",
+            isPresented: pendingDelayBinding,
+            titleVisibility: .visible
+        ) {
+            Button("Ustaw \(pendingDelay?.label.lowercased() ?? "")") {
+                if let delay = pendingDelay { shield.setLockDelay(delay) }
+                pendingDelay = nil
+            }
+        }
+        .confirmationDialog(
+            "Dopóki ta opcja jest włączona, nie usuniesz z iPhone’a żadnej aplikacji — także Minimal.",
+            isPresented: $confirmPreventRemoval,
+            titleVisibility: .visible
+        ) {
+            Button("Blokuj usuwanie aplikacji") {
+                Task { await shield.setPreventAppRemoval(true) }
+            }
+        }
         .alert("Tarcza", isPresented: messageBinding) {
             Button("OK", role: .cancel) {}
         } message: {
@@ -64,7 +85,7 @@ struct ShieldView: View {
                     .foregroundStyle(shield.isProtecting ? Theme.good : Theme.warning)
                     .contentTransition(.symbolEffect(.replace))
                     .padding(.bottom, 2)
-                Text(shield.isProtecting ? "Tarcza włączona" : "Tarcza wyłączona")
+                Text(heroTitle)
                     .font(.title.weight(.semibold))
                     .foregroundStyle(Theme.primary)
                 Text(heroSubtitle)
@@ -89,7 +110,15 @@ struct ShieldView: View {
         .listRowBackground(Color.clear)
     }
 
+    private var heroTitle: String {
+        if !shield.isFullEdition { return "Tarcza: \(shield.activeLayers) z 3 kroków" }
+        return shield.isProtecting ? "Tarcza włączona" : "Tarcza wyłączona"
+    }
+
     private var heroSubtitle: String {
+        if !shield.isFullEdition {
+            return "Minimal nie widzi ustawień iOS, więc zaznacz każdy krok, gdy go wykonasz."
+        }
         switch shield.activeLayers {
         case 3: return "Wszystkie trzy warstwy działają. Porno jest zablokowane w całym telefonie."
         case 0: return "Włącz warstwy poniżej. Każda zamyka inną furtkę."
@@ -126,7 +155,7 @@ struct ShieldView: View {
         Section {
             LayerHeader(number: 2,
                         title: "Filtr DNS dla całego telefonu",
-                        detail: "Szyfrowany rodzinny DNS. Strony porno przestają istnieć — w każdej aplikacji, przeglądarce i w wynikach wyszukiwania.",
+                        detail: "Szyfrowany rodzinny DNS. Strony porno przestają się otwierać — w każdej aplikacji i przeglądarce.",
                         isActive: shield.dnsEnabled)
 
             if shield.dnsInstalled && !shield.dnsEnabled {
@@ -167,7 +196,7 @@ struct ShieldView: View {
                 weakenButton("Usuń filtr DNS") { Task { await shield.removeDNS() } }
             }
         } footer: {
-            Text("Po instalacji włącz filtr w Ustawieniach: Ogólne → VPN i urządzenia zarządzane → DNS → Minimal.")
+            Text("Po instalacji włącz filtr w Ustawieniach: Ogólne → VPN i urządzenia zarządzane → DNS → Minimal. Włączona aplikacja VPN omija filtr DNS — filtr Apple (warstwa 1) działa nadal.")
         }
         .minimalRow()
     }
@@ -199,7 +228,7 @@ struct ShieldView: View {
 
     private var commitmentSection: some View {
         Section {
-            Picker("Opóźnienie wyłączenia", selection: lockDelayBinding) {
+            Picker("Opóźnienie osłabienia", selection: lockDelayBinding) {
                 ForEach(ShieldModel.LockDelay.allCases) { delay in
                     Text(delay.label).tag(delay)
                 }
@@ -211,7 +240,7 @@ struct ShieldView: View {
         } header: {
             Text("Zobowiązanie")
         } footer: {
-            Text("Każde osłabienie tarczy wymaga odczekania wybranego czasu. Impuls mija, decyzja zostaje. „Blokuj usuwanie aplikacji” nie pozwala usunąć z iPhone’a Minimal ani innych aplikacji.")
+            Text("Wyłączenie lub osłabienie warstw w Minimal wymaga odczekania wybranego czasu, a data i godzina iPhone’a muszą się wtedy ustawiać automatycznie. Impuls mija, decyzja zostaje. Ustawienia iOS nadal pozwalają wyłączyć filtry — dlatego kod Czasu przed ekranem warto oddać zaufanej osobie. „Blokuj usuwanie aplikacji” nie pozwala usunąć z iPhone’a żadnej aplikacji, także Minimal.")
         }
         .minimalRow()
     }
@@ -228,7 +257,7 @@ struct ShieldView: View {
             } label: {
                 Label("Poproś o odblokowanie", systemImage: "lock")
             }
-            .confirmationDialog("Odblokowanie nastąpi za \(shield.lockDelay.label.lowercased()). Potem przez 15 minut możesz osłabić tarczę.",
+            .confirmationDialog("Odblokowanie nastąpi za \(shield.lockDelay.waitLabel). Potem przez 30 minut możesz osłabić tarczę.",
                                 isPresented: $confirmUnlock, titleVisibility: .visible) {
                 Button("Rozpocznij odliczanie") { shield.requestUnlock() }
             }
@@ -251,6 +280,12 @@ struct ShieldView: View {
                     .buttonStyle(.borderless)
             }
         }
+    }
+
+    // MARK: - Confirmations
+
+    private var pendingDelayBinding: Binding<Bool> {
+        Binding(get: { pendingDelay != nil }, set: { if !$0 { pendingDelay = nil } })
     }
 
     // MARK: - More
@@ -282,12 +317,23 @@ struct ShieldView: View {
     }
 
     private var lockDelayBinding: Binding<ShieldModel.LockDelay> {
-        Binding(get: { shield.lockDelay }, set: { shield.setLockDelay($0) })
+        Binding(get: { shield.lockDelay }, set: { delay in
+            // Long commitments are easy to choose and hard to undo — confirm first.
+            if delay.rawValue >= ShieldModel.LockDelay.oneDay.rawValue, delay.rawValue > shield.lockDelay.rawValue {
+                pendingDelay = delay
+            } else {
+                shield.setLockDelay(delay)
+            }
+        })
     }
 
     private var preventRemovalBinding: Binding<Bool> {
         Binding(get: { shield.preventAppRemoval }, set: { value in
-            Task { await shield.setPreventAppRemoval(value) }
+            if value {
+                confirmPreventRemoval = true
+            } else {
+                Task { await shield.setPreventAppRemoval(false) }
+            }
         })
     }
 

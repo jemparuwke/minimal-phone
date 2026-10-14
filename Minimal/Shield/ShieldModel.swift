@@ -33,6 +33,14 @@ final class ShieldModel: ObservableObject {
             }
         }
 
+        /// "odczekaj 1 godzinę / 24 godziny / 3 dni"
+        var waitLabel: String {
+            switch self {
+            case .oneHour: return "1 godzinę"
+            default: return label.lowercased()
+            }
+        }
+
         var interval: TimeInterval { TimeInterval(rawValue) }
     }
 
@@ -48,7 +56,7 @@ final class ShieldModel: ObservableObject {
     }
 
     /// After the delay passes, changes are allowed for this long before it locks again.
-    static let unlockWindow: TimeInterval = 15 * 60
+    static let unlockWindow: TimeInterval = 30 * 60
 
     // MARK: Published state
 
@@ -106,6 +114,7 @@ final class ShieldModel: ObservableObject {
         let requested = defaults.double(forKey: Key.unlockRequestedAt)
         unlockRequestedAt = requested > 0 ? Date(timeIntervalSince1970: requested) : nil
         freeStepsDone = Set(defaults.stringArray(forKey: Key.freeSteps) ?? [])
+        scheduleLockRefresh()
         if isFullEdition {
             authorization = AuthorizationCenter.shared.authorizationStatus
         }
@@ -219,6 +228,9 @@ final class ShieldModel: ObservableObject {
     // MARK: - Layer 2: DNS
 
     func installDNS(_ provider: DNSProvider) async {
+        if let current = dnsProvider, dnsInstalled, provider.strictness < current.strictness, !requireUnlocked() {
+            return
+        }
         isWorking = true
         defer { isWorking = false }
         let manager = NEDNSSettingsManager.shared()
@@ -286,26 +298,51 @@ final class ShieldModel: ObservableObject {
     func requestUnlock() {
         unlockRequestedAt = Date()
         defaults.set(Date().timeIntervalSince1970, forKey: Key.unlockRequestedAt)
+        scheduleLockRefresh()
     }
 
     func relock() {
         unlockRequestedAt = nil
         defaults.removeObject(forKey: Key.unlockRequestedAt)
+        scheduleLockRefresh()
+    }
+
+    private var lockRefreshTask: Task<Void, Never>?
+
+    /// Re-renders the UI the moment the lock opens or closes again, so buttons that depend
+    /// on `canWeaken` never show a stale state.
+    private func scheduleLockRefresh() {
+        lockRefreshTask?.cancel()
+        let next: Date?
+        switch lockState() {
+        case .waiting(let until), .open(let until): next = until
+        case .off, .locked: next = nil
+        }
+        guard let next else { return }
+        lockRefreshTask = Task { [weak self] in
+            try? await Task.sleep(for: .seconds(max(1, next.timeIntervalSinceNow + 0.5)))
+            guard !Task.isCancelled, let self else { return }
+            self.objectWillChange.send()
+            if case .locked = self.lockState() { self.relock() } else { self.scheduleLockRefresh() }
+        }
     }
 
     /// Making the delay longer is always allowed; shorter needs the lock open.
     func setLockDelay(_ delay: LockDelay) {
+        guard delay != lockDelay else { return }
         if delay.rawValue < lockDelay.rawValue, !requireUnlocked() { return }
         lockDelay = delay
         defaults.set(delay.rawValue, forKey: Key.lockDelay)
-        if delay == .none { relock() }
+        // Any change starts from a locked state: an old unlock request never carries over.
+        relock()
+        if isAuthorized { applyManagedSettings() }
     }
 
     // MARK: - Private
 
     private func requireUnlocked() -> Bool {
         if canWeaken { return true }
-        message = "Tarcza jest zablokowana. Poproś o odblokowanie i odczekaj \(lockDelay.label.lowercased())."
+        message = "Tarcza jest zablokowana. Poproś o odblokowanie w sekcji „Zobowiązanie” i odczekaj \(lockDelay.waitLabel)."
         return false
     }
 
@@ -351,6 +388,8 @@ final class ShieldModel: ObservableObject {
         managed.webContent.blockedByFilter = webFilterOn ? .auto(BlockedDomains.domains) : nil
         managed.media.denyBookstoreErotica = webFilterOn ? true : nil
         managed.application.denyAppRemoval = preventAppRemoval ? true : nil
+        // With a commitment delay, the clock cannot be moved forward to skip the wait.
+        managed.dateAndTime.requireAutomaticDateAndTime = lockDelay != .none ? true : nil
 
         let apps = blockedSelection.applicationTokens
         let categories = blockedSelection.categoryTokens

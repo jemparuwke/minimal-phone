@@ -13,6 +13,15 @@ enum DNSProvider: String, CaseIterable, Identifiable {
 
     var id: String { rawValue }
 
+    /// Higher blocks more. Switching to a lower level counts as weakening the shield.
+    var strictness: Int {
+        switch self {
+        case .cleanBrowsingFamily: return 3
+        case .adGuardFamily, .cleanBrowsingAdult: return 2
+        case .cloudflareFamily: return 1
+        }
+    }
+
     var name: String {
         switch self {
         case .cleanBrowsingFamily: return "CleanBrowsing Family"
