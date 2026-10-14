@@ -22,7 +22,7 @@ struct SettingsView: View {
             Form {
                 header
 
-                if !SharedConfig.isAppGroupAvailable {
+                if showsAppGroupWarning {
                     Section {
                         Label("Widżet nie widzi Twoich ulubionych. W Xcode dodaj App Group „\(SharedConfig.appGroup)” do obu targetów (Signing & Capabilities) i zainstaluj ponownie.", systemImage: "exclamationmark.triangle")
                             .font(.footnote)
@@ -153,6 +153,15 @@ struct SettingsView: View {
             .padding(.vertical, 12)
         }
         .listRowBackground(Color.clear)
+    }
+
+    /// Unsigned simulator builds (CI screenshots) never have the App Group; only warn on devices.
+    private var showsAppGroupWarning: Bool {
+        #if targetEnvironment(simulator)
+        return false
+        #else
+        return !SharedConfig.isAppGroupAvailable
+        #endif
     }
 
     private var footerText: String {
