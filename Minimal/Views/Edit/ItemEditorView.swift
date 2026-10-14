@@ -55,8 +55,14 @@ struct ItemEditorView: View {
     }
 
     private var hasChanges: Bool {
-        guard let initialSnapshot else { return false }
-        return initialSnapshot != snapshot && !(isNew && kind == .catalog)
+        guard var initial = initialSnapshot else { return false }
+        if isNew {
+            // Nothing is typed in the catalog picker, and for a new item switching the kind
+            // alone loses nothing.
+            if kind == .catalog { return false }
+            initial.kind = kind
+        }
+        return initial != snapshot
     }
 
     init(mode: Mode, showsCancel: Bool = true) {
