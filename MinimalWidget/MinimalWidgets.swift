@@ -167,6 +167,17 @@ struct FavoritesWidgetView: View {
 
     // MARK: Lock Screen
 
+    private func lockRows(_ items: [LaunchItem]) -> some View {
+        VStack(alignment: .leading, spacing: 0) {
+            ForEach(items) { item in
+                Text(item.name.lowercased(with: polish))
+                    .font(.system(.body, weight: .medium))
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.8)
+            }
+        }
+    }
+
     private var lockScreen: some View {
         VStack(alignment: .leading, spacing: 0) {
             if entry.items.isEmpty {
@@ -175,10 +186,11 @@ struct FavoritesWidgetView: View {
                 Text("Dodaj ulubione w\u{00a0}aplikacji")
                     .font(.caption)
             } else {
-                ForEach(entry.items.prefix(3)) { item in
-                    Text(item.name.lowercased(with: polish))
-                        .font(.system(.body, weight: .medium))
-                        .lineLimit(1)
+                // Lock Screen widgets follow Dynamic Type: drop to two rows when three don't fit.
+                ViewThatFits(in: .vertical) {
+                    lockRows(Array(entry.items.prefix(3)))
+                    lockRows(Array(entry.items.prefix(2)))
+                    lockRows(Array(entry.items.prefix(1)))
                 }
             }
         }
