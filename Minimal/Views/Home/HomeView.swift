@@ -46,7 +46,7 @@ struct HomeView: View {
                     coordinator.sheet = .favorites
                 } label: {
                     Text("dodaj ulubione")
-                        .font(.minimal(textScale.itemSize))
+                        .minimalFont(textScale.itemSize)
                         .foregroundStyle(Theme.tertiary)
                 }
                 .buttonStyle(.dim)
@@ -71,7 +71,7 @@ struct HomeView: View {
         VStack(alignment: .leading, spacing: 18) {
             if stats.resistedToday > 0 {
                 Text(resistedText)
-                    .font(.minimal(14, weight: .regular))
+                    .font(.footnote)
                     .foregroundStyle(Theme.tertiary)
                     .transition(.opacity)
             }
@@ -106,7 +106,7 @@ struct HomeView: View {
                 }
                 .accessibilityLabel("Ustawienia")
             }
-            .font(.system(size: 19, weight: .light))
+            .minimalFont(19, weight: .light)
             .foregroundStyle(Theme.secondary)
             .buttonStyle(.dim)
         }
@@ -127,7 +127,7 @@ struct ItemLabel: View {
     var body: some View {
         HStack(alignment: .firstTextBaseline, spacing: 10) {
             Text(item.name.lowercased(with: Formatters.polish))
-                .font(.minimal(size))
+                .minimalFont(size)
                 .foregroundStyle(color)
                 .lineLimit(1)
                 .minimumScaleFactor(0.7)

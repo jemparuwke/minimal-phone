@@ -61,6 +61,8 @@ jobs:
       # Screenshots run when the commit message contains [shots], or on manual runs.
       - name: Capture screenshots
         if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[shots]')
+        timeout-minutes: 15
+        continue-on-error: true
         run: scripts/screenshots.sh build-sim/Build/Products/Debug-iphonesimulator/Minimal.app
 
       - name: Commit screenshots

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PayloadContent</key>
+	<array>
+		<dict>
+			<key>DNSSettings</key>
+			<dict>
+				<key>DNSProtocol</key>
+				<string>HTTPS</string>
+				<key>ServerAddresses</key>
+				<array>
+					<string>185.228.168.168</string>
+					<string>185.228.169.168</string>
+					<string>2a0d:2a00:1::</string>
+					<string>2a0d:2a00:2::</string>
+				</array>
+				<key>ServerURL</key>
+				<string>https://doh.cleanbrowsing.org/doh/family-filter/</string>
+			</dict>
+			<key>PayloadDisplayName</key>
+			<string>CleanBrowsing Family Filter (DNS over HTTPS)</string>
+			<key>PayloadIdentifier</key>
+			<string>pl.minimal.dns.cleanbrowsing-family.dns</string>
+			<key>PayloadType</key>
+			<string>com.apple.dnsSettings.managed</string>
+			<key>PayloadUUID</key>
+			<string>40DFBFE7-69E9-511E-9CE8-CF791C125F7D</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+		</dict>
+	</array>
+	<key>PayloadDescription</key>
+	<string>Szyfrowany rodzinny DNS (CleanBrowsing Family Filter) dla całego iPhone’a. Blokuje porno, VPN-y i proxy, wymusza bezpieczne wyszukiwanie i tryb ograniczony YouTube.</string>
+	<key>PayloadDisplayName</key>
+	<string>Minimal · filtr DNS (CleanBrowsing Family Filter)</string>
+	<key>PayloadIdentifier</key>
+	<string>pl.minimal.dns.cleanbrowsing-family</string>
+	<key>PayloadOrganization</key>
+	<string>Minimal</string>
+	<key>PayloadRemovalDisallowed</key>
+	<false/>
+	<key>PayloadType</key>
+	<string>Configuration</string>
+	<key>PayloadUUID</key>
+	<string>57476781-0244-5CF3-A75A-1A86B84C5CAA</string>
+	<key>PayloadVersion</key>
+	<integer>1</integer>
+</dict>
+</plist>

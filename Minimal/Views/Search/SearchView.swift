@@ -51,7 +51,7 @@ struct SearchView: View {
     private var header: some View {
         HStack(spacing: 16) {
             TextField("", text: $query, prompt: Text("szukaj").foregroundStyle(Theme.tertiary))
-                .font(.minimal(30))
+                .minimalFont(30)
                 .foregroundStyle(Theme.primary)
                 .tint(Theme.primary)
                 .focused($focused)
@@ -61,7 +61,7 @@ struct SearchView: View {
                 .onSubmit(openBestMatch)
 
             Button("Gotowe") { close() }
-                .font(.system(size: 17, weight: .regular))
+                .font(.body)
                 .foregroundStyle(Theme.secondary)
                 .buttonStyle(.dim)
         }
@@ -99,10 +99,10 @@ struct SearchView: View {
     private func suggestion(icon: String, text: String) -> some View {
         HStack(spacing: 12) {
             Image(systemName: icon)
-                .font(.system(size: 16, weight: .light))
+                .minimalFont(16, weight: .light)
                 .frame(width: 22)
             Text(text)
-                .font(.minimal(19, weight: .regular))
+                .font(.title3)
                 .lineLimit(1)
         }
         .foregroundStyle(Theme.secondary)
@@ -126,7 +126,7 @@ struct SearchView: View {
             }
         }
         .labelStyle(.titleAndIcon)
-        .font(.system(size: 15, weight: .regular))
+        .font(.subheadline)
         .foregroundStyle(Theme.tertiary)
         .buttonStyle(.dim)
         .padding(.horizontal, Theme.gutter)

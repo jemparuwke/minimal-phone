@@ -16,10 +16,14 @@ struct ShieldView: View {
     var body: some View {
         List {
             hero
-            webFilterSection
-            dnsSection
-            blockedAppsSection
-            commitmentSection
+            if shield.isFullEdition {
+                webFilterSection
+                dnsSection
+                blockedAppsSection
+                commitmentSection
+            } else {
+                FreeShieldSections()
+            }
             moreSection
         }
         .navigationTitle("Tarcza")
@@ -55,16 +59,16 @@ struct ShieldView: View {
         Section {
             VStack(spacing: 14) {
                 Image(systemName: shield.isProtecting ? "checkmark.shield.fill" : "shield.slash")
-                    .font(.system(size: 60, weight: .light))
+                    .minimalFont(60, weight: .light)
                     .symbolRenderingMode(.hierarchical)
                     .foregroundStyle(shield.isProtecting ? Theme.good : Theme.warning)
                     .contentTransition(.symbolEffect(.replace))
                     .padding(.bottom, 2)
                 Text(shield.isProtecting ? "Tarcza włączona" : "Tarcza wyłączona")
-                    .font(.system(size: 26, weight: .semibold))
+                    .font(.title.weight(.semibold))
                     .foregroundStyle(Theme.primary)
                 Text(heroSubtitle)
-                    .font(.system(size: 15))
+                    .font(.subheadline)
                     .foregroundStyle(Theme.secondary)
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
@@ -306,11 +310,11 @@ struct LayerHeader: View {
                     .fill(isActive ? Theme.good.opacity(0.18) : Theme.surface)
                 if isActive {
                     Image(systemName: "checkmark")
-                        .font(.system(size: 13, weight: .bold))
+                        .minimalFont(13, weight: .bold)
                         .foregroundStyle(Theme.good)
                 } else {
                     Text("\(number)")
-                        .font(.system(size: 14, weight: .semibold, design: .rounded))
+                        .font(.subheadline.weight(.semibold)).fontDesign(.rounded)
                         .foregroundStyle(Theme.secondary)
                 }
             }
@@ -319,15 +323,15 @@ struct LayerHeader: View {
             VStack(alignment: .leading, spacing: 5) {
                 HStack(alignment: .firstTextBaseline) {
                     Text(title)
-                        .font(.system(size: 17, weight: .semibold))
+                        .font(.headline)
                         .foregroundStyle(Theme.primary)
                     Spacer(minLength: 8)
                     Text(isActive ? "Aktywna" : "Wyłączona")
-                        .font(.system(size: 13, weight: .medium))
+                        .font(.footnote.weight(.medium))
                         .foregroundStyle(isActive ? Theme.good : Theme.tertiary)
                 }
                 Text(detail)
-                    .font(.system(size: 14))
+                    .font(.subheadline)
                     .foregroundStyle(Theme.secondary)
                     .fixedSize(horizontal: false, vertical: true)
             }
@@ -348,16 +352,16 @@ struct ActivationSteps: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             Text("Ostatni krok — włącz w Ustawieniach")
-                .font(.system(size: 15, weight: .semibold))
+                .font(.subheadline.weight(.semibold))
                 .foregroundStyle(Theme.warning)
             ForEach(Array(steps.enumerated()), id: \.offset) { index, step in
                 HStack(alignment: .firstTextBaseline, spacing: 10) {
                     Text("\(index + 1).")
-                        .font(.system(size: 15, weight: .semibold, design: .rounded))
+                        .font(.subheadline.weight(.semibold)).fontDesign(.rounded)
                         .foregroundStyle(Theme.secondary)
                         .frame(width: 18, alignment: .trailing)
                     Text(step)
-                        .font(.system(size: 15))
+                        .font(.subheadline)
                         .foregroundStyle(Theme.primary)
                 }
             }

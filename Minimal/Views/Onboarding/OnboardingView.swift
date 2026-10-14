@@ -42,7 +42,7 @@ struct OnboardingView: View {
                         go(to: Step(rawValue: step.rawValue - 1) ?? .welcome)
                     } label: {
                         Image(systemName: "chevron.left")
-                            .font(.system(size: 18, weight: .medium))
+                            .minimalFont(18, weight: .medium)
                             .frame(width: 44, height: 44)
                     }
                     .buttonStyle(.dim)
@@ -128,11 +128,11 @@ private struct WelcomePage: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
                     Text("minimal")
-                        .font(.minimal(56, weight: .thin))
+                        .minimalFont(56, weight: .thin)
                         .foregroundStyle(Theme.primary)
                         .padding(.top, 72)
                     Text("Wszystko, czego potrzebujesz.\nNic, co rozprasza.")
-                        .font(.system(size: 22, weight: .regular))
+                        .font(.title2)
                         .foregroundStyle(Theme.secondary)
                         .padding(.top, 8)
 
@@ -140,15 +140,15 @@ private struct WelcomePage: View {
                         ForEach(Array(features.enumerated()), id: \.offset) { index, feature in
                             HStack(alignment: .top, spacing: 18) {
                                 Image(systemName: feature.icon)
-                                    .font(.system(size: 26, weight: .light))
+                                    .minimalFont(26, weight: .light)
                                     .foregroundStyle(Theme.primary)
                                     .frame(width: 36)
                                 VStack(alignment: .leading, spacing: 3) {
                                     Text(feature.title)
-                                        .font(.system(size: 17, weight: .semibold))
+                                        .font(.headline)
                                         .foregroundStyle(Theme.primary)
                                     Text(feature.text)
-                                        .font(.system(size: 15))
+                                        .font(.subheadline)
                                         .foregroundStyle(Theme.secondary)
                                         .fixedSize(horizontal: false, vertical: true)
                                 }
@@ -211,13 +211,14 @@ private struct AppsPage: View {
 private struct ShieldPage: View {
     let next: () -> Void
     @EnvironmentObject private var shield: ShieldModel
+    @State private var showFreeShield = false
 
     var body: some View {
         OnboardingPage {
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
                     Image(systemName: shield.isProtecting ? "checkmark.shield.fill" : "shield")
-                        .font(.system(size: 54, weight: .light))
+                        .minimalFont(54, weight: .light)
                         .symbolRenderingMode(.hierarchical)
                         .foregroundStyle(shield.isProtecting ? Theme.good : Theme.primary)
                         .contentTransition(.symbolEffect(.replace))
@@ -227,29 +228,17 @@ private struct ShieldPage: View {
                               topPadding: 20)
 
                     VStack(spacing: 12) {
-                        ShieldStepCard(
-                            number: 1,
-                            title: "Filtr stron dla dorosłych",
-                            text: "Wbudowany filtr Apple w Safari i innych przeglądarkach.",
-                            isDone: shield.webFilterActive,
-                            action: "Włącz"
-                        ) {
-                            Task { await shield.enableWebFilter() }
-                        }
-
-                        ShieldStepCard(
-                            number: 2,
-                            title: "Filtr DNS",
-                            text: shield.dnsInstalled && !shield.dnsEnabled
-                                ? "Zainstalowany. Włącz go: Ustawienia → Ogólne → VPN i zarządzanie urządzeniem → DNS → Minimal."
-                                : "Blokuje porno w każdej aplikacji i wymusza bezpieczne wyszukiwanie.",
-                            isDone: shield.dnsEnabled,
-                            action: shield.dnsInstalled ? "Ustawienia" : "Zainstaluj"
-                        ) {
-                            if shield.dnsInstalled {
-                                SystemSettings.open()
-                            } else {
-                                Task { await shield.installDNS(.recommended) }
+                        if shield.isFullEdition {
+                            fullEditionCards
+                        } else {
+                            ShieldStepCard(
+                                number: 1,
+                                title: "Tarcza w trzech krokach",
+                                text: "Filtr Apple, profil DNS i blokada aplikacji — krok po kroku, w Ustawieniach iOS.",
+                                isDone: shield.isProtecting,
+                                action: "Ustaw"
+                            ) {
+                                showFreeShield = true
                             }
                         }
                     }
@@ -262,11 +251,43 @@ private struct ShieldPage: View {
             Button(shield.isProtecting ? "Dalej" : "Dalej bez tarczy", action: next)
                 .buttonStyle(.primary)
         }
+        .sheet(isPresented: $showFreeShield) {
+            NavigationStack { ShieldView(showsDone: true) }
+        }
         .task { await shield.refresh() }
         .alert("Tarcza", isPresented: Binding(get: { shield.message != nil }, set: { if !$0 { shield.message = nil } })) {
             Button("OK", role: .cancel) {}
         } message: {
             Text(shield.message ?? "")
+        }
+    }
+
+    @ViewBuilder
+    private var fullEditionCards: some View {
+        ShieldStepCard(
+            number: 1,
+            title: "Filtr stron dla dorosłych",
+            text: "Wbudowany filtr Apple w Safari i innych przeglądarkach.",
+            isDone: shield.webFilterActive,
+            action: "Włącz"
+        ) {
+            Task { await shield.enableWebFilter() }
+        }
+
+        ShieldStepCard(
+            number: 2,
+            title: "Filtr DNS",
+            text: shield.dnsInstalled && !shield.dnsEnabled
+                ? "Zainstalowany. Włącz go: Ustawienia → Ogólne → VPN i zarządzanie urządzeniem → DNS → Minimal."
+                : "Blokuje porno w każdej aplikacji i wymusza bezpieczne wyszukiwanie.",
+            isDone: shield.dnsEnabled,
+            action: shield.dnsInstalled ? "Ustawienia" : "Zainstaluj"
+        ) {
+            if shield.dnsInstalled {
+                SystemSettings.open()
+            } else {
+                Task { await shield.installDNS(.recommended) }
+            }
         }
     }
 }
@@ -285,11 +306,11 @@ private struct ShieldStepCard: View {
                 Circle().fill(isDone ? Theme.good.opacity(0.18) : Theme.surface)
                 if isDone {
                     Image(systemName: "checkmark")
-                        .font(.system(size: 13, weight: .bold))
+                        .minimalFont(13, weight: .bold)
                         .foregroundStyle(Theme.good)
                 } else {
                     Text("\(number)")
-                        .font(.system(size: 14, weight: .semibold, design: .rounded))
+                        .font(.subheadline.weight(.semibold)).fontDesign(.rounded)
                         .foregroundStyle(Theme.secondary)
                 }
             }
@@ -297,10 +318,10 @@ private struct ShieldStepCard: View {
 
             VStack(alignment: .leading, spacing: 3) {
                 Text(title)
-                    .font(.system(size: 17, weight: .semibold))
+                    .font(.headline)
                     .foregroundStyle(Theme.primary)
                 Text(text)
-                    .font(.system(size: 14))
+                    .font(.subheadline)
                     .foregroundStyle(Theme.secondary)
                     .fixedSize(horizontal: false, vertical: true)
             }
@@ -309,12 +330,12 @@ private struct ShieldStepCard: View {
 
             if isDone {
                 Text("Gotowe")
-                    .font(.system(size: 15, weight: .medium))
+                    .font(.subheadline.weight(.medium))
                     .foregroundStyle(Theme.good)
             } else {
                 Button(action: perform) {
                     Text(action)
-                        .font(.system(size: 15, weight: .semibold))
+                        .font(.subheadline.weight(.semibold))
                         .foregroundStyle(.black)
                         .padding(.horizontal, 14)
                         .frame(height: 32)
@@ -374,10 +395,10 @@ struct PageTitle: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(title)
-                .font(.system(size: 34, weight: .bold))
+                .font(.largeTitle.bold())
                 .foregroundStyle(Theme.primary)
             Text(subtitle)
-                .font(.system(size: 17))
+                .font(.body)
                 .foregroundStyle(Theme.secondary)
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -395,16 +416,16 @@ struct GuideStepRow: View {
     var body: some View {
         HStack(alignment: .top, spacing: 14) {
             Text("\(number)")
-                .font(.system(size: 15, weight: .semibold, design: .rounded))
+                .font(.subheadline.weight(.semibold)).fontDesign(.rounded)
                 .foregroundStyle(Color.black)
                 .frame(width: 26, height: 26)
                 .background(Theme.primary, in: Circle())
             VStack(alignment: .leading, spacing: 3) {
                 Text(title)
-                    .font(.system(size: 17, weight: .semibold))
+                    .font(.headline)
                     .foregroundStyle(Theme.primary)
                 Text(text)
-                    .font(.system(size: 15))
+                    .font(.subheadline)
                     .foregroundStyle(Theme.secondary)
                     .fixedSize(horizontal: false, vertical: true)
             }

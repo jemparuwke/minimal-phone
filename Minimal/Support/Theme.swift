@@ -14,9 +14,25 @@ enum Theme {
     static let gutter: CGFloat = 32
 }
 
-extension Font {
-    static func minimal(_ size: CGFloat, weight: Font.Weight = .light) -> Font {
-        .system(size: size, weight: weight, design: .default)
+/// System font at a designer-chosen size that still follows Dynamic Type.
+struct ScaledSystemFont: ViewModifier {
+    @ScaledMetric private var size: CGFloat
+    private let weight: Font.Weight
+
+    init(size: CGFloat, weight: Font.Weight, relativeTo textStyle: Font.TextStyle) {
+        _size = ScaledMetric(wrappedValue: size, relativeTo: textStyle)
+        self.weight = weight
+    }
+
+    func body(content: Content) -> some View {
+        content.font(.system(size: size, weight: weight))
+    }
+}
+
+extension View {
+    /// Light system text at `size` points (at the default text size), scaled with Dynamic Type.
+    func minimalFont(_ size: CGFloat, weight: Font.Weight = .light, relativeTo textStyle: Font.TextStyle = .title) -> some View {
+        modifier(ScaledSystemFont(size: size, weight: weight, relativeTo: textStyle))
     }
 }
 
@@ -71,7 +87,7 @@ struct PrimaryButtonStyle: ButtonStyle {
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .font(.system(size: 17, weight: .semibold))
+            .font(.headline)
             .foregroundStyle(Color.black)
             .frame(maxWidth: .infinity)
             .frame(height: 52)
@@ -86,7 +102,7 @@ struct PrimaryButtonStyle: ButtonStyle {
 struct SecondaryButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .font(.system(size: 17, weight: .regular))
+            .font(.body)
             .foregroundStyle(Theme.secondary)
             .frame(maxWidth: .infinity)
             .frame(height: 44)

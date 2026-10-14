@@ -132,12 +132,12 @@ struct SettingsView: View {
         Section {
             VStack(spacing: 6) {
                 Text("minimal")
-                    .font(.minimal(34, weight: .thin))
+                    .minimalFont(34, weight: .thin)
                     .foregroundStyle(Theme.primary)
                 Text(stats.resistedTotal > 0
                      ? "Odpuszczone pokusy: \(stats.resistedTotal)"
                      : "Mniej ekranu. Więcej życia.")
-                    .font(.system(size: 14))
+                    .font(.subheadline)
                     .foregroundStyle(Theme.secondary)
             }
             .frame(maxWidth: .infinity)
@@ -162,7 +162,7 @@ struct SettingsRow: View {
     var body: some View {
         HStack(spacing: 14) {
             Image(systemName: icon)
-                .font(.system(size: 16, weight: .regular))
+                .minimalFont(16, weight: .regular)
                 .foregroundStyle(color)
                 .frame(width: 24)
             Text(title)

@@ -8,10 +8,18 @@
 //
 //  2. BUNDLE_ID_PREFIX: dowolny unikalny prefiks, np. com.jankowalski.
 //     Identyfikatory aplikacji muszą być unikalne na całym świecie.
+//
+//  3. MINIMAL_EDITION:
+//     Full — płatne konto Apple Developer (99 USD/rok): pełna tarcza
+//            (filtr Apple, filtr DNS, blokada aplikacji).
+//     Free — darmowe Apple ID: wszystko poza automatyczną tarczą;
+//            zamiast niej profil DNS i wbudowany filtr iOS (przewodnik
+//            w aplikacji). Aplikację trzeba odświeżać co 7 dni.
 // ─────────────────────────────────────────────────────────────
 
 DEVELOPMENT_TEAM =
 BUNDLE_ID_PREFIX = pl.jemparuwke
+MINIMAL_EDITION = Full
 
 // Nie zmieniaj poniższych linii.
 APP_BUNDLE_ID = $(BUNDLE_ID_PREFIX).minimal

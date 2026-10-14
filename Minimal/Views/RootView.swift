@@ -28,6 +28,8 @@ struct RootView: View {
         .animation(.easeInOut(duration: 0.25), value: coordinator.pausing?.id)
         .statusBarHidden(hideStatusBar && !coordinator.isSearching)
         .preferredColorScheme(.dark)
+        // Huge accessibility sizes would push the home screen off-screen; cap them.
+        .dynamicTypeSize(...DynamicTypeSize.accessibility2)
         .sheet(item: $coordinator.sheet) { sheet in
             sheetContent(sheet)
         }

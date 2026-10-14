@@ -16,6 +16,13 @@ NAMESPACE = uuid.UUID("5b0e7a7e-6d1c-4c1a-9a51-3c1f0f6e2b77")
 
 PROVIDERS = [
     {
+        "slug": "cleanbrowsing-family",
+        "name": "CleanBrowsing Family Filter",
+        "url": "https://doh.cleanbrowsing.org/doh/family-filter/",
+        "servers": ["185.228.168.168", "185.228.169.168", "2a0d:2a00:1::", "2a0d:2a00:2::"],
+        "blurb": "Blokuje porno, VPN-y i proxy, wymusza bezpieczne wyszukiwanie i tryb ograniczony YouTube.",
+    },
+    {
         "slug": "cleanbrowsing-adult",
         "name": "CleanBrowsing Adult Filter",
         "url": "https://doh.cleanbrowsing.org/doh/adult-filter/",

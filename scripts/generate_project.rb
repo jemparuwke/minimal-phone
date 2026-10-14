@@ -47,11 +47,13 @@ app_refs = []
 shared_refs = []
 widget_refs = []
 config_refs = []
+profile_refs = []
 
 add_tree(project, main_group, 'Minimal', app_refs)
 add_tree(project, main_group, 'Shared', shared_refs)
 add_tree(project, main_group, 'MinimalWidget', widget_refs)
 add_tree(project, main_group, 'Config', config_refs)
+add_tree(project, main_group, 'Profiles', profile_refs)
 
 xcconfig = config_refs.find { |ref| ref.path == 'Signing.xcconfig' }
 raise 'Config/Signing.xcconfig missing' unless xcconfig
@@ -91,14 +93,14 @@ def source?(ref)
 end
 
 def resource?(ref)
-  ref.path.end_with?('.xcassets')
+  ref.path.end_with?('.xcassets', '.mobileconfig')
 end
 
 app = project.new_target(:application, 'Minimal', :ios, DEPLOYMENT_TARGET)
 widget = project.new_target(:app_extension, 'MinimalWidget', :ios, DEPLOYMENT_TARGET)
 
 app.add_file_references((app_refs + shared_refs).select { |ref| source?(ref) })
-app_refs.select { |ref| resource?(ref) }.each { |ref| app.resources_build_phase.add_file_reference(ref) }
+(app_refs + profile_refs).select { |ref| resource?(ref) }.each { |ref| app.resources_build_phase.add_file_reference(ref) }
 widget.add_file_references((widget_refs + shared_refs).select { |ref| source?(ref) })
 
 common = {
@@ -122,7 +124,7 @@ app.build_configurations.each do |config|
   s['PRODUCT_NAME'] = '$(TARGET_NAME)'
   s['PRODUCT_BUNDLE_IDENTIFIER'] = '$(APP_BUNDLE_ID)'
   s['INFOPLIST_FILE'] = 'Minimal/Info.plist'
-  s['CODE_SIGN_ENTITLEMENTS'] = 'Minimal/Minimal.entitlements'
+  s['CODE_SIGN_ENTITLEMENTS'] = 'Minimal/Minimal-$(MINIMAL_EDITION).entitlements'
   s['ASSETCATALOG_COMPILER_APPICON_NAME'] = 'AppIcon'
   s['ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME'] = 'AccentColor'
   s['ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS'] = 'NO'

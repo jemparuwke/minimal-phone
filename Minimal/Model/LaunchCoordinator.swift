@@ -34,6 +34,8 @@ final class LaunchCoordinator: ObservableObject {
     private var isActive = false
     private var pendingURL: URL?
     private var pendingItem: LaunchItem?
+    /// iOS 26 can deliver one widget tap twice; ignore repeats within a second.
+    private var lastDeepLink: (url: URL, at: Date)?
 
     init(store: LauncherStore, stats: UsageStats) {
         self.store = store
@@ -99,6 +101,8 @@ final class LaunchCoordinator: ObservableObject {
     /// `minimal://settings`, `minimal://home`.
     func handle(_ url: URL) {
         guard url.scheme?.lowercased() == SharedConfig.urlScheme else { return }
+        if let last = lastDeepLink, last.url == url, Date().timeIntervalSince(last.at) < 1 { return }
+        lastDeepLink = (url, Date())
         switch url.host?.lowercased() {
         case "open":
             let key = url.lastPathComponent

@@ -24,7 +24,7 @@ struct PauseView: View {
                     .fill(Color.white.opacity(0.09))
                     .scaleEffect(inhale ? 1 : 0.42)
                 Text(remaining > 0 ? "\(remaining)" : "")
-                    .font(.minimal(44, weight: .ultraLight))
+                    .minimalFont(44, weight: .ultraLight)
                     .monospacedDigit()
                     .foregroundStyle(Theme.secondary)
                     .contentTransition(.numericText(countsDown: true))
@@ -34,20 +34,20 @@ struct PauseView: View {
 
             VStack(spacing: 12) {
                 Text(inhale ? "wdech" : "wydech")
-                    .font(.minimal(15, weight: .regular))
+                    .font(.subheadline)
                     .foregroundStyle(Theme.tertiary)
                     .contentTransition(.opacity)
                 Text(item.name)
-                    .font(.minimal(34))
+                    .minimalFont(34)
                     .foregroundStyle(Theme.primary)
                     .multilineTextAlignment(.center)
                 Text("Czy naprawdę potrzebujesz tego teraz?")
-                    .font(.minimal(17, weight: .regular))
+                    .font(.body)
                     .foregroundStyle(Theme.secondary)
                     .multilineTextAlignment(.center)
                 if let opensText {
                     Text(opensText)
-                        .font(.minimal(15, weight: .regular))
+                        .font(.subheadline)
                         .foregroundStyle(Theme.tertiary)
                 }
             }
@@ -61,7 +61,7 @@ struct PauseView: View {
                     coordinator.resist()
                 } label: {
                     Text("Nie teraz")
-                        .font(.system(size: 17, weight: .semibold))
+                        .font(.headline)
                         .foregroundStyle(.black)
                         .frame(maxWidth: .infinity)
                         .frame(height: 54)
@@ -73,7 +73,7 @@ struct PauseView: View {
                     coordinator.open(item)
                 } label: {
                     Text(remaining > 0 ? "Otwórz za \(remaining) s" : "Otwórz")
-                        .font(.system(size: 17, weight: .regular))
+                        .font(.body)
                         .foregroundStyle(remaining > 0 ? Theme.tertiary : Theme.secondary)
                         .frame(maxWidth: .infinity)
                         .frame(height: 54)

@@ -35,6 +35,18 @@ enum DNSProvider: String, CaseIterable, Identifiable {
         }
     }
 
+    /// Configuration profile bundled with the app (Profiles/), used by the Free edition.
+    var profileURL: URL? {
+        let slug: String
+        switch self {
+        case .cleanBrowsingFamily: slug = "cleanbrowsing-family"
+        case .cleanBrowsingAdult: slug = "cleanbrowsing-adult"
+        case .adGuardFamily: slug = "adguard-family"
+        case .cloudflareFamily: slug = "cloudflare-family"
+        }
+        return Bundle.main.url(forResource: "Minimal-DNS-\(slug)", withExtension: "mobileconfig")
+    }
+
     /// DNS-over-HTTPS endpoint.
     var serverURL: URL {
         switch self {

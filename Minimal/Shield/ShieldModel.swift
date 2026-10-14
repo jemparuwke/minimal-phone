@@ -67,7 +67,16 @@ final class ShieldModel: ObservableObject {
     @Published var message: String?
     @Published private(set) var isWorking = false
 
-    private let managed = ManagedSettingsStore()
+    /// Free edition: steps the user confirmed doing in iOS Settings (see `FreeStep`).
+    @Published private(set) var freeStepsDone: Set<String>
+
+    enum FreeStep: String, CaseIterable {
+        case webFilter, dnsProfile, appLimits
+    }
+
+    let isFullEdition = Edition.isFull
+
+    private lazy var managed = ManagedSettingsStore()
     private let defaults: UserDefaults
     /// The system reports `.notDetermined` after every launch until authorization is
     /// requested again (silently, once granted). We do that once per launch.
@@ -81,11 +90,12 @@ final class ShieldModel: ObservableObject {
         static let lockDelay = "shield.lockDelay"
         static let unlockRequestedAt = "shield.unlockRequestedAt"
         static let everAuthorized = "shield.everAuthorized"
+        static let freeSteps = "shield.freeSteps"
     }
 
     init(defaults: UserDefaults = .standard) {
         self.defaults = defaults
-        authorization = AuthorizationCenter.shared.authorizationStatus
+        authorization = .notDetermined
         webFilterOn = defaults.bool(forKey: Key.webFilter)
         preventAppRemoval = defaults.bool(forKey: Key.preventRemoval)
         blockedSelection = defaults.data(forKey: Key.selection)
@@ -95,6 +105,10 @@ final class ShieldModel: ObservableObject {
         lockDelay = LockDelay(rawValue: defaults.integer(forKey: Key.lockDelay)) ?? .none
         let requested = defaults.double(forKey: Key.unlockRequestedAt)
         unlockRequestedAt = requested > 0 ? Date(timeIntervalSince1970: requested) : nil
+        freeStepsDone = Set(defaults.stringArray(forKey: Key.freeSteps) ?? [])
+        if isFullEdition {
+            authorization = AuthorizationCenter.shared.authorizationStatus
+        }
     }
 
     // MARK: - Summary
@@ -117,15 +131,33 @@ final class ShieldModel: ObservableObject {
 
     var blockedAppsActive: Bool { blockedCount > 0 && isAuthorized }
 
-    var isProtecting: Bool { webFilterActive || dnsEnabled }
+    var isProtecting: Bool {
+        if isFullEdition { return webFilterActive || dnsEnabled }
+        return isFreeStepDone(.webFilter) || isFreeStepDone(.dnsProfile)
+    }
 
     var activeLayers: Int {
-        [webFilterActive, dnsEnabled, blockedAppsActive].filter { $0 }.count
+        if !isFullEdition { return freeStepsDone.count }
+        return [webFilterActive, dnsEnabled, blockedAppsActive].filter { $0 }.count
+    }
+
+    func isFreeStepDone(_ step: FreeStep) -> Bool {
+        freeStepsDone.contains(step.rawValue)
+    }
+
+    func setFreeStep(_ step: FreeStep, done: Bool) {
+        if done {
+            freeStepsDone.insert(step.rawValue)
+        } else {
+            freeStepsDone.remove(step.rawValue)
+        }
+        defaults.set(Array(freeStepsDone), forKey: Key.freeSteps)
     }
 
     // MARK: - Refresh
 
     func refresh() async {
+        guard isFullEdition else { return }
         authorization = AuthorizationCenter.shared.authorizationStatus
         if !isAuthorized, !didRestoreAuthorization, defaults.bool(forKey: Key.everAuthorized) {
             // Already approved earlier: this returns without any prompt and restores the status.

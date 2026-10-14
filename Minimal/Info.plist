@@ -37,6 +37,8 @@
 	<true/>
 	<key>MinimalAppGroup</key>
 	<string>$(APP_GROUP_ID)</string>
+	<key>MinimalEdition</key>
+	<string>$(MINIMAL_EDITION)</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

@@ -15,13 +15,13 @@ struct ClockView: View {
         TimelineView(.periodic(from: .now, by: 1)) { context in
             VStack(alignment: .leading, spacing: 4) {
                 Text(time(context.date))
-                    .font(.minimal(textScale.clockSize, weight: .thin))
+                    .minimalFont(textScale.clockSize, weight: .thin)
                     .monospacedDigit()
                     .lineLimit(1)
                     .minimumScaleFactor(0.5)
                     .foregroundStyle(Theme.primary)
                 Text(detail(context.date))
-                    .font(.minimal(17, weight: .regular))
+                    .font(.body)
                     .foregroundStyle(Theme.secondary)
             }
             .accessibilityElement(children: .combine)

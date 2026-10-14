@@ -109,7 +109,7 @@ struct FavoritesEditorView: View {
                     } label: {
                         HStack(spacing: 12) {
                             Image(systemName: "plus.circle.fill")
-                                .font(.system(size: 20))
+                                .minimalFont(20, weight: .regular)
                                 .foregroundStyle(store.canAddFavorite ? Theme.good : Theme.tertiary)
                             Text(item.name)
                                 .foregroundStyle(store.canAddFavorite ? Theme.primary : Theme.tertiary)
@@ -179,7 +179,7 @@ struct CatalogRow: View {
                     .foregroundStyle(Theme.primary)
                 Spacer()
                 Image(systemName: included ? "checkmark.circle.fill" : "circle")
-                    .font(.system(size: 21, weight: .regular))
+                    .minimalFont(21, weight: .regular)
                     .foregroundStyle(included ? Theme.primary : Theme.tertiary)
                     .contentTransition(.symbolEffect(.replace))
             }

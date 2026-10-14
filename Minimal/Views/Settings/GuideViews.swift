@@ -80,7 +80,7 @@ struct ShieldGuideView: View {
         List {
             Section {
                 Text("Tarcza Minimal działa sama. Te ustawienia iOS sprawiają, że trudno ją wyłączyć w chwili słabości.")
-                    .font(.system(size: 15))
+                    .font(.subheadline)
                     .foregroundStyle(Theme.secondary)
                     .listRowBackground(Color.clear)
             }
@@ -101,21 +101,21 @@ struct GuideSection: View {
             ForEach(steps) { step in
                 HStack(alignment: .top, spacing: 14) {
                     Image(systemName: step.icon)
-                        .font(.system(size: 18, weight: .regular))
+                        .minimalFont(18, weight: .regular)
                         .foregroundStyle(Theme.primary)
                         .frame(width: 26)
                         .padding(.top, 2)
                     VStack(alignment: .leading, spacing: 5) {
                         Text(step.title)
-                            .font(.system(size: 16, weight: .semibold))
+                            .font(.callout.weight(.semibold))
                             .foregroundStyle(Theme.primary)
                         Text(step.text)
-                            .font(.system(size: 14))
+                            .font(.subheadline)
                             .foregroundStyle(Theme.secondary)
                             .fixedSize(horizontal: false, vertical: true)
                         if let path = step.path {
                             Text(path)
-                                .font(.system(size: 13, weight: .medium))
+                                .font(.footnote.weight(.medium))
                                 .foregroundStyle(Theme.tertiary)
                                 .fixedSize(horizontal: false, vertical: true)
                                 .textSelection(.enabled)
