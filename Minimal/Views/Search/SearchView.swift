@@ -68,9 +68,16 @@ struct SearchView: View {
             .safeAreaInset(edge: .bottom, spacing: 0) {
                 footer
                     .background {
-                        LinearGradient(colors: [Theme.background.opacity(0), Theme.background],
-                                       startPoint: .top, endPoint: .center)
-                            .ignoresSafeArea()
+                        // A short fade above the buttons, then solid black so no list text
+                        // ever shows through the labels.
+                        VStack(spacing: 0) {
+                            LinearGradient(colors: [Theme.background.opacity(0), Theme.background],
+                                           startPoint: .top, endPoint: .bottom)
+                                .frame(height: 20)
+                            Theme.background
+                        }
+                        .ignoresSafeArea()
+                        .accessibilityHidden(true)
                     }
             }
         }
