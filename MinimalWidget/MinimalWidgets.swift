@@ -85,6 +85,9 @@ struct FavoritesWidget: Widget {
 struct FavoritesWidgetView: View {
     let entry: FavoritesEntry
     @Environment(\.widgetFamily) private var family
+    @Environment(\.colorSchemeContrast) private var contrast
+
+    private var secondary: Color { .white.opacity(contrast == .increased ? 0.8 : 0.6) }
 
     private static let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -108,8 +111,8 @@ struct FavoritesWidgetView: View {
         VStack(alignment: .leading, spacing: 0) {
             if family == .systemLarge {
                 Text(Self.dateFormatter.string(from: entry.date))
-                    .font(.system(size: 13, weight: .medium))
-                    .foregroundStyle(.white.opacity(0.6))
+                    .font(.footnote.weight(.medium))
+                    .foregroundStyle(secondary)
                     .padding(.bottom, 8)
             }
 
@@ -132,6 +135,8 @@ struct FavoritesWidgetView: View {
             Spacer(minLength: 0)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        // The date and messages follow Dynamic Type, capped so the rows still fit.
+        .dynamicTypeSize(...DynamicTypeSize.xxLarge)
         .containerBackground(for: .widget) { Color.black }
         .widgetURL(SharedConfig.homeURL)
     }
@@ -160,8 +165,8 @@ struct FavoritesWidgetView: View {
 
     private func message(_ text: String) -> some View {
         Text(text)
-            .font(.system(size: 15, weight: .regular))
-            .foregroundStyle(.white.opacity(0.6))
+            .font(.subheadline)
+            .foregroundStyle(secondary)
             .fixedSize(horizontal: false, vertical: true)
     }
 
@@ -231,6 +236,7 @@ struct SearchWidget: Widget {
 
 struct SearchWidgetView: View {
     @Environment(\.widgetFamily) private var family
+    @Environment(\.colorSchemeContrast) private var contrast
 
     var body: some View {
         content
@@ -253,8 +259,8 @@ struct SearchWidgetView: View {
         default:
             VStack(alignment: .leading) {
                 Text("minimal")
-                    .font(.system(size: 15, weight: .medium))
-                    .foregroundStyle(.white.opacity(0.6))
+                    .font(.subheadline.weight(.medium))
+                    .foregroundStyle(.white.opacity(contrast == .increased ? 0.8 : 0.6))
                 Spacer()
                 HStack(spacing: 8) {
                     Image(systemName: "magnifyingglass")
@@ -266,6 +272,7 @@ struct SearchWidgetView: View {
                 .widgetAccentable()
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+            .dynamicTypeSize(...DynamicTypeSize.xxLarge)
             .containerBackground(for: .widget) { Color.black }
         }
     }

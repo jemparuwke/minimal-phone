@@ -25,8 +25,8 @@ struct SetupGuideView: View {
                   text: "Nowo pobrane aplikacje nie pojawią się na ekranie głównym.",
                   path: "Ustawienia → Ekran główny i biblioteka aplikacji → Tylko biblioteka aplikacji"),
         GuideStep(icon: "app.badge", title: "Bez czerwonych kropek",
-                  text: "Liczniki powiadomień to najsilniejszy wabik. Wyłącz je w bibliotece aplikacji, a dla najbardziej natarczywych aplikacji także w ich powiadomieniach.",
-                  path: "Ustawienia → Ekran główny i biblioteka aplikacji → Pokaż w bibliotece aplikacji (wyłącz), oraz Ustawienia → Powiadomienia → aplikacja → Plakietki"),
+                  text: "Plakietki powiadomień to najsilniejszy wabik. Wyłącz je w bibliotece aplikacji, a dla najbardziej natarczywych aplikacji także w ich powiadomieniach.",
+                  path: "Ustawienia → Ekran główny i biblioteka aplikacji → Pokaż w bibliotece aplikacji (wyłącz) oraz Ustawienia → Powiadomienia → aplikacja → Plakietki"),
     ]
 
     private let calm: [GuideStep] = [
@@ -34,7 +34,7 @@ struct SetupGuideView: View {
                   text: "Dodaj nową tapetę w czarnym kolorze — na ekranie blokady i ekranie głównym.",
                   path: "Ustawienia → Tapeta → Dodaj nową tapetę → Kolor"),
         GuideStep(icon: "camera.filters", title: "Skala szarości jednym gestem",
-                  text: "Szary ekran jest zaskakująco nudny — i o to chodzi. Ustaw skrót: trzykrotne kliknięcie bocznego przycisku włącza i wyłącza szarość.",
+                  text: "Szary ekran jest zaskakująco nudny — i o to chodzi. Ustaw skrót: trzykrotne naciśnięcie przycisku bocznego włącza i\u{00a0}wyłącza szarość.",
                   path: "Ustawienia → Dostępność → Ekran i wielkość tekstu → Filtry barwne → Skala szarości, potem Dostępność → Skróty dostępności → Filtry barwne",
                   isDone: { UIAccessibility.isGrayscaleEnabled }),
         GuideStep(icon: "moon", title: "Tryb skupienia",
@@ -62,7 +62,7 @@ struct SetupGuideView: View {
             GuideSection(title: "Spokój", steps: calm)
             GuideSection(title: "Na co iOS nie pozwala", steps: limits)
         }
-        .navigationTitle("Przewodnik")
+        .navigationTitle("Przewodnik po minimalizmie")
         .navigationBarTitleDisplayMode(.inline)
         .minimalSheet()
     }
@@ -84,11 +84,15 @@ struct ShieldGuideView: View {
                   text: "iPhone rozmywa nagie zdjęcia i wideo w Wiadomościach, AirDropie, FaceTimie i części aplikacji, zanim je zobaczysz.",
                   path: "Ustawienia → Prywatność i ochrona → Ostrzeżenia dotyczące treści wymagających dyskrecji"),
         GuideStep(icon: "icloud", title: "Przekazywanie prywatne iCloud",
-                  text: "Gdy jest włączone, Safari może pytać o adresy stron serwery Apple, omijając filtr DNS. Filtr Apple (warstwa 1) działa nadal, ale dla pełnej ochrony je wyłącz.",
+                  text: "Gdy jest włączone, Safari może pytać serwery Apple o\u{00a0}adresy stron, omijając filtr DNS. Filtr Apple (warstwa 1) działa nadal, ale dla pełnej ochrony je wyłącz.",
                   path: "Ustawienia → [Twoje imię] → iCloud → Przekazywanie prywatne"),
-        GuideStep(icon: "network.badge.shield.half.filled", title: "Bez nowych aplikacji i VPN-ów",
-                  text: "Aplikacje VPN i proxy mogą ominąć filtr DNS, a usunięcie Minimal wyłącza tarczę. Zablokuj instalowanie i usuwanie aplikacji — zmieni to tylko osoba z kodem. Uwaga: wtedy nie zainstalujesz też ponownie Minimal z Xcode (wersja Free co 7 dni) — osoba z kodem musi na chwilę na to pozwolić.",
-                  path: "Ograniczaj treść i prywatność → Zakupy w iTunes Store i App Store → Instalowanie aplikacji i Usuwanie aplikacji: Nie pozwalaj"),
+        Edition.isFull
+            ? GuideStep(icon: "network.badge.shield.half.filled", title: "Bez nowych aplikacji i VPN-ów",
+                        text: "Aplikacje VPN i\u{00a0}proxy mogą ominąć filtr DNS, a\u{00a0}usunięcie Minimal wyłącza tarczę. Zablokuj instalowanie i\u{00a0}usuwanie aplikacji — zmieni to tylko osoba z\u{00a0}kodem. Uwaga: wtedy nie zainstalujesz też ponownie Minimal z\u{00a0}Xcode — osoba z\u{00a0}kodem musi na chwilę na to pozwolić.",
+                        path: "Ograniczaj treść i prywatność → Zakupy w iTunes Store i App Store → Instalowanie aplikacji i Usuwanie aplikacji: Nie pozwalaj")
+            : GuideStep(icon: "network.badge.shield.half.filled", title: "Bez nowych aplikacji i VPN-ów",
+                        text: "Aplikacje VPN i\u{00a0}proxy mogą ominąć filtr DNS. Zablokuj instalowanie aplikacji — zmieni to tylko osoba z\u{00a0}kodem. Uwaga: wtedy nie zainstalujesz też ponownie Minimal z\u{00a0}Xcode (co 7\u{00a0}dni) — osoba z\u{00a0}kodem musi na chwilę na to pozwolić.",
+                        path: "Ograniczaj treść i prywatność → Zakupy w iTunes Store i App Store → Instalowanie aplikacji: Nie pozwalaj"),
     ]
 
     var body: some View {
@@ -130,6 +134,7 @@ struct GuideSection: View {
                                 Spacer(minLength: 8)
                                 Label("Wł.", systemImage: "checkmark.circle.fill")
                                     .labelStyle(.titleAndIcon)
+                                    .accessibilityLabel("włączone")
                                     .font(.footnote.weight(.medium))
                                     .foregroundStyle(Theme.good)
                             }

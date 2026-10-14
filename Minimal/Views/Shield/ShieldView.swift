@@ -83,11 +83,11 @@ struct ShieldView: View {
     private var hero: some View {
         Section {
             VStack(spacing: 14) {
-                Image(systemName: shield.isProtecting ? "checkmark.shield.fill" : "shield.slash")
+                Image(systemName: shield.displayProtecting ? "checkmark.shield.fill" : "shield.slash")
                     .minimalFont(60, weight: .light)
                     .accessibilityHidden(true)
                     .symbolRenderingMode(.hierarchical)
-                    .foregroundStyle(shield.isProtecting ? Theme.good : Theme.warning)
+                    .foregroundStyle(shield.displayProtecting ? Theme.good : Theme.warning)
                     .contentTransition(.symbolEffect(.replace))
                     .padding(.bottom, 2)
                 Text(heroTitle)
@@ -100,6 +100,8 @@ struct ShieldView: View {
                     .foregroundStyle(Theme.secondary)
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
+                    // Until iOS reports the real state, show the remembered title only.
+                    .opacity(shield.isResolved ? 1 : 0)
                 HStack(spacing: 6) {
                     ForEach(0..<3, id: \.self) { index in
                         Capsule()
@@ -108,8 +110,9 @@ struct ShieldView: View {
                     }
                 }
                 .padding(.top, 4)
+                .opacity(shield.isResolved ? 1 : 0)
                 .accessibilityElement()
-                .accessibilityLabel("Aktywne warstwy: \(shield.activeLayers) z 3")
+                .accessibilityLabel("Aktywne warstwy: \(shield.activeLayers) z\u{00a0}3")
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, 16)
@@ -119,7 +122,7 @@ struct ShieldView: View {
 
     private var heroTitle: String {
         if !shield.isFullEdition { return "Tarcza: \(shield.activeLayers) z 3 kroków" }
-        return shield.isProtecting ? "Tarcza włączona" : "Tarcza wyłączona"
+        return shield.displayProtecting ? "Tarcza włączona" : "Tarcza wyłączona"
     }
 
     private var heroSubtitle: String {
@@ -161,7 +164,7 @@ struct ShieldView: View {
     private var dnsSection: some View {
         Section {
             LayerHeader(number: 2,
-                        title: "Filtr DNS dla całego telefonu",
+                        title: "Filtr DNS dla całego iPhone’a",
                         detail: "Szyfrowany rodzinny DNS. Strony porno przestają się otwierać w przeglądarkach i aplikacjach.",
                         isActive: shield.dnsEnabled)
 
@@ -239,12 +242,12 @@ struct ShieldView: View {
 
     private var commitmentSection: some View {
         Section {
-            Picker("Opóźnienie osłabienia", selection: lockDelayBinding) {
+            Picker("Czas oczekiwania", selection: lockDelayBinding) {
                 ForEach(ShieldModel.LockDelay.allCases) { delay in
                     Text(delay.label).tag(delay)
                 }
             }
-            .confirmationDialog("Ustawić opóźnienie: \(pendingDelay?.label.lowercased() ?? "")?",
+            .confirmationDialog("Ustawić czas oczekiwania: \(pendingDelay?.label.lowercased() ?? "")?",
                                 isPresented: pendingDelayBinding, titleVisibility: .visible) {
                 Button("Ustaw \(pendingDelay?.label.lowercased() ?? "")") {
                     if let delay = pendingDelay { shield.setLockDelay(delay) }
@@ -268,7 +271,7 @@ struct ShieldView: View {
         } header: {
             Text("Zobowiązanie")
         } footer: {
-            Text("Wyłączenie lub osłabienie warstw w Minimal wymaga odczekania wybranego czasu, a data i godzina iPhone’a muszą się wtedy ustawiać automatycznie. Impuls mija, decyzja zostaje. Ustawienia iOS nadal pozwalają wyłączyć filtry — dlatego kod Czasu przed ekranem warto oddać zaufanej osobie. „Blokuj usuwanie aplikacji” nie pozwala usunąć z iPhone’a żadnej aplikacji, także Minimal.")
+            Text("Wyłączenie lub osłabienie warstw w\u{00a0}Minimal wymaga odczekania wybranego czasu\(shield.isAuthorized ? ", a\u{00a0}w\u{00a0}Ustawieniach → Ogólne → Data i\u{00a0}czas musi być wtedy włączone „Ustaw automatycznie”" : ""). Impuls mija, decyzja zostaje. Ustawienia iOS nadal pozwalają wyłączyć filtry — dlatego kod Czasu przed ekranem warto oddać zaufanej osobie. „Blokuj usuwanie aplikacji” nie pozwala usunąć z iPhone’a żadnej aplikacji, także Minimal.")
         }
         .minimalRow()
     }
@@ -301,7 +304,7 @@ struct ShieldView: View {
             }
         case .open(let until):
             HStack {
-                Label("Odblokowane jeszcze \(Formatters.duration(until.timeIntervalSinceNow))", systemImage: "lock.open")
+                Label("Odblokowane jeszcze przez \(Formatters.duration(until.timeIntervalSinceNow))", systemImage: "lock.open")
                     .foregroundStyle(Theme.good)
                     .monospacedDigit()
                 Spacer()
@@ -426,7 +429,7 @@ struct LayerHeader: View {
                     Text(isActive ? "Wł." : "Wył.")
                         .font(.footnote.weight(.medium))
                         .foregroundStyle(isActive ? Theme.good : Theme.tertiary)
-                        .accessibilityLabel(isActive ? "włączona" : "wyłączona")
+                        .accessibilityLabel(isActive ? "włączone" : "wyłączone")
                 }
                 Text(detail)
                     .font(.subheadline)

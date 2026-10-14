@@ -27,7 +27,7 @@ struct PauseView: View {
                 Circle()
                     .stroke(Theme.hairline, lineWidth: 1)
                 Circle()
-                    .fill(Color.white.opacity(0.09))
+                    .fill(Theme.breath)
                     .scaleEffect(reduceMotion ? 0.7 : (inhale ? 1 : 0.42))
                 Text(remaining > 0 ? "\(remaining)" : "")
                     .minimalFont(44, weight: .ultraLight)
@@ -82,7 +82,7 @@ struct PauseView: View {
                 .buttonStyle(.dim)
                 .disabled(remaining > 0)
             }
-            .padding(.horizontal, Theme.gutter)
+            .padding(.horizontal, Theme.ctaInset)
             .padding(.bottom, 24)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)

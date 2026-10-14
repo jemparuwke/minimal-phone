@@ -6,7 +6,7 @@
 
 <p align="center">
   <b>Wszystko, czego potrzebujesz. Nic, co rozprasza.</b><br>
-  Minimalistyczny ekran dla iPhone’a — z tarczą, która blokuje porno w całym telefonie.
+  Minimalistyczny ekran dla iPhone’a — z tarczą, która blokuje strony porno w przeglądarkach i aplikacjach.
 </p>
 
 <p align="center">
@@ -55,7 +55,7 @@
 10. **Darmowe konto Apple?** iPhone poprosi o zaufanie deweloperowi: **Ustawienia → Ogólne → VPN i urządzenia zarządzane → Aplikacja dewelopera → [Twoje konto] → Ufaj**. Potem naciśnij **▶︎** jeszcze raz albo stuknij ikonę Minimal.
 11. **Gotowe.** Minimal przeprowadzi Cię przez resztę: wybór aplikacji, tarczę i ustawienie ekranu.
 
-> Wolisz nie klikać w Xcode? Utwórz plik `Config/Signing.local.xcconfig` z jedną linią `DEVELOPMENT_TEAM = TWÓJ_TEAM_ID` (Team ID znajdziesz na [developer.apple.com/account](https://developer.apple.com/account) → Membership details). Ten plik nie trafia do gita, a zespół ustawia się wtedy w obu targetach naraz.
+> Wolisz nie klikać w Xcode? Utwórz plik `Config/Signing.local.xcconfig` z jedną linią `DEVELOPMENT_TEAM = TWÓJ_TEAM_ID` (Team ID znajdziesz na [developer.apple.com/account](https://developer.apple.com/account) → Membership details; z darmowym kontem po prostu wybierz zespół w kroku 8). Ten plik nie trafia do gita, a zespół ustawia się wtedy w obu targetach naraz.
 
 ### Gdy Xcode pokaże błąd
 
@@ -78,7 +78,7 @@ iOS nie pozwala żadnej aplikacji zastąpić ekranu głównego. Da się go jedna
 1. **Widżet:** przytrzymaj puste miejsce na ekranie → **Edytuj → Dodaj widżet → Minimal → Ulubione** (duży).
 2. **Reszta do biblioteki:** pozostałe ikony przenieś do biblioteki aplikacji i ukryj zbędne strony ekranu.
 3. **Dock:** zostaw w nim tylko Minimal.
-4. **Czerń i szarość:** ustaw czarną tapetę i skrót do skali szarości (trzykrotne kliknięcie bocznego przycisku).
+4. **Czerń i szarość:** ustaw czarną tapetę i skrót do skali szarości (trzykrotne naciśnięcie przycisku bocznego).
 
 Dokładne ścieżki znajdziesz w aplikacji: **⋯ → Przewodnik po minimalizmie**.
 
@@ -157,6 +157,6 @@ scripts/            generator projektu Xcode, ikona, profile, zrzuty ekranu
 ```
 
 - Projekt Xcode jest generowany skryptem: `gem install xcodeproj && ruby scripts/generate_project.rb`. Uruchom go po dodaniu lub usunięciu plików (skrypt kasuje zespół wybrany w Xcode — używaj wtedy `Config/Signing.local.xcconfig`).
-- Przy każdym pushu CI (GitHub Actions, macOS) buduje aplikację na symulator i na iPhone’a oraz tworzy niepodpisany plik `.ipa` (wersja Free, tylko dla zaawansowanych — widżet wymaga narzędzia, które doda App Group przy podpisywaniu). Commit z `[shots]` w opisie dodatkowo odświeża zrzuty ekranu w `docs/screenshots`.
+- Przy każdym pushu CI (GitHub Actions, macOS) buduje aplikację na symulator i na iPhone’a oraz tworzy niepodpisany plik `.ipa` (wersja Free, tylko do sprawdzenia kompilacji — to nie jest droga instalacji: po ponownym podpisaniu widżet nie zobaczy danych aplikacji; w pełni działa tylko instalacja z Xcode). Commit z `[shots]` w opisie dodatkowo odświeża zrzuty ekranu w `docs/screenshots`.
 - Deep linki: `minimalphone://search`, `minimalphone://shield`, `minimalphone://settings`, `minimalphone://open/<id lub id-z-katalogu>`. Przydają się w Skrótach i pod przyciskiem czynności.
 - Aplikacja jest przeznaczona do instalacji z Xcode na własnym iPhonie. Publikacja w App Store wymagałaby osobnej zgody Apple na uprawnienie Family Controls (Distribution) i rezygnacji z niepublicznego adresu `prefs:` (otwieranie Ustawień).

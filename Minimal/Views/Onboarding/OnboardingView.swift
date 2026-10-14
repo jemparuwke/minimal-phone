@@ -2,126 +2,75 @@ import SwiftUI
 import UIKit
 
 /// First run: welcome → pick your apps → shield → make it your home screen.
+/// A plain navigation stack, so each step gets the system back button and edge swipe.
 struct OnboardingView: View {
-    private enum Step: Int, CaseIterable {
+    enum Step: Int, CaseIterable, Hashable {
         case welcome, apps, shield, homeScreen
     }
 
     @AppStorage(Pref.onboarded) private var onboarded = false
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @State private var step: Step = OnboardingView.initialStep
-    @State private var forward = true
+    @State private var path: [Step] = OnboardingView.initialPath
 
-    private static var initialStep: Step {
+    private static var initialPath: [Step] {
         #if DEBUG
         // CI screenshots: `-debug.onboardingStep 2`
-        if let step = Step(rawValue: UserDefaults.standard.integer(forKey: "debug.onboardingStep")) { return step }
+        let target = UserDefaults.standard.integer(forKey: "debug.onboardingStep")
+        return Step.allCases.filter { $0 != .welcome && $0.rawValue <= target }
+        #else
+        return []
         #endif
-        return .welcome
     }
 
     var body: some View {
-        ZStack {
-            Theme.background.ignoresSafeArea()
-
-            Group {
-                switch step {
-                case .welcome: WelcomePage(next: next)
-                case .apps: AppsPage(next: next)
-                case .shield: ShieldPage(next: next)
-                case .homeScreen: HomeScreenPage(finish: finish)
+        NavigationStack(path: $path) {
+            page(.welcome)
+                .toolbar(.hidden, for: .navigationBar)
+                .navigationDestination(for: Step.self) { step in
+                    page(step)
+                        .navigationBarTitleDisplayMode(.inline)
                 }
-            }
-            .transition(reduceMotion ? .opacity : .asymmetric(
-                insertion: .move(edge: forward ? .trailing : .leading).combined(with: .opacity),
-                removal: .move(edge: forward ? .leading : .trailing).combined(with: .opacity)
-            ))
-        }
-        // Swipe right goes back a page, like a navigation stack.
-        .simultaneousGesture(
-            DragGesture(minimumDistance: 30)
-                .onEnded { value in
-                    if value.translation.width > 80, abs(value.translation.height) < 60, step != .welcome {
-                        go(to: Step(rawValue: step.rawValue - 1) ?? .welcome)
-                    }
-                }
-        )
-        .overlay(alignment: .top) {
-            if step != .welcome {
-                HStack {
-                    Button {
-                        go(to: Step(rawValue: step.rawValue - 1) ?? .welcome)
-                    } label: {
-                        Image(systemName: "chevron.left")
-                            .minimalFont(18, weight: .medium)
-                            .frame(width: 44, height: 44)
-                    }
-                    .buttonStyle(.dim)
-                    .foregroundStyle(Theme.secondary)
-                    .accessibilityLabel("Wstecz")
-                    Spacer()
-                    PageDots(count: Step.allCases.count, current: step.rawValue)
-                    Spacer()
-                    Color.clear.frame(width: 44, height: 44)
-                }
-                .padding(.horizontal, 12)
-            }
         }
         .preferredColorScheme(.dark)
         .interactiveDismissDisabled()
     }
 
-    private func next() {
-        go(to: Step(rawValue: step.rawValue + 1) ?? .homeScreen)
-    }
-
-    private func go(to target: Step) {
-        forward = target.rawValue > step.rawValue
-        withAnimation(reduceMotion ? .easeInOut(duration: 0.2) : .spring(response: 0.45, dampingFraction: 0.9)) {
-            step = target
-        }
-        // Let VoiceOver start reading the new page from the top.
-        UIAccessibility.post(notification: .screenChanged, argument: nil)
-    }
-
-    private func finish() {
-        onboarded = true
-    }
-}
-
-private struct PageDots: View {
-    let count: Int
-    let current: Int
-
-    var body: some View {
-        HStack(spacing: 7) {
-            ForEach(0..<count, id: \.self) { index in
-                Circle()
-                    .fill(index == current ? Theme.primary : Theme.tertiary)
-                    .frame(width: 6, height: 6)
+    @ViewBuilder
+    private func page(_ step: Step) -> some View {
+        Group {
+            switch step {
+            case .welcome: WelcomePage { advance(from: step) }
+            case .apps: AppsPage { advance(from: step) }
+            case .shield: ShieldPage { advance(from: step) }
+            case .homeScreen: HomeScreenPage { onboarded = true }
             }
         }
-        .accessibilityElement()
-        .accessibilityLabel("Krok \(current + 1) z \(count)")
+        .background(Theme.background.ignoresSafeArea())
+    }
+
+    private func advance(from step: Step) {
+        // A quick double tap must not push the same page twice.
+        guard let next = Step(rawValue: step.rawValue + 1), !path.contains(next) else { return }
+        path.append(next)
     }
 }
 
-/// Shared page scaffold: content on top, buttons pinned to the bottom.
+/// Shared page scaffold: content scrolls under the buttons pinned to the bottom.
 private struct OnboardingPage<Content: View, Buttons: View>: View {
     @ViewBuilder var content: Content
     @ViewBuilder var buttons: Buttons
 
     var body: some View {
-        VStack(spacing: 0) {
-            content
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-            VStack(spacing: 6) {
-                buttons
+        content
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .safeAreaInset(edge: .bottom, spacing: 0) {
+                VStack(spacing: 6) {
+                    buttons
+                }
+                .padding(.horizontal, Theme.ctaInset)
+                .padding(.top, 20)
+                .padding(.bottom, 16)
+                .background { BottomBarBackground() }
             }
-            .padding(.horizontal, 24)
-            .padding(.top, 12)
-            .padding(.bottom, 16)
-        }
     }
 }
 
@@ -136,7 +85,7 @@ private struct WelcomePage: View {
         ("textformat", "Tylko słowa", "Spokojny ekran z kilkoma najważniejszymi aplikacjami. Bez ikon, kolorów i czerwonych kropek."),
         ("magnifyingglass", "Wszystko pod ręką", "Każdą aplikację znajdziesz w sekundę — wystarczy zacząć pisać. Niczego nie tracisz."),
         ("wind", "Pauza", "Kilka sekund oddechu przed aplikacjami, które kradną czas."),
-        ("checkmark.shield", "Tarcza", "Blokuje porno w przeglądarkach i aplikacjach — na całym iPhonie."),
+        ("checkmark.shield", "Tarcza", "Strony porno przestają się otwierać w\u{00a0}przeglądarkach i\u{00a0}aplikacjach."),
     ]
 
     var body: some View {
@@ -239,11 +188,12 @@ private struct ShieldPage: View {
                         .symbolRenderingMode(.hierarchical)
                         .foregroundStyle(shield.isProtecting ? Theme.good : Theme.primary)
                         .contentTransition(.symbolEffect(.replace))
-                        .padding(.top, 72)
+                        .accessibilityHidden(true)
+                        .padding(.top, 16)
                     PageTitle(title: "Tarcza",
                               subtitle: shield.isFullEdition
                                 ? "Włącz obie warstwy, a strony porno przestaną się otwierać w przeglądarkach i aplikacjach. Później możesz dodać blokadę wybranych aplikacji."
-                                : "Trzy krótkie kroki w Ustawieniach iOS i porno znika z Twojego iPhone’a. Minimal poprowadzi Cię przez każdy z nich.",
+                                : "Trzy krótkie kroki w\u{00a0}Ustawieniach iOS i\u{00a0}strony porno przestaną się otwierać. Minimal poprowadzi Cię przez każdy z\u{00a0}nich.",
                               topPadding: 20)
 
                     VStack(spacing: 12) {
@@ -303,7 +253,7 @@ private struct ShieldPage: View {
             title: "Filtr DNS",
             text: shield.dnsInstalled && !shield.dnsEnabled
                 ? "Zainstalowany. Włącz go: Ustawienia → Ogólne → VPN i urządzenia zarządzane → DNS → Minimal."
-                : "CleanBrowsing Family: blokuje porno, a także Reddita, VPN-y i proxy; wymusza bezpieczne wyszukiwanie. Dostawcę zmienisz w Tarczy.",
+                : "CleanBrowsing Family: blokuje porno, a\u{00a0}także Reddita, VPN-y i\u{00a0}proxy; wymusza bezpieczne wyszukiwanie. Zapytania o\u{00a0}adresy stron trafiają do tego dostawcy — zmienisz go w\u{00a0}Tarczy.",
             isDone: shield.dnsEnabled,
             action: shield.dnsInstalled ? "Ustawienia" : "Zainstaluj"
         ) {
@@ -324,6 +274,8 @@ private struct ShieldStepCard: View {
     let action: String
     let perform: () -> Void
 
+    @Environment(\.dynamicTypeSize) private var typeSize
+
     var body: some View {
         HStack(alignment: .top, spacing: 14) {
             ZStack {
@@ -339,24 +291,36 @@ private struct ShieldStepCard: View {
                 }
             }
             .frame(width: 30, height: 30)
+            .accessibilityHidden(true)
 
             VStack(alignment: .leading, spacing: 4) {
-                HStack(alignment: .firstTextBaseline) {
-                    Text(title)
-                        .font(.headline)
-                        .foregroundStyle(Theme.primary)
-                    Spacer(minLength: 8)
-                    if isDone {
-                        Label("Gotowe", systemImage: "checkmark")
-                            .labelStyle(.titleAndIcon)
-                            .font(.subheadline.weight(.medium))
-                            .foregroundStyle(Theme.good)
+                VStack(alignment: .leading, spacing: 4) {
+                    // At accessibility text sizes "Gotowe" moves under the title instead of
+                    // squeezing it.
+                    let layout = typeSize.isAccessibilitySize
+                        ? AnyLayout(VStackLayout(alignment: .leading, spacing: 2))
+                        : AnyLayout(HStackLayout(alignment: .firstTextBaseline))
+                    layout {
+                        Text(title)
+                            .font(.headline)
+                            .foregroundStyle(Theme.primary)
+                        if !typeSize.isAccessibilitySize {
+                            Spacer(minLength: 8)
+                        }
+                        if isDone {
+                            Label("Gotowe", systemImage: "checkmark")
+                                .labelStyle(.titleAndIcon)
+                                .font(.subheadline.weight(.medium))
+                                .foregroundStyle(Theme.good)
+                        }
                     }
+                    Text(text)
+                        .font(.subheadline)
+                        .foregroundStyle(Theme.secondary)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
-                Text(text)
-                    .font(.subheadline)
-                    .foregroundStyle(Theme.secondary)
-                    .fixedSize(horizontal: false, vertical: true)
+                .accessibilityElement(children: .combine)
+
                 if !isDone {
                     Button(action: perform) {
                         Text(action)
@@ -369,6 +333,8 @@ private struct ShieldStepCard: View {
                     }
                     .buttonStyle(.dim)
                     .padding(.top, 8)
+                    .accessibilityLabel("\(action): \(title)")
+                    .accessibilityInputLabels([action, title])
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -389,8 +355,7 @@ private struct HomeScreenPage: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
                     PageTitle(title: "Zrób z tego swój ekran",
-                              subtitle: "iOS nie pozwala aplikacjom zastąpić ekranu głównego, ale w minutę ustawisz go tak, że Minimal stanie się wszystkim, co widzisz.",
-                              topPadding: 72)
+                              subtitle: "iOS nie pozwala aplikacjom zastąpić ekranu głównego, ale w minutę ustawisz go tak, że Minimal stanie się wszystkim, co widzisz.")
 
                     VStack(alignment: .leading, spacing: 22) {
                         GuideStepRow(number: 1, title: "Dodaj widżet",
@@ -419,7 +384,7 @@ private struct HomeScreenPage: View {
 struct PageTitle: View {
     let title: String
     let subtitle: String
-    var topPadding: CGFloat = 64
+    var topPadding: CGFloat = 16
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {

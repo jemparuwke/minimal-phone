@@ -3,7 +3,7 @@ import AppIntents
 /// "Szukaj w Minimal" and "Tarcza" for the Action Button, Spotlight and the Shortcuts app.
 struct OpenSearchIntent: AppIntent {
     static let title: LocalizedStringResource = "Szukaj w Minimal"
-    static let description = IntentDescription("Otwiera Minimal od razu z wyszukiwaniem wszystkich aplikacji.")
+    static let description = IntentDescription("Otwiera Minimal od razu z\u{00a0}wyszukiwaniem wszystkich aplikacji.")
     static let openAppWhenRun = true
 
     @MainActor

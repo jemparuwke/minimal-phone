@@ -121,6 +121,7 @@ struct FavoritesEditorView: View {
                     // Borderless keeps the row tappable while the list is in edit mode.
                     .buttonStyle(.borderless)
                     .disabled(!store.canAddFavorite)
+                    .accessibilityLabel("Dodaj \(item.name)")
                 }
             }
             .minimalRow()

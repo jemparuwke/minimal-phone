@@ -38,7 +38,7 @@ enum DNSProvider: String, CaseIterable, Identifiable {
         case .cleanBrowsingAdult:
             return "Blokuje porno i wymusza bezpieczne wyszukiwanie w Google i Bing. Nie blokuje Reddita ani VPN-ów."
         case .adGuardFamily:
-            return "Blokuje porno, reklamy i śledzenie, wymusza bezpieczne wyszukiwanie. Może psuć reklamy w niektórych aplikacjach."
+            return "Blokuje porno, reklamy i śledzenie, wymusza bezpieczne wyszukiwanie. Może zakłócać działanie niektórych aplikacji."
         case .cloudflareFamily:
             return "Blokuje porno i złośliwe strony. Najszybszy, ale nie wymusza bezpiecznego wyszukiwania."
         }

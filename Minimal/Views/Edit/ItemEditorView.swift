@@ -167,14 +167,16 @@ struct ItemEditorView: View {
         .navigationTitle(isNew ? "Dodaj" : "Edytuj")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            if showsCancel {
+            // Pushed editors swap the back button for "Anuluj" once something has changed,
+            // so edits are never lost to a back swipe.
+            if showsCancel || hasChanges {
                 ToolbarItem(placement: .cancellationAction) {
                     CloseToolbarButton {
                         if hasChanges { confirmDiscard = true } else { dismiss() }
                     }
                     .confirmationDialog("Odrzucić zmiany?", isPresented: $confirmDiscard, titleVisibility: .visible) {
                         Button("Odrzuć zmiany", role: .destructive) { dismiss() }
-                        Button("Edytuj dalej", role: .cancel) {}
+                        Button("Kontynuuj edycję", role: .cancel) {}
                     }
                 }
             }
@@ -195,6 +197,7 @@ struct ItemEditorView: View {
             initialSnapshot = start
         }
         .interactiveDismissDisabled(hasChanges)
+        .navigationBarBackButtonHidden(hasChanges)
         .alert("Nie udało się otworzyć", isPresented: $testFailed) {
             Button("OK", role: .cancel) {}
         } message: {
@@ -231,7 +234,8 @@ struct ItemEditorView: View {
             HStack(spacing: 10) {
                 Image(systemName: "magnifyingglass")
                     .foregroundStyle(Theme.tertiary)
-                TextField("Szukaj w katalogu", text: $catalogQuery)
+                    .accessibilityHidden(true)
+                TextField("Szukaj w katalogu", text: $catalogQuery)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
             }

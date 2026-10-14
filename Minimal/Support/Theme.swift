@@ -10,12 +10,15 @@ enum Theme {
     static let tertiary = white(0.47, increased: 0.66)
     static let hairline = white(0.12, increased: 0.30)
     static let surface = white(0.07, increased: 0.14)
+    static let breath = white(0.09, increased: 0.18)
     // System colors adapt to Increase Contrast and match the rest of iOS.
     static let good = Color(uiColor: .systemGreen)
     static let warning = Color(uiColor: .systemYellow)
     static let bad = Color(uiColor: .systemRed)
 
     static let gutter: CGFloat = 32
+    /// Side inset of the big bottom buttons, the same on every screen.
+    static let ctaInset: CGFloat = 24
 
     private static func white(_ alpha: CGFloat, increased: CGFloat) -> Color {
         Color(uiColor: UIColor { traits in
@@ -87,7 +90,7 @@ struct DimOnPressStyle: ButtonStyle {
             .padding(.horizontal, showButtonShapes ? 8 : 0)
             .background {
                 if showButtonShapes {
-                    RoundedRectangle(cornerRadius: 8, style: .continuous).fill(Theme.surface)
+                    RoundedRectangle(cornerRadius: 8, style: .continuous).fill(Theme.hairline)
                 }
             }
             .contentShape(Rectangle())
@@ -140,11 +143,18 @@ struct PrimaryButtonStyle: ButtonStyle {
 
 /// Quiet text button under the primary one ("Pomiń", "Nie teraz").
 struct SecondaryButtonStyle: ButtonStyle {
+    @Environment(\.accessibilityShowButtonShapes) private var showButtonShapes
+
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .font(.body)
             .foregroundStyle(Theme.secondary)
             .frame(maxWidth: .infinity, minHeight: 44)
+            .background {
+                if showButtonShapes {
+                    Capsule().fill(Theme.hairline)
+                }
+            }
             .contentShape(Rectangle())
             .opacity(configuration.isPressed ? 0.4 : 1)
     }
@@ -186,6 +196,21 @@ struct CloseToolbarButton: View {
         } else {
             Button(title, action: action)
         }
+    }
+}
+
+/// Background for a bar pinned to the bottom of a scrolling screen: a short fade, then solid
+/// black, so content scrolls away under it and never shows through the buttons.
+struct BottomBarBackground: View {
+    var body: some View {
+        VStack(spacing: 0) {
+            LinearGradient(colors: [Theme.background.opacity(0), Theme.background],
+                           startPoint: .top, endPoint: .bottom)
+                .frame(height: 20)
+            Theme.background
+        }
+        .ignoresSafeArea()
+        .accessibilityHidden(true)
     }
 }
 

@@ -103,7 +103,7 @@ struct HomeView: View {
                         .foregroundStyle(shield.displayProtecting ? Theme.secondary : Theme.warning)
                         .frame(width: 44, height: 44)
                 }
-                .accessibilityLabel(shield.displayProtecting ? "Tarcza aktywna" : "Tarcza wyłączona")
+                .accessibilityLabel(shield.displayProtecting ? "Tarcza włączona" : "Tarcza wyłączona")
 
                 Spacer()
 

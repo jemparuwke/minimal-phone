@@ -67,18 +67,7 @@ struct SearchView: View {
             // The list scrolls under the footer and fades out instead of ending in a hard edge.
             .safeAreaInset(edge: .bottom, spacing: 0) {
                 footer
-                    .background {
-                        // A short fade above the buttons, then solid black so no list text
-                        // ever shows through the labels.
-                        VStack(spacing: 0) {
-                            LinearGradient(colors: [Theme.background.opacity(0), Theme.background],
-                                           startPoint: .top, endPoint: .bottom)
-                                .frame(height: 20)
-                            Theme.background
-                        }
-                        .ignoresSafeArea()
-                        .accessibilityHidden(true)
-                    }
+                    .background { BottomBarBackground() }
             }
         }
         .background(Theme.background.ignoresSafeArea())

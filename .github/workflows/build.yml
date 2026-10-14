@@ -39,8 +39,9 @@ jobs:
             | tee build-simulator.log | grep -E "error:|warning:|BUILD (SUCCEEDED|FAILED)" || true
           grep -q "BUILD SUCCEEDED" build-simulator.log
 
-      # The unsigned IPA is the Free edition: it is the only one a re-signer with a
-      # free Apple account (e.g. Sideloadly) can install.
+      # Unsigned Free build, mainly a device compile check. It carries no entitlements,
+      # so after re-signing (e.g. Sideloadly) the widget cannot see the app's data.
+      # Install from Xcode for a fully working app.
       - name: Build for iPhone (unsigned, Free edition)
         run: |
           set -o pipefail

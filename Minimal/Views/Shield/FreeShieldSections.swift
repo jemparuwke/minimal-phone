@@ -28,8 +28,8 @@ struct FreeShieldSections: View {
 
         Section {
             LayerHeader(number: 2,
-                        title: "Filtr DNS dla całego telefonu",
-                        detail: "Profil szyfrowanego, rodzinnego DNS. Blokuje porno w przeglądarkach i aplikacjach.",
+                        title: "Filtr DNS dla całego iPhone’a",
+                        detail: "Profil szyfrowanego rodzinnego DNS. Strony porno przestają się otwierać w\u{00a0}przeglądarkach i\u{00a0}aplikacjach.",
                         isActive: shield.isFreeStepDone(.dnsProfile))
             Picker("Dostawca", selection: $provider) {
                 ForEach(DNSProvider.allCases) { provider in
@@ -52,7 +52,7 @@ struct FreeShieldSections: View {
             }
             DoneToggle(step: .dnsProfile, title: "Filtr DNS")
         } footer: {
-            Text("Profil możesz też przesłać na iPhone’a AirDropem z folderu Profiles w projekcie.")
+            Text("Adresy otwieranych stron trafiają (zaszyfrowane) do wybranego dostawcy. Włączona aplikacja VPN, a\u{00a0}czasem także Przekazywanie prywatne iCloud, omija filtr DNS — filtr witryn dla dorosłych (krok 1) działa nadal. Profil możesz też przesłać na iPhone’a AirDropem z\u{00a0}folderu Profiles w\u{00a0}projekcie.")
         }
         .minimalRow()
 
@@ -63,7 +63,7 @@ struct FreeShieldSections: View {
                         isActive: shield.isFreeStepDone(.appLimits))
             StepList(steps: [
                 "Ustawienia → Czas przed ekranem → Limity aplikacji → Dodaj limit.",
-                "Wybierz aplikacje i ustaw limit 1 minuty.",
+                "Wybierz aplikacje i\u{00a0}ustaw limit 1\u{00a0}minuty.",
                 "Włącz „Blokuj po osiągnięciu limitu” (opcja pojawia się po ustawieniu kodu Czasu przed ekranem).",
             ])
             DoneToggle(step: .appLimits, title: "Blokada wybranych aplikacji")

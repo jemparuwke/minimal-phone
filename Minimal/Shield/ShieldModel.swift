@@ -421,9 +421,9 @@ final class ShieldModel: ObservableObject {
         case .restricted:
             return "Czas przed ekranem jest ograniczony na tym iPhonie — np. przez rodzica w Chmurze rodzinnej albo przez zarządzanie urządzeniem."
         case .networkError:
-            return "Brak połączenia z internetem. Spróbuj ponownie za chwilę."
+            return "Brak połączenia z\u{00a0}Internetem. Spróbuj ponownie za chwilę."
         case .invalidAccountType:
-            return "Ta funkcja wymaga konta Apple osoby dorosłej. Zaloguj się na nie w Ustawieniach i spróbuj ponownie."
+            return "Ta funkcja wymaga konta Apple osoby dorosłej. Zaloguj się na takie konto w\u{00a0}Ustawieniach i spróbuj ponownie."
         case .unavailable:
             return "Czas przed ekranem jest teraz niedostępny. Upewnij się, że jest włączony w Ustawieniach."
         default:

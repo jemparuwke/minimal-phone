@@ -15,6 +15,7 @@ struct RootView: View {
 
             if coordinator.isSearching {
                 SearchView()
+                    .accessibilityHidden(coordinator.pausing != nil)
                     .transition(reduceMotion ? .opacity : .move(edge: .bottom))
                     .accessibilityAddTraits(.isModal)
                     .zIndex(1)

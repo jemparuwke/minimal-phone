@@ -38,7 +38,8 @@ struct SettingsView: View {
                         SettingsRow(icon: shield.displayProtecting ? "checkmark.shield.fill" : "shield",
                                     color: shield.displayProtecting ? Theme.good : Theme.warning,
                                     title: "Tarcza",
-                                    value: shield.displayProtecting ? "Wł." : "Wył.")
+                                    value: shield.displayProtecting ? "Wł." : "Wył.",
+                                    spokenValue: shield.displayProtecting ? "włączona" : "wyłączona")
                     }
                     NavigationLink {
                         SetupGuideView()
@@ -119,7 +120,7 @@ struct SettingsView: View {
                     .confirmationDialog("Przywrócić domyślną listę?", isPresented: $confirmReset, titleVisibility: .visible) {
                         Button("Przywróć", role: .destructive) { store.resetToStarter() }
                     } message: {
-                        Text("Wszystkie dodane aplikacje, skróty i adresy zostaną usunięte, a ulubione wrócą do domyślnych.")
+                        Text("Zostaną tylko podstawowe aplikacje Apple. Aplikacje dodane z\u{00a0}katalogu, skróty, adresy, zmienione nazwy i\u{00a0}pauzy przed otwarciem zostaną usunięte, a\u{00a0}Ulubione wrócą do ustawień domyślnych.")
                     }
                 } footer: {
                     Text(footerText)
@@ -176,6 +177,8 @@ struct SettingsRow: View {
     var color: Color = .white
     let title: String
     var value: String? = nil
+    /// Full word for VoiceOver when `value` is an abbreviation ("Wł." → "włączona").
+    var spokenValue: String? = nil
 
     var body: some View {
         HStack(spacing: 14) {
@@ -190,6 +193,7 @@ struct SettingsRow: View {
                 Spacer()
                 Text(value)
                     .foregroundStyle(Theme.secondary)
+                    .accessibilityLabel(spokenValue ?? value)
             }
         }
     }
