@@ -14,8 +14,8 @@ struct FreeShieldSections: View {
                         isActive: shield.isFreeStepDone(.webFilter))
             StepList(steps: [
                 "Otwórz Ustawienia → Czas przed ekranem i włącz go.",
-                "Ograniczenia zawartości i prywatności → włącz.",
-                "Ograniczenia zawartości → Zawartość internetowa → Ogranicz strony dla dorosłych.",
+                "Ograniczaj treść i prywatność → włącz.",
+                "App Store, multimedia, Internet i gry → Zawartość www → Blokuj witryny dla dorosłych.",
             ])
             Button {
                 SystemSettings.open()
@@ -42,7 +42,7 @@ struct FreeShieldSections: View {
             StepList(steps: [
                 "Stuknij „Zapisz profil” i wybierz „Zapisz w Plikach”.",
                 "Otwórz Pliki i stuknij zapisany profil.",
-                "Ustawienia → Pobrany profil → Instaluj.",
+                "Ustawienia → Profil pobrany → Instaluj.",
             ])
             if let url = provider.profileURL {
                 ShareLink(item: url, preview: SharePreview("Minimal · filtr DNS (\(provider.name))")) {
@@ -64,7 +64,7 @@ struct FreeShieldSections: View {
             StepList(steps: [
                 "Ustawienia → Czas przed ekranem → Limity aplikacji → Dodaj limit.",
                 "Wybierz aplikacje i ustaw limit 1 minuty.",
-                "Włącz „Blokuj po upływie limitu”.",
+                "Włącz „Blokuj po osiągnięciu limitu”.",
             ])
             DoneToggle(step: .appLimits)
         } footer: {

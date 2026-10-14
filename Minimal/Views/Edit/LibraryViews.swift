@@ -16,7 +16,7 @@ struct LibraryView: View {
                     LabeledContent {
                         Text("\(store.favorites.count)")
                     } label: {
-                        Label("Ekran główny", systemImage: "house")
+                        Label("Ulubione", systemImage: "star")
                     }
                 }
                 NavigationLink {
@@ -96,7 +96,7 @@ struct FavoritesEditorView: View {
                 .onMove { source, destination in store.moveFavorites(from: source, to: destination) }
                 .onDelete { offsets in store.removeFavorites(at: offsets) }
             } header: {
-                Text("Na ekranie głównym")
+                Text("Ulubione")
             } footer: {
                 Text("Maksymalnie \(LauncherStore.maxFavorites). Mniej znaczy spokojniej.")
             }
@@ -121,7 +121,7 @@ struct FavoritesEditorView: View {
             .minimalRow()
         }
         .environment(\.editMode, .constant(.active))
-        .navigationTitle("Ekran główny")
+        .navigationTitle("Ulubione")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             if showsDone {

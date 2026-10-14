@@ -13,39 +13,39 @@ struct GuideStep: Identifiable {
 struct SetupGuideView: View {
     private let homeScreen: [GuideStep] = [
         GuideStep(icon: "square.text.square", title: "Widżet Minimal",
-                  text: "Przytrzymaj puste miejsce na ekranie początkowym → Edytuj → Dodaj widżet → Minimal → „Ulubione” w dużym rozmiarze."),
+                  text: "Przytrzymaj puste miejsce na ekranie głównym → Edytuj → Dodaj widżet → Minimal → „Ulubione” w dużym rozmiarze."),
         GuideStep(icon: "rectangle.stack", title: "Jedna strona",
-                  text: "Przenieś pozostałe aplikacje do biblioteki aplikacji (przytrzymaj ikonę → Usuń aplikację → Usuń z ekranu początkowego). Potem w trybie edycji stuknij kropki stron i odznacz zbędne."),
+                  text: "Przenieś pozostałe aplikacje do biblioteki aplikacji (przytrzymaj ikonę → Usuń aplikację → Usuń z ekranu głównego). Potem przytrzymaj ekran → Edytuj → Edycja stron i odznacz zbędne strony."),
         GuideStep(icon: "dock.rectangle", title: "Dock",
                   text: "Zostaw w Docku tylko Minimal. Wyszukiwanie każdej aplikacji to jedno stuknięcie."),
         GuideStep(icon: "tray.and.arrow.down", title: "Nowe aplikacje do biblioteki",
-                  text: "Nowo pobrane aplikacje nie pojawią się na ekranie początkowym.",
-                  path: "Ustawienia → Ekran początkowy i biblioteka aplikacji → Tylko biblioteka aplikacji"),
+                  text: "Nowo pobrane aplikacje nie pojawią się na ekranie głównym.",
+                  path: "Ustawienia → Ekran główny i biblioteka aplikacji → Tylko biblioteka aplikacji"),
         GuideStep(icon: "app.badge", title: "Bez czerwonych kropek",
                   text: "Wyłącz plakietki — liczniki powiadomień to najsilniejszy wabik.",
-                  path: "Ustawienia → Ekran początkowy i biblioteka aplikacji → Plakietki powiadomień"),
+                  path: "Ustawienia → Ekran główny i biblioteka aplikacji → Plakietki powiadomień"),
     ]
 
     private let calm: [GuideStep] = [
         GuideStep(icon: "circle.lefthalf.filled", title: "Czarna tapeta",
-                  text: "Dodaj nową tapetę w kolorze czarnym — na ekranie blokady i początkowym.",
+                  text: "Dodaj nową tapetę w czarnym kolorze — na ekranie blokady i ekranie głównym.",
                   path: "Ustawienia → Tapeta → Dodaj nową tapetę → Kolor"),
         GuideStep(icon: "camera.filters", title: "Skala szarości jednym gestem",
                   text: "Szary ekran jest zaskakująco nudny — i o to chodzi. Ustaw skrót: trzykrotne kliknięcie bocznego przycisku włącza i wyłącza szarość.",
-                  path: "Ustawienia → Dostępność → Ekran i wielkość tekstu → Filtry kolorów → Skala szarości, potem Dostępność → Skrót dostępności → Filtry kolorów"),
-        GuideStep(icon: "moon", title: "Skupienie",
-                  text: "Utwórz tryb Skupienia, który przepuszcza tylko ważne osoby i aplikacje. Możesz go włączać automatycznie o stałych porach.",
-                  path: "Ustawienia → Skupienie"),
+                  path: "Ustawienia → Dostępność → Ekran i wielkość tekstu → Filtry barwne → Skala szarości, potem Dostępność → Skróty dostępności → Filtry barwne"),
+        GuideStep(icon: "moon", title: "Tryb skupienia",
+                  text: "Utwórz tryb skupienia, który przepuszcza tylko ważne osoby i aplikacje. Możesz go włączać automatycznie o stałych porach.",
+                  path: "Ustawienia → Tryb skupienia"),
         GuideStep(icon: "bell.badge", title: "Podsumowanie powiadomień",
-                  text: "Zbierz mniej pilne powiadomienia w jedno lub dwa podsumowania dziennie.",
-                  path: "Ustawienia → Powiadomienia → Zaplanowane podsumowanie"),
+                  text: "Zbierz mniej pilne powiadomienia w zaplanowane podsumowanie — raz lub dwa razy dziennie.",
+                  path: "Ustawienia → Powiadomienia"),
         GuideStep(icon: "wind", title: "Pauza dla pożeraczy czasu",
                   text: "W Minimal przytrzymaj nazwę aplikacji i wybierz „Pauza przed otwarciem”. Kilka sekund wystarczy, by impuls minął."),
     ]
 
     var body: some View {
         List {
-            GuideSection(title: "Ekran początkowy", steps: homeScreen)
+            GuideSection(title: "Ekran główny iPhone’a", steps: homeScreen)
             GuideSection(title: "Spokój", steps: calm)
         }
         .navigationTitle("Przewodnik")
@@ -58,22 +58,20 @@ struct SetupGuideView: View {
 struct ShieldGuideView: View {
     private let steps: [GuideStep] = [
         GuideStep(icon: "hourglass", title: "Kod Czasu przed ekranem u zaufanej osoby",
-                  text: "Włącz Czas przed ekranem i ustaw kod, który wpisze ktoś zaufany — nie Ty. Bez tego kodu nie da się wyłączyć filtrów.",
+                  text: "Włącz Czas przed ekranem i ustaw kod, który wpisze ktoś zaufany — nie Ty. Bez tego kodu nie da się wyłączyć filtrów, a od iOS 26.4 także odebrać Minimal dostępu do Czasu przed ekranem.",
                   path: "Ustawienia → Czas przed ekranem → Zablokuj ustawienia Czasu przed ekranem"),
-        GuideStep(icon: "nosign", title: "Ogranicz strony dla dorosłych",
+        GuideStep(icon: "nosign", title: "Blokuj witryny dla dorosłych",
                   text: "Ten sam filtr Apple co warstwa 1 tarczy — ale chroniony kodem zaufanej osoby.",
-                  path: "Ustawienia → Czas przed ekranem → Ograniczenia zawartości i prywatności → Ograniczenia zawartości → Zawartość internetowa → Ogranicz strony dla dorosłych"),
+                  path: "Ustawienia → Czas przed ekranem → Ograniczaj treść i prywatność → App Store, multimedia, Internet i gry → Zawartość www → Blokuj witryny dla dorosłych"),
         GuideStep(icon: "person.badge.key", title: "Zablokuj zmiany kodu i konta",
                   text: "Uniemożliwia obejście ograniczeń przez zmianę kodu lub konta Apple.",
-                  path: "Ograniczenia zawartości i prywatności → Zmiany kodu: Nie zezwalaj, Zmiany konta: Nie zezwalaj"),
-        GuideStep(icon: "eye.slash", title: "Ostrzeżenie o wrażliwej zawartości",
+                  path: "Ograniczaj treść i prywatność → Zmiany kodu: Nie pozwalaj, Zmiany danych konta: Nie pozwalaj"),
+        GuideStep(icon: "eye.slash", title: "Ostrzeżenia o treściach wymagających dyskrecji",
                   text: "iPhone rozmywa nagie zdjęcia i wideo w Wiadomościach, AirDropie, FaceTimie i części aplikacji, zanim je zobaczysz.",
-                  path: "Ustawienia → Prywatność i ochrona → Ostrzeżenie o wrażliwej zawartości"),
+                  path: "Ustawienia → Prywatność i ochrona → Ostrzeżenia dotyczące treści wymagających dyskrecji"),
         GuideStep(icon: "network.badge.shield.half.filled", title: "Uważaj na VPN-y",
-                  text: "Aplikacje VPN i proxy mogą ominąć filtr DNS. Nie instaluj ich — a jeśli chcesz mieć pewność, zablokuj kategorię w warstwie 3 tarczy."),
-        GuideStep(icon: "icloud", title: "Prywatny przekaźnik iCloud",
-                  text: "Jeśli masz iCloud+, Prywatny przekaźnik może w Safari omijać filtr DNS. Filtr Apple (warstwa 1) nadal działa, ale dla pełnej ochrony wyłącz przekaźnik.",
-                  path: "Ustawienia → [Twoje imię] → iCloud → Prywatny przekaźnik"),
+                  text: "Aplikacje VPN i proxy mogą ominąć filtr DNS. Domyślny filtr (CleanBrowsing Family) blokuje strony VPN-ów, a z kodem u zaufanej osoby możesz też zablokować instalowanie aplikacji.",
+                  path: "Ograniczaj treść i prywatność → Zakupy w iTunes Store i App Store → Instalowanie aplikacji: Nie pozwalaj"),
     ]
 
     var body: some View {

@@ -153,13 +153,13 @@ struct ItemMenu: View {
             Button {
                 store.setFavorite(item, false)
             } label: {
-                Label("Usuń z ekranu głównego", systemImage: "minus.circle")
+                Label("Usuń z ulubionych", systemImage: "minus.circle")
             }
         } else {
             Button {
                 store.setFavorite(item, true)
             } label: {
-                Label("Dodaj do ekranu głównego", systemImage: "plus.circle")
+                Label("Dodaj do ulubionych", systemImage: "plus.circle")
             }
             .disabled(!store.canAddFavorite)
         }
@@ -181,7 +181,7 @@ struct ItemMenu: View {
         Button {
             coordinator.sheet = .favorites
         } label: {
-            Label("Ułóż ekran główny", systemImage: "arrow.up.arrow.down")
+            Label("Ułóż ulubione", systemImage: "arrow.up.arrow.down")
         }
     }
 }

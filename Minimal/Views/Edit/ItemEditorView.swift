@@ -250,7 +250,7 @@ struct ItemEditorView: View {
     @ViewBuilder
     private var optionSections: some View {
         Section {
-            Toggle("Na ekranie głównym", isOn: $favorite)
+            Toggle("W ulubionych", isOn: $favorite)
                 .disabled(!favorite && !store.canAddFavorite && !isCurrentlyFavorite)
             Toggle("Pauza przed otwarciem", isOn: $mindful)
         } footer: {

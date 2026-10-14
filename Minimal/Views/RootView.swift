@@ -6,6 +6,7 @@ struct RootView: View {
     @Environment(\.scenePhase) private var scenePhase
     @AppStorage(Pref.onboarded) private var onboarded = false
     @AppStorage(Pref.hideStatusBar) private var hideStatusBar = true
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         ZStack {
@@ -13,7 +14,7 @@ struct RootView: View {
 
             if coordinator.isSearching {
                 SearchView()
-                    .transition(.move(edge: .bottom))
+                    .transition(reduceMotion ? .opacity : .move(edge: .bottom))
                     .zIndex(1)
             }
 
@@ -42,6 +43,16 @@ struct RootView: View {
         } message: { item in
             Text(failureMessage(for: item))
         }
+        #if DEBUG
+        .task {
+            // CI screenshots: `-debug.route search|shield|settings|debug-pause`
+            if let route = UserDefaults.standard.string(forKey: "debug.route"),
+               let url = URL(string: "\(SharedConfig.urlScheme)://\(route)") {
+                try? await Task.sleep(for: .milliseconds(600))
+                coordinator.handle(url)
+            }
+        }
+        #endif
         .onChange(of: scenePhase, initial: true) { _, phase in
             coordinator.scenePhaseChanged(phase)
             if phase == .active {

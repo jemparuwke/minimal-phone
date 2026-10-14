@@ -54,20 +54,9 @@ done
 relaunch -pref.onboarded YES
 shot home 4
 
-xcrun simctl openurl "$UDID" "minimal://search"
-shot search 3
-
-xcrun simctl openurl "$UDID" "minimal://home"
-sleep 1
-xcrun simctl openurl "$UDID" "minimal://debug-pause"
-shot pause 3
-
-relaunch -pref.onboarded YES
-sleep 2
-xcrun simctl openurl "$UDID" "minimal://shield"
-shot shield 4
-
-relaunch -pref.onboarded YES
-sleep 2
-xcrun simctl openurl "$UDID" "minimal://settings"
-shot settings 3
+for route in search debug-pause shield settings; do
+  relaunch -pref.onboarded YES -debug.route "$route"
+  name="$route"
+  [ "$route" = "debug-pause" ] && name="pause"
+  shot "$name" 4
+done

@@ -7,6 +7,7 @@ struct PauseView: View {
     @EnvironmentObject private var coordinator: LaunchCoordinator
     @EnvironmentObject private var stats: UsageStats
     @AppStorage(Pref.pauseSeconds) private var pauseSeconds = 5
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @State private var remaining = 5
     @State private var inhale = false
@@ -22,7 +23,7 @@ struct PauseView: View {
                     .stroke(Theme.hairline, lineWidth: 1)
                 Circle()
                     .fill(Color.white.opacity(0.09))
-                    .scaleEffect(inhale ? 1 : 0.42)
+                    .scaleEffect(reduceMotion ? 0.7 : (inhale ? 1 : 0.42))
                 Text(remaining > 0 ? "\(remaining)" : "")
                     .minimalFont(44, weight: .ultraLight)
                     .monospacedDigit()
@@ -97,7 +98,7 @@ struct PauseView: View {
         }
         .task {
             while !Task.isCancelled {
-                withAnimation(.easeInOut(duration: breath)) { inhale.toggle() }
+                withAnimation(reduceMotion ? nil : .easeInOut(duration: breath)) { inhale.toggle() }
                 try? await Task.sleep(for: .seconds(breath))
             }
         }

@@ -39,7 +39,7 @@ struct SettingsView: View {
                 }
                 .minimalRow()
 
-                Section("Ekran główny") {
+                Section("Układ") {
                     NavigationLink {
                         FavoritesEditorView(showsDone: false)
                     } label: {

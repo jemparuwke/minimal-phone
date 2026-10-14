@@ -167,7 +167,7 @@ struct ShieldView: View {
                 weakenButton("Usuń filtr DNS") { Task { await shield.removeDNS() } }
             }
         } footer: {
-            Text("Po instalacji włącz filtr w Ustawieniach: Ogólne → VPN i zarządzanie urządzeniem → DNS → Minimal.")
+            Text("Po instalacji włącz filtr w Ustawieniach: Ogólne → VPN i urządzenia zarządzane → DNS → Minimal.")
         }
         .minimalRow()
     }
@@ -345,7 +345,7 @@ struct LayerHeader: View {
 struct ActivationSteps: View {
     private let steps = [
         "Otwórz Ustawienia → Ogólne.",
-        "Stuknij VPN i zarządzanie urządzeniem → DNS.",
+        "Stuknij VPN i urządzenia zarządzane → DNS.",
         "Wybierz „Minimal”.",
     ]
 

@@ -278,7 +278,7 @@ private struct ShieldPage: View {
             number: 2,
             title: "Filtr DNS",
             text: shield.dnsInstalled && !shield.dnsEnabled
-                ? "Zainstalowany. Włącz go: Ustawienia → Ogólne → VPN i zarządzanie urządzeniem → DNS → Minimal."
+                ? "Zainstalowany. Włącz go: Ustawienia → Ogólne → VPN i urządzenia zarządzane → DNS → Minimal."
                 : "Blokuje porno w każdej aplikacji i wymusza bezpieczne wyszukiwanie.",
             isDone: shield.dnsEnabled,
             action: shield.dnsInstalled ? "Ustawienia" : "Zainstaluj"
@@ -360,14 +360,14 @@ private struct HomeScreenPage: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
                     PageTitle(title: "Zrób z tego swój ekran",
-                              subtitle: "iOS nie pozwala aplikacjom zastąpić ekranu początkowego, ale w minutę ustawisz go tak, że Minimal stanie się wszystkim, co widzisz.",
+                              subtitle: "iOS nie pozwala aplikacjom zastąpić ekranu głównego, ale w minutę ustawisz go tak, że Minimal stanie się wszystkim, co widzisz.",
                               topPadding: 72)
 
                     VStack(alignment: .leading, spacing: 22) {
                         GuideStepRow(number: 1, title: "Dodaj widżet",
-                                     text: "Przytrzymaj ekran początkowy → Edytuj → Dodaj widżet → Minimal → Ulubione (duży).")
+                                     text: "Przytrzymaj ekran główny → Edytuj → Dodaj widżet → Minimal → Ulubione (duży).")
                         GuideStepRow(number: 2, title: "Schowaj resztę",
-                                     text: "Przenieś pozostałe aplikacje do biblioteki aplikacji i ukryj dodatkowe strony ekranu początkowego.")
+                                     text: "Przenieś pozostałe aplikacje do biblioteki aplikacji i ukryj dodatkowe strony ekranu głównego.")
                         GuideStepRow(number: 3, title: "Minimal w Docku",
                                      text: "Zostaw w Docku tylko Minimal — wyszukiwanie wszystkiego jest jedno stuknięcie stąd.")
                         GuideStepRow(number: 4, title: "Czerń i szarość",
