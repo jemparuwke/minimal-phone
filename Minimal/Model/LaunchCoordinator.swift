@@ -36,9 +36,13 @@ final class LaunchCoordinator: ObservableObject {
     /// iOS 26 can deliver one widget tap twice; ignore repeats within a second.
     private var lastDeepLink: (url: URL, at: Date)?
 
+    /// The live coordinator, for App Intents running in the app's process.
+    static weak var current: LaunchCoordinator?
+
     init(store: LauncherStore, stats: UsageStats) {
         self.store = store
         self.stats = stats
+        Self.current = self
     }
 
     // MARK: - Launching

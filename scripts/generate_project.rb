@@ -93,7 +93,7 @@ def source?(ref)
 end
 
 def resource?(ref)
-  ref.path.end_with?('.xcassets', '.mobileconfig')
+  ref.path.end_with?('.xcassets', '.mobileconfig', '.xcprivacy')
 end
 
 app = project.new_target(:application, 'Minimal', :ios, DEPLOYMENT_TARGET)
@@ -102,6 +102,7 @@ widget = project.new_target(:app_extension, 'MinimalWidget', :ios, DEPLOYMENT_TA
 app.add_file_references((app_refs + shared_refs).select { |ref| source?(ref) })
 (app_refs + profile_refs).select { |ref| resource?(ref) }.each { |ref| app.resources_build_phase.add_file_reference(ref) }
 widget.add_file_references((widget_refs + shared_refs).select { |ref| source?(ref) })
+widget_refs.select { |ref| resource?(ref) }.each { |ref| widget.resources_build_phase.add_file_reference(ref) }
 
 common = {
   'CODE_SIGN_STYLE' => 'Automatic',

@@ -156,7 +156,7 @@ struct CatalogView: View {
             Section {
                 EmptyView()
             } footer: {
-                Text("Nie ma Twojej aplikacji? Dodaj ją przez „Dodaj skrót lub adres” — skrót z aplikacji Skróty otworzy każdą aplikację.")
+                Text("Nie ma Twojej aplikacji albo się nie otwiera? Dodaj ją przez „Dodaj skrót lub adres” — skrót z aplikacji Skróty otworzy każdą aplikację, także bankową czy mObywatel.")
             }
         }
         .searchable(text: $query, placement: .navigationBarDrawer(displayMode: .always), prompt: "Szukaj")
