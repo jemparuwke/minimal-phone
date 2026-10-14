@@ -173,6 +173,8 @@ final class ShieldModel: ObservableObject {
             didRestoreAuthorization = true
             try? await AuthorizationCenter.shared.requestAuthorization(for: .individual)
             authorization = AuthorizationCenter.shared.authorizationStatus
+            // Access was revoked in Settings: stop asking on every launch.
+            if !isAuthorized { defaults.set(false, forKey: Key.everAuthorized) }
         }
         if isAuthorized { applyManagedSettings() }
         await refreshDNS()
@@ -342,7 +344,11 @@ final class ShieldModel: ObservableObject {
 
     private func requireUnlocked() -> Bool {
         if canWeaken { return true }
-        message = "Tarcza jest zablokowana. Poproś o odblokowanie w sekcji „Zobowiązanie” i odczekaj \(lockDelay.waitLabel)."
+        if case .waiting(let until) = lockState() {
+            message = "Tarcza odblokuje się za \(Formatters.duration(until.timeIntervalSinceNow)). Wtedy przez 30 minut możesz ją osłabić."
+        } else {
+            message = "Tarcza jest zablokowana. Poproś o odblokowanie w sekcji „Zobowiązanie” i odczekaj \(lockDelay.waitLabel)."
+        }
         return false
     }
 

@@ -45,7 +45,7 @@ struct LibraryView: View {
                                     .foregroundStyle(Theme.tertiary)
                             }
                             if store.isFavorite(item) {
-                                Image(systemName: "house")
+                                Image(systemName: "star")
                                     .foregroundStyle(Theme.tertiary)
                             }
                         }

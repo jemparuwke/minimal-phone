@@ -17,7 +17,7 @@ struct SearchView: View {
             header
 
             ScrollView {
-                LazyVStack(alignment: .leading, spacing: 20) {
+                LazyVStack(alignment: .leading, spacing: 4) {
                     ForEach(results) { item in
                         Button {
                             focused = false
@@ -63,6 +63,7 @@ struct SearchView: View {
             Button("Gotowe") { close() }
                 .font(.body)
                 .foregroundStyle(Theme.secondary)
+                .frame(minWidth: 44, minHeight: 44)
                 .buttonStyle(.dim)
         }
         .padding(.horizontal, Theme.gutter)
@@ -106,7 +107,7 @@ struct SearchView: View {
                 .lineLimit(1)
         }
         .foregroundStyle(Theme.secondary)
-        .frame(maxWidth: .infinity, alignment: .leading)
+        .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
     }
 
     private var footer: some View {

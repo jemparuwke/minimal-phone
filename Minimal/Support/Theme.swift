@@ -125,7 +125,8 @@ struct MinimalSheetStyle: ViewModifier {
         content
             .scrollContentBackground(.hidden)
             .background(Theme.background.ignoresSafeArea())
-            .tint(Theme.primary)
+            // No explicit .tint: buttons follow the white AccentColor, while switches keep
+            // the system green so their "on" state stays readable.
             .preferredColorScheme(.dark)
     }
 }

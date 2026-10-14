@@ -43,7 +43,7 @@ struct SettingsView: View {
                     NavigationLink {
                         FavoritesEditorView(showsDone: false)
                     } label: {
-                        SettingsRow(icon: "house", color: .white, title: "Ulubione", value: "\(store.favorites.count)")
+                        SettingsRow(icon: "star", color: .white, title: "Ulubione", value: "\(store.favorites.count)")
                     }
                     NavigationLink {
                         LibraryView(showsDone: false)

@@ -40,7 +40,7 @@ struct HomeView: View {
     // MARK: - Favorites
 
     private var favorites: some View {
-        VStack(alignment: .leading, spacing: textScale.itemSize * 0.5) {
+        VStack(alignment: .leading, spacing: textScale.itemSize * 0.22) {
             if store.favorites.isEmpty {
                 Button {
                     coordinator.sheet = .favorites
@@ -131,6 +131,7 @@ struct ItemLabel: View {
                 .foregroundStyle(color)
                 .lineLimit(1)
                 .minimumScaleFactor(0.7)
+                .frame(minHeight: 44, alignment: .leading)
             if item.mindful {
                 Circle()
                     .fill(Theme.tertiary)
