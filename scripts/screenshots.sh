@@ -30,6 +30,8 @@ BUNDLE=$(/usr/libexec/PlistBuddy -c 'Print CFBundleIdentifier' "$APP/Info.plist"
 xcrun simctl boot "$UDID" || true
 xcrun simctl bootstatus "$UDID" -b >/dev/null
 xcrun simctl ui "$UDID" appearance dark
+# A fresh simulator shows the "slide to type" keyboard tip over the first text field.
+xcrun simctl spawn "$UDID" defaults write com.apple.keyboard.preferences DidShowContinuousPathIntroduction -bool true || true
 xcrun simctl status_bar "$UDID" override --time "9:41" --dataNetwork wifi --wifiMode active --wifiBars 3 \
   --cellularMode active --cellularBars 4 --batteryState charged --batteryLevel 100
 xcrun simctl install "$UDID" "$APP"
