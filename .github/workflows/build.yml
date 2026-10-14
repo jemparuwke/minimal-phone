@@ -91,3 +91,10 @@ jobs:
         with:
           name: build-logs
           path: build-*.log
+
+      - name: Compiler warnings
+        if: always()
+        run: |
+          echo "== unique compiler warnings =="
+          grep -h "warning:" build-*.log 2>/dev/null | sed 's|.*/minimal-phone/||' | sort -u | head -60 || true
+          echo "== end =="
