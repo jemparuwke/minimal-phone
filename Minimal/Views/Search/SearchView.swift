@@ -4,6 +4,7 @@ import SwiftUI
 struct SearchView: View {
     @EnvironmentObject private var store: LauncherStore
     @EnvironmentObject private var coordinator: LaunchCoordinator
+    @EnvironmentObject private var stats: UsageStats
     @AppStorage(Pref.searchEngine) private var engine: SearchEngine = .duckDuckGo
 
     @State private var query = ""
@@ -12,12 +13,34 @@ struct SearchView: View {
     private var trimmed: String { query.trimmingCharacters(in: .whitespacesAndNewlines) }
     private var results: [LaunchItem] { store.search(query) }
 
+    /// Shown above the full list before anything is typed, like Spotlight's Siri Suggestions.
+    private var recents: [LaunchItem] {
+        guard trimmed.isEmpty else { return [] }
+        return stats.recentIDs.compactMap(store.item(id:))
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             header
 
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: 4) {
+                    if !recents.isEmpty {
+                        sectionLabel("Ostatnio")
+                        ForEach(recents) { item in
+                            Button {
+                                focused = false
+                                coordinator.launch(item)
+                            } label: {
+                                ItemLabel(item: item, size: 26)
+                            }
+                            .buttonStyle(.dim)
+                            .contextMenu { ItemMenu(item: item) }
+                        }
+                        sectionLabel("Wszystkie")
+                            .padding(.top, 12)
+                    }
+
                     ForEach(results) { item in
                         Button {
                             focused = false
@@ -96,6 +119,14 @@ struct SearchView: View {
             suggestion(icon: "plus", text: "Dodaj „\(trimmed)”")
         }
         .buttonStyle(.dim)
+    }
+
+    private func sectionLabel(_ text: String) -> some View {
+        Text(text)
+            .font(.footnote.weight(.semibold))
+            .foregroundStyle(Theme.tertiary)
+            .textCase(.uppercase)
+            .accessibilityAddTraits(.isHeader)
     }
 
     private func suggestion(icon: String, text: String) -> some View {

@@ -11,9 +11,13 @@ final class UsageStats: ObservableObject {
 
     private static let key = "stats.day.v1"
     private static let resistedTotalKey = "stats.resistedTotal"
+    private static let recentKey = "stats.recent.v1"
+    private static let recentLimit = 3
 
     @Published private var day: Day
     @Published private(set) var resistedTotal: Int
+    /// IDs of the most recently opened items, newest first.
+    @Published private(set) var recentIDs: [UUID]
 
     private let defaults: UserDefaults
 
@@ -22,6 +26,7 @@ final class UsageStats: ObservableObject {
         let stored = defaults.data(forKey: Self.key).flatMap { try? JSONDecoder().decode(Day.self, from: $0) }
         day = stored ?? Day(date: Self.todayKey())
         resistedTotal = defaults.integer(forKey: Self.resistedTotalKey)
+        recentIDs = (defaults.stringArray(forKey: Self.recentKey) ?? []).compactMap(UUID.init(uuidString:))
     }
 
     func opensToday(of item: LaunchItem) -> Int {
@@ -36,6 +41,10 @@ final class UsageStats: ObservableObject {
         rollOver()
         day.opens[item.id.uuidString, default: 0] += 1
         save()
+        recentIDs.removeAll { $0 == item.id }
+        recentIDs.insert(item.id, at: 0)
+        recentIDs = Array(recentIDs.prefix(Self.recentLimit))
+        defaults.set(recentIDs.map(\.uuidString), forKey: Self.recentKey)
     }
 
     func recordResisted() {
