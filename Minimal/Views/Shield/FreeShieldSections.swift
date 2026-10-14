@@ -29,7 +29,7 @@ struct FreeShieldSections: View {
         Section {
             LayerHeader(number: 2,
                         title: "Filtr DNS dla całego telefonu",
-                        detail: "Profil szyfrowanego, rodzinnego DNS. Blokuje porno w każdej aplikacji.",
+                        detail: "Profil szyfrowanego, rodzinnego DNS. Blokuje porno w przeglądarkach i aplikacjach.",
                         isActive: shield.isFreeStepDone(.dnsProfile))
             Picker("Dostawca", selection: $provider) {
                 ForEach(DNSProvider.allCases) { provider in
@@ -40,9 +40,9 @@ struct FreeShieldSections: View {
                 .font(.footnote)
                 .foregroundStyle(Theme.secondary)
             StepList(steps: [
-                "Stuknij „Zapisz profil” i wybierz „Zapisz w Plikach”.",
+                "Stuknij „Zapisz profil” i wybierz „Zachowaj w Plikach”.",
                 "Otwórz Pliki i stuknij zapisany profil.",
-                "Ustawienia → Profil pobrany → Instaluj.",
+                "Ustawienia → Profil pobrany → Instaluj. iOS oznaczy profil jako niezweryfikowany — to normalne dla profilu bez podpisu.",
             ])
             if let url = provider.profileURL {
                 ShareLink(item: url, preview: SharePreview("Minimal · filtr DNS (\(provider.name))")) {

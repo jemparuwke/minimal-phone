@@ -169,7 +169,7 @@ struct ItemEditorView: View {
         .toolbar {
             if showsCancel {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Anuluj") {
+                    CloseToolbarButton {
                         if hasChanges { confirmDiscard = true } else { dismiss() }
                     }
                     .confirmationDialog("Odrzucić zmiany?", isPresented: $confirmDiscard, titleVisibility: .visible) {
@@ -180,8 +180,7 @@ struct ItemEditorView: View {
             }
             if !(isNew && kind == .catalog) {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Zapisz") { save() }
-                        .fontWeight(.semibold)
+                    ConfirmToolbarButton(title: "Zapisz") { save() }
                         .disabled(!isValid)
                 }
             }
@@ -337,7 +336,9 @@ struct ItemEditorView: View {
         Section {
             Button {
                 if kind == .catalog, case .edit(let item) = mode {
-                    coordinator.tryOpen(item)
+                    Task {
+                        if !(await coordinator.tryOpen(item)) { testFailed = true }
+                    }
                 } else if let url = draftURL {
                     Task {
                         if !(await UIApplication.shared.open(url)) { testFailed = true }

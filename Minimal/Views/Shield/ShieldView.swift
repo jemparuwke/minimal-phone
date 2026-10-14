@@ -57,14 +57,13 @@ struct ShieldView: View {
         .toolbar {
             if showsDone {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Gotowe") { dismiss() }
-                        .fontWeight(.semibold)
+                    ConfirmToolbarButton { dismiss() }
                 }
             }
         }
         .familyActivityPicker(isPresented: $showPicker, selection: $pickerSelection)
         .onChange(of: showPicker) { _, presented in
-            guard !presented else { return }
+            guard !presented, pickerSelection != shield.blockedSelection else { return }
             Task { pickerSelection = await shield.updateBlocked(pickerSelection) }
         }
         .alert(shield.messageTitle, isPresented: messageBinding) {
@@ -128,7 +127,7 @@ struct ShieldView: View {
             return "Minimal nie widzi ustawień iOS, więc zaznacz każdy krok, gdy go wykonasz."
         }
         switch shield.activeLayers {
-        case 3: return "Wszystkie trzy warstwy działają. Porno jest zablokowane w całym telefonie."
+        case 3: return "Wszystkie trzy warstwy działają. Strony dla dorosłych są blokowane w przeglądarkach i aplikacjach."
         case 0: return "Włącz warstwy poniżej. Każda zamyka inną furtkę."
         default: return "Aktywne warstwy: \(shield.activeLayers) z 3. Włącz pozostałe, by zamknąć wszystkie furtki."
         }
@@ -140,7 +139,7 @@ struct ShieldView: View {
         Section {
             LayerHeader(number: 1,
                         title: "Filtr stron dla dorosłych",
-                        detail: "Wbudowany filtr Apple. Blokuje strony dla dorosłych w Safari, innych przeglądarkach i aplikacjach oraz wyłącza przeglądanie prywatne.",
+                        detail: "Wbudowany filtr Apple. Blokuje strony dla dorosłych w Safari, innych przeglądarkach i aplikacjach, a także archiwa stron i tłumacza Google, przez które da się je obejść. Wyłącza przeglądanie prywatne.",
                         isActive: shield.webFilterActive)
             if shield.webFilterActive {
                 weakenButton(.webFilter)
@@ -163,7 +162,7 @@ struct ShieldView: View {
         Section {
             LayerHeader(number: 2,
                         title: "Filtr DNS dla całego telefonu",
-                        detail: "Szyfrowany rodzinny DNS. Strony porno przestają się otwierać — w każdej aplikacji i przeglądarce.",
+                        detail: "Szyfrowany rodzinny DNS. Strony porno przestają się otwierać w przeglądarkach i aplikacjach.",
                         isActive: shield.dnsEnabled)
 
             if shield.dnsInstalled && !shield.dnsEnabled {
@@ -204,7 +203,7 @@ struct ShieldView: View {
                 weakenButton(.dns)
             }
         } footer: {
-            Text("Po instalacji włącz filtr w Ustawieniach: Ogólne → VPN i urządzenia zarządzane → DNS → Minimal. Włączona aplikacja VPN omija filtr DNS — filtr Apple (warstwa 1) działa nadal.")
+            Text("Po instalacji włącz filtr w Ustawieniach: Ogólne → VPN i urządzenia zarządzane → DNS → Minimal. Adresy otwieranych stron trafiają (zaszyfrowane) do wybranego dostawcy. Włączona aplikacja VPN, a czasem także Przekazywanie prywatne iCloud, omija filtr DNS — filtr Apple (warstwa 1) działa nadal.")
         }
         .minimalRow()
     }
@@ -218,8 +217,12 @@ struct ShieldView: View {
                         detail: "Zablokuj aplikacje, w których łatwo trafić na porno — np. X, Reddit, Telegram, Tumblr — albo całe kategorie.",
                         isActive: shield.blockedAppsActive)
             Button {
-                pickerSelection = shield.blockedSelection
-                showPicker = true
+                Task {
+                    // The picker can only list apps once Screen Time access is granted.
+                    guard await shield.authorize() else { return }
+                    pickerSelection = shield.blockedSelection
+                    showPicker = true
+                }
             } label: {
                 LabeledContent {
                     Text(shield.blockedCount > 0 ? "\(shield.blockedCount)" : "Brak")

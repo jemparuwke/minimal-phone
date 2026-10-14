@@ -12,7 +12,9 @@ struct MinimalApp: App {
         let stats = UsageStats()
         _store = StateObject(wrappedValue: store)
         _stats = StateObject(wrappedValue: stats)
-        _coordinator = StateObject(wrappedValue: LaunchCoordinator(store: store, stats: stats))
+        // Created eagerly so App Intents find it even on a cold launch.
+        let coordinator = LaunchCoordinator(store: store, stats: stats)
+        _coordinator = StateObject(wrappedValue: coordinator)
         _shield = StateObject(wrappedValue: ShieldModel())
     }
 

@@ -67,8 +67,7 @@ struct LibraryView: View {
         .toolbar {
             if showsDone {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Gotowe") { dismiss() }
-                        .fontWeight(.semibold)
+                    ConfirmToolbarButton { dismiss() }
                 }
             }
         }
@@ -132,8 +131,7 @@ struct FavoritesEditorView: View {
         .toolbar {
             if showsDone {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Gotowe") { dismiss() }
-                        .fontWeight(.semibold)
+                    ConfirmToolbarButton { dismiss() }
                 }
             }
         }

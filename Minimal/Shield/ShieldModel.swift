@@ -107,7 +107,16 @@ final class ShieldModel: ObservableObject {
         static let unlockRequestedAt = "shield.unlockRequestedAt"
         static let everAuthorized = "shield.everAuthorized"
         static let freeSteps = "shield.freeSteps"
+        static let lastProtecting = "shield.lastProtecting"
     }
+
+    /// False until the first refresh after launch has read the real state from iOS.
+    @Published private(set) var isResolved = !Edition.isFull
+    private var lastKnownProtecting: Bool { defaults.bool(forKey: Key.lastProtecting) }
+
+    /// What the home screen shows: the last known state until iOS has been asked, so a cold
+    /// launch never flashes "off" for a shield that is actually on.
+    var displayProtecting: Bool { isResolved ? isProtecting : lastKnownProtecting }
 
     init(defaults: UserDefaults = .standard) {
         self.defaults = defaults
@@ -176,16 +185,29 @@ final class ShieldModel: ObservableObject {
     func refresh() async {
         guard isFullEdition else { return }
         authorization = AuthorizationCenter.shared.authorizationStatus
-        if !isAuthorized, !didRestoreAuthorization, defaults.bool(forKey: Key.everAuthorized) {
+        if authorization == .notDetermined, !didRestoreAuthorization, defaults.bool(forKey: Key.everAuthorized) {
             // Already approved earlier: this returns without any prompt and restores the status.
             didRestoreAuthorization = true
-            try? await AuthorizationCenter.shared.requestAuthorization(for: .individual)
+            do {
+                try await AuthorizationCenter.shared.requestAuthorization(for: .individual)
+            } catch FamilyControlsError.networkError {
+                // Temporary (e.g. offline at launch): try again on the next activation.
+                didRestoreAuthorization = false
+            } catch {}
             authorization = AuthorizationCenter.shared.authorizationStatus
             // Access was revoked in Settings: stop asking on every launch.
-            if !isAuthorized { defaults.set(false, forKey: Key.everAuthorized) }
+            if authorization == .denied { defaults.set(false, forKey: Key.everAuthorized) }
         }
         if isAuthorized { applyManagedSettings() }
         await refreshDNS()
+        isResolved = true
+        defaults.set(isProtecting, forKey: Key.lastProtecting)
+    }
+
+    /// Asks for Screen Time access (silent when already granted). Used before showing the
+    /// app picker, which needs it to list apps.
+    func authorize() async -> Bool {
+        await ensureAuthorized()
     }
 
     // MARK: - Layer 1: Apple web filter
@@ -253,7 +275,7 @@ final class ShieldModel: ObservableObject {
             dnsProvider = provider
             defaults.set(provider.rawValue, forKey: Key.dnsProvider)
         } catch {
-            report("Nie udało się zainstalować filtra DNS", error.localizedDescription)
+            report("Nie udało się zainstalować filtra DNS", Self.describeDNS(error))
         }
         await refreshDNS()
     }
@@ -269,7 +291,7 @@ final class ShieldModel: ObservableObject {
             dnsProvider = nil
             defaults.removeObject(forKey: Key.dnsProvider)
         } catch {
-            report("Nie udało się usunąć filtra DNS", error.localizedDescription)
+            report("Nie udało się usunąć filtra DNS", Self.describeDNS(error))
         }
         await refreshDNS()
     }
@@ -345,7 +367,12 @@ final class ShieldModel: ObservableObject {
         defaults.set(delay.rawValue, forKey: Key.lockDelay)
         // Any change starts from a locked state: an old unlock request never carries over.
         relock()
-        if isAuthorized { applyManagedSettings() }
+        if isAuthorized {
+            applyManagedSettings()
+        } else if delay != .none, isFullEdition {
+            // The automatic date & time rule needs Screen Time access.
+            Task { if await ensureAuthorized() { applyManagedSettings() } }
+        }
     }
 
     // MARK: - Private
@@ -375,6 +402,14 @@ final class ShieldModel: ObservableObject {
             defaults.set(true, forKey: Key.everAuthorized)
         }
         return isAuthorized
+    }
+
+    /// NetworkExtension errors are not localised; give a Polish hint instead, and stay silent
+    /// when the user simply declined iOS's "add DNS settings" prompt.
+    private static func describeDNS(_ error: Error) -> String? {
+        let text = (error as NSError).localizedDescription.lowercased()
+        if text.contains("denied") || text.contains("permission") || text.contains("cancel") { return nil }
+        return "Spróbuj ponownie. Gdy iOS zapyta o dodanie ustawień DNS, zgódź się — inaczej filtr nie zostanie zainstalowany."
     }
 
     private static func describe(_ error: FamilyControlsError) -> String? {

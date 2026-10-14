@@ -1,8 +1,8 @@
 import ManagedSettings
 
-/// Extra domains blocked on top of Apple's automatic adult-content filter.
-/// Apple's filter already covers these; listing the biggest ones explicitly makes
-/// sure they stay blocked even if a site is temporarily misclassified.
+/// Extra domains blocked on top of Apple's automatic adult-content filter:
+/// the biggest adult sites (so they stay blocked even if misclassified), plus web archives
+/// and Google's page translator, which can show any blocked page under an allowed domain.
 enum BlockedDomains {
     /// Apple allows at most 50 extra domains; keep this list under that.
     static let names: [String] = [

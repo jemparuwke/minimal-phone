@@ -99,11 +99,11 @@ struct HomeView: View {
                 Button {
                     coordinator.sheet = .shield
                 } label: {
-                    Image(systemName: shield.isProtecting ? "checkmark.shield" : "shield")
-                        .foregroundStyle(shield.isProtecting ? Theme.secondary : Theme.warning)
+                    Image(systemName: shield.displayProtecting ? "checkmark.shield" : "shield")
+                        .foregroundStyle(shield.displayProtecting ? Theme.secondary : Theme.warning)
                         .frame(width: 44, height: 44)
                 }
-                .accessibilityLabel(shield.isProtecting ? "Tarcza aktywna" : "Tarcza wyłączona")
+                .accessibilityLabel(shield.displayProtecting ? "Tarcza aktywna" : "Tarcza wyłączona")
 
                 Spacer()
 

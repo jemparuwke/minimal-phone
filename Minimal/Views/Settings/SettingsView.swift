@@ -35,10 +35,10 @@ struct SettingsView: View {
                     NavigationLink {
                         ShieldView()
                     } label: {
-                        SettingsRow(icon: shield.isProtecting ? "checkmark.shield.fill" : "shield",
-                                    color: shield.isProtecting ? Theme.good : Theme.warning,
+                        SettingsRow(icon: shield.displayProtecting ? "checkmark.shield.fill" : "shield",
+                                    color: shield.displayProtecting ? Theme.good : Theme.warning,
                                     title: "Tarcza",
-                                    value: shield.isProtecting ? "Wł." : "Wył.")
+                                    value: shield.displayProtecting ? "Wł." : "Wył.")
                     }
                     NavigationLink {
                         SetupGuideView()
@@ -130,8 +130,7 @@ struct SettingsView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Gotowe") { dismiss() }
-                        .fontWeight(.semibold)
+                    ConfirmToolbarButton { dismiss() }
                 }
             }
         }

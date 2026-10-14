@@ -136,7 +136,7 @@ private struct WelcomePage: View {
         ("textformat", "Tylko słowa", "Spokojny ekran z kilkoma najważniejszymi aplikacjami. Bez ikon, kolorów i czerwonych kropek."),
         ("magnifyingglass", "Wszystko pod ręką", "Każdą aplikację znajdziesz w sekundę — wystarczy zacząć pisać. Niczego nie tracisz."),
         ("wind", "Pauza", "Kilka sekund oddechu przed aplikacjami, które kradną czas."),
-        ("checkmark.shield", "Tarcza", "Porno zablokowane w całym telefonie — w przeglądarkach i aplikacjach."),
+        ("checkmark.shield", "Tarcza", "Blokuje porno w przeglądarkach i aplikacjach — na całym iPhonie."),
     ]
 
     var body: some View {
@@ -242,7 +242,7 @@ private struct ShieldPage: View {
                         .padding(.top, 72)
                     PageTitle(title: "Tarcza",
                               subtitle: shield.isFullEdition
-                                ? "Włącz obie warstwy, a porno zniknie z Twojego iPhone’a. Później możesz dodać blokadę wybranych aplikacji."
+                                ? "Włącz obie warstwy, a strony porno przestaną się otwierać w przeglądarkach i aplikacjach. Później możesz dodać blokadę wybranych aplikacji."
                                 : "Trzy krótkie kroki w Ustawieniach iOS i porno znika z Twojego iPhone’a. Minimal poprowadzi Cię przez każdy z nich.",
                               topPadding: 20)
 
@@ -254,7 +254,7 @@ private struct ShieldPage: View {
                                 number: 1,
                                 title: "Tarcza w trzech krokach",
                                 text: "Filtr Apple, profil DNS i blokada aplikacji — krok po kroku, w Ustawieniach iOS.",
-                                isDone: shield.isProtecting,
+                                isDone: shield.activeLayers == ShieldModel.FreeStep.allCases.count,
                                 action: "Ustaw"
                             ) {
                                 showFreeShield = true
@@ -303,7 +303,7 @@ private struct ShieldPage: View {
             title: "Filtr DNS",
             text: shield.dnsInstalled && !shield.dnsEnabled
                 ? "Zainstalowany. Włącz go: Ustawienia → Ogólne → VPN i urządzenia zarządzane → DNS → Minimal."
-                : "Blokuje porno w każdej aplikacji i wymusza bezpieczne wyszukiwanie.",
+                : "CleanBrowsing Family: blokuje porno, a także Reddita, VPN-y i proxy; wymusza bezpieczne wyszukiwanie. Dostawcę zmienisz w Tarczy.",
             isDone: shield.dnsEnabled,
             action: shield.dnsInstalled ? "Ustawienia" : "Zainstaluj"
         ) {

@@ -75,8 +75,15 @@ final class LaunchCoordinator: ObservableObject {
     }
 
     /// "Try it" from the editor: open without counting it as a real launch.
-    func tryOpen(_ item: LaunchItem) {
-        openExternal(item)
+    /// Returns whether anything opened, so the editor can show its own error.
+    func tryOpen(_ item: LaunchItem) async -> Bool {
+        for url in candidateURLs(for: item) {
+            let isWeb = ["http", "https"].contains(url.scheme?.lowercased() ?? "")
+            let options: [UIApplication.OpenExternalURLOptionsKey: Any] =
+                isWeb && item.catalogID != nil ? [.universalLinksOnly: true] : [:]
+            if await UIApplication.shared.open(url, options: options) { return true }
+        }
+        return false
     }
 
     func resist() {

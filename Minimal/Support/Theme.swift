@@ -158,6 +158,37 @@ extension ButtonStyle where Self == SecondaryButtonStyle {
     static var secondary: SecondaryButtonStyle { SecondaryButtonStyle() }
 }
 
+/// Sheet toolbar buttons. On iOS 26 they become the system checkmark / close glass buttons
+/// (Button roles .confirm and .close), like Apple's own apps; earlier systems get text.
+struct ConfirmToolbarButton: View {
+    var title = "Gotowe"
+    let action: () -> Void
+
+    var body: some View {
+        if #available(iOS 26.0, *) {
+            Button(role: .confirm, action: action)
+                .accessibilityLabel(title)
+        } else {
+            Button(title, action: action)
+                .fontWeight(.semibold)
+        }
+    }
+}
+
+struct CloseToolbarButton: View {
+    var title = "Anuluj"
+    let action: () -> Void
+
+    var body: some View {
+        if #available(iOS 26.0, *) {
+            Button(role: .close, action: action)
+                .accessibilityLabel(title)
+        } else {
+            Button(title, action: action)
+        }
+    }
+}
+
 /// Black, dark-mode styling for sheets that use system lists and forms.
 struct MinimalSheetStyle: ViewModifier {
     func body(content: Content) -> some View {

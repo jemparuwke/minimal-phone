@@ -27,7 +27,7 @@
 | **Pauza** | Przy wybranych aplikacjach (Instagram, YouTube, X…) najpierw kilka sekund oddechu i pytanie, czy na pewno. Impuls mija, a Ty decydujesz świadomie. |
 | **Tarcza** | Trzy warstwy blokady porno: filtr stron dla dorosłych Apple, szyfrowany rodzinny DNS dla całego telefonu i blokada wybranych aplikacji. Do tego opcjonalne opóźnienie, zanim tarczę da się wyłączyć. |
 | **Widżety** | „Ulubione” na ekran główny i ekran blokady oraz „Szukaj”, który otwiera wyszukiwanie jednym stuknięciem. |
-| **Prywatność** | Bez kont, bez serwerów, bez śledzenia. Wszystko zostaje na Twoim iPhonie. |
+| **Prywatność** | Bez kont, reklam i śledzenia. Twoje dane zostają na iPhonie — tylko filtr DNS wysyła (zaszyfrowane) zapytania o adresy stron do wybranego dostawcy. |
 
 ---
 

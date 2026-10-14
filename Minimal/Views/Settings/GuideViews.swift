@@ -3,7 +3,7 @@ import UIKit
 
 /// One step of a guide: what to do, and where in iOS Settings to do it.
 struct GuideStep: Identifiable {
-    let id = UUID()
+    var id: String { title }
     let icon: String
     let title: String
     let text: String
@@ -87,7 +87,7 @@ struct ShieldGuideView: View {
                   text: "Gdy jest włączone, Safari może pytać o adresy stron serwery Apple, omijając filtr DNS. Filtr Apple (warstwa 1) działa nadal, ale dla pełnej ochrony je wyłącz.",
                   path: "Ustawienia → [Twoje imię] → iCloud → Przekazywanie prywatne"),
         GuideStep(icon: "network.badge.shield.half.filled", title: "Bez nowych aplikacji i VPN-ów",
-                  text: "Aplikacje VPN i proxy mogą ominąć filtr DNS, a usunięcie Minimal wyłącza tarczę. Zablokuj instalowanie i usuwanie aplikacji — zmieni to tylko osoba z kodem.",
+                  text: "Aplikacje VPN i proxy mogą ominąć filtr DNS, a usunięcie Minimal wyłącza tarczę. Zablokuj instalowanie i usuwanie aplikacji — zmieni to tylko osoba z kodem. Uwaga: wtedy nie zainstalujesz też ponownie Minimal z Xcode (wersja Free co 7 dni) — osoba z kodem musi na chwilę na to pozwolić.",
                   path: "Ograniczaj treść i prywatność → Zakupy w iTunes Store i App Store → Instalowanie aplikacji i Usuwanie aplikacji: Nie pozwalaj"),
     ]
 
