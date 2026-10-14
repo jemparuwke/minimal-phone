@@ -371,12 +371,13 @@ struct ActivationSteps: View {
 }
 
 enum SystemSettings {
-    /// Opens the Settings app. Falls back to this app's own settings page.
+    /// Opens the Settings app at its root. Falls back to this app's own settings page.
     static func open() {
-        guard let root = URL(string: "App-prefs:") else { return }
-        UIApplication.shared.open(root) { opened in
-            guard !opened, let fallback = URL(string: UIApplication.openSettingsURLString) else { return }
-            UIApplication.shared.open(fallback)
+        let candidates = ["prefs:", "App-prefs:", UIApplication.openSettingsURLString].compactMap(URL.init(string:))
+        Task { @MainActor in
+            for url in candidates {
+                if await UIApplication.shared.open(url) { return }
+            }
         }
     }
 }

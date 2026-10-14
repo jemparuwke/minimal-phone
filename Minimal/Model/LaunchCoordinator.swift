@@ -32,7 +32,6 @@ final class LaunchCoordinator: ObservableObject {
     private let store: LauncherStore
     private let stats: UsageStats
     private var isActive = false
-    private var pendingURL: URL?
     private var pendingItem: LaunchItem?
     /// iOS 26 can deliver one widget tap twice; ignore repeats within a second.
     private var lastDeepLink: (url: URL, at: Date)?
@@ -57,7 +56,7 @@ final class LaunchCoordinator: ObservableObject {
     /// Opens the item right away (after the pause, or for items without one).
     func open(_ item: LaunchItem) {
         pausing = nil
-        guard let url = item.url else {
+        guard !candidateURLs(for: item).isEmpty else {
             failedItem = item
             return
         }
@@ -66,11 +65,15 @@ final class LaunchCoordinator: ObservableObject {
         }
         stats.recordOpen(item)
         guard isActive else {
-            pendingURL = url
             pendingItem = item
             return
         }
-        openExternal(url, for: item)
+        openExternal(item)
+    }
+
+    /// "Try it" from the editor: open without counting it as a real launch.
+    func tryOpen(_ item: LaunchItem) {
+        openExternal(item)
     }
 
     func resist() {
@@ -83,14 +86,31 @@ final class LaunchCoordinator: ObservableObject {
         Task { _ = await UIApplication.shared.open(url) }
     }
 
-    private func openExternal(_ url: URL, for item: LaunchItem) {
+    /// Catalog items use the catalog's current URL list (so fixes ship with app updates);
+    /// anything the user typed is used as is.
+    private func candidateURLs(for item: LaunchItem) -> [URL] {
+        if let app = AppCatalog.app(id: item.catalogID) {
+            return app.urls.compactMap(URL.init(string:))
+        }
+        return item.url.map { [$0] } ?? []
+    }
+
+    /// Tries each candidate in turn. Universal links of catalog apps are opened only in
+    /// their app, never in the browser, so a missing app fails cleanly and we move on.
+    private func openExternal(_ item: LaunchItem) {
+        let candidates = candidateURLs(for: item)
+        let isCatalogApp = item.catalogID != nil
         Task {
-            let opened = await UIApplication.shared.open(url)
-            if opened {
-                isSearching = false
-            } else {
-                failedItem = item
+            for url in candidates {
+                let isWeb = ["http", "https"].contains(url.scheme?.lowercased() ?? "")
+                let options: [UIApplication.OpenExternalURLOptionsKey: Any] =
+                    isWeb && isCatalogApp ? [.universalLinksOnly: true] : [:]
+                if await UIApplication.shared.open(url, options: options) {
+                    isSearching = false
+                    return
+                }
             }
+            failedItem = item
         }
     }
 
@@ -139,10 +159,13 @@ final class LaunchCoordinator: ObservableObject {
         switch phase {
         case .active:
             isActive = true
-            if let url = pendingURL, let item = pendingItem {
-                pendingURL = nil
+            if let item = pendingItem {
                 pendingItem = nil
-                openExternal(url, for: item)
+                // Opening another app while the scene is still settling can be dropped.
+                Task {
+                    try? await Task.sleep(for: .milliseconds(250))
+                    openExternal(item)
+                }
             }
         case .background:
             isActive = false

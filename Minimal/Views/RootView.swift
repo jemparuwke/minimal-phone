@@ -96,6 +96,6 @@ struct RootView: View {
         if item.isShortcut {
             return "Sprawdź, czy w aplikacji Skróty istnieje skrót o dokładnie takiej nazwie jak w „\(item.name)”."
         }
-        return "„\(item.name)” chyba nie jest zainstalowana albo adres jest błędny. Możesz zamiast tego użyć skrótu z aplikacji Skróty."
+        return "„\(item.name)” nie otwiera się — może nie jest zainstalowana albo jest ukryta. Stuknij „Edytuj” i wybierz „Skrót”: przez aplikację Skróty otworzysz każdą aplikację."
     }
 }

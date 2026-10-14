@@ -59,11 +59,22 @@ struct ItemEditorView: View {
                 _shortcutName = State(initialValue: shortcut)
                 _urlString = State(initialValue: "")
             case .url(let url):
-                _kind = State(initialValue: .url)
+                _kind = State(initialValue: AppCatalog.app(id: item.catalogID) != nil ? .catalog : .url)
                 _shortcutName = State(initialValue: "")
                 _urlString = State(initialValue: url)
             }
         }
+    }
+
+    /// The item being edited, when it came from the catalog.
+    private var editedCatalogApp: CatalogApp? {
+        if case .edit(let item) = mode { return AppCatalog.app(id: item.catalogID) }
+        return nil
+    }
+
+    private var availableKinds: [Kind] {
+        if isNew || editedCatalogApp != nil { return Kind.allCases }
+        return [.shortcut, .url]
     }
 
     private var isNew: Bool {
@@ -85,27 +96,31 @@ struct ItemEditorView: View {
     }
 
     private var isValid: Bool {
-        kind != .catalog && draftURL != nil && !resolvedName.isEmpty
+        if kind == .catalog { return !isNew && !name.trimmed.isEmpty }
+        return draftURL != nil && !resolvedName.isEmpty
     }
 
     var body: some View {
         Form {
-            if isNew {
-                Section {
-                    Picker("Rodzaj", selection: $kind) {
-                        ForEach(Kind.allCases) { kind in
-                            Text(kind.label).tag(kind)
-                        }
+            Section {
+                Picker("Rodzaj", selection: $kind) {
+                    ForEach(availableKinds) { kind in
+                        Text(kind.label).tag(kind)
                     }
-                    .pickerStyle(.segmented)
                 }
-                .listRowBackground(Color.clear)
-                .listRowInsets(EdgeInsets())
+                .pickerStyle(.segmented)
             }
+            .listRowBackground(Color.clear)
+            .listRowInsets(EdgeInsets())
 
             switch kind {
             case .catalog:
-                catalogSections
+                if isNew {
+                    catalogSections
+                } else {
+                    catalogItemSections
+                    optionSections
+                }
             case .shortcut:
                 shortcutSections
                 optionSections
@@ -135,7 +150,7 @@ struct ItemEditorView: View {
                     Button("Anuluj") { dismiss() }
                 }
             }
-            if kind != .catalog {
+            if !(isNew && kind == .catalog) {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Zapisz") { save() }
                         .fontWeight(.semibold)
@@ -146,6 +161,25 @@ struct ItemEditorView: View {
         .onAppear {
             if case .edit(let item) = mode { favorite = store.isFavorite(item) }
         }
+        .onChange(of: kind) { _, newKind in
+            if newKind == .shortcut, shortcutName.trimmed.isEmpty, !name.trimmed.isEmpty {
+                shortcutName = "Otwórz \(name.trimmed)"
+            }
+        }
+    }
+
+    // MARK: - Catalog item (edit)
+
+    @ViewBuilder
+    private var catalogItemSections: some View {
+        Section {
+            TextField("Nazwa", text: $name)
+        } header: {
+            Text("Nazwa")
+        } footer: {
+            Text("Gotowe połączenie z katalogu Minimal. Jeśli „\(editedCatalogApp?.name ?? name)” nie otwiera się na Twoim iPhonie, wybierz „Skrót” — zadziała z każdą aplikacją.")
+        }
+        .minimalRow()
     }
 
     // MARK: - Catalog
@@ -260,11 +294,15 @@ struct ItemEditorView: View {
 
         Section {
             Button {
-                if let url = draftURL { coordinator.openURL(url) }
+                if kind == .catalog, case .edit(let item) = mode {
+                    coordinator.tryOpen(item)
+                } else if let url = draftURL {
+                    coordinator.openURL(url)
+                }
             } label: {
                 Label("Wypróbuj", systemImage: "play")
             }
-            .disabled(draftURL == nil)
+            .disabled(kind != .catalog && draftURL == nil)
         }
         .minimalRow()
     }
@@ -280,9 +318,13 @@ struct ItemEditorView: View {
             store.add(LaunchItem(name: resolvedName, target: draftTarget, mindful: mindful), favorite: favorite)
         case .edit(let item):
             var updated = item
-            if updated.target != draftTarget { updated.catalogID = nil }
-            updated.name = resolvedName
-            updated.target = draftTarget
+            if kind == .catalog {
+                updated.name = name.trimmed
+            } else {
+                updated.catalogID = nil
+                updated.name = resolvedName
+                updated.target = draftTarget
+            }
             updated.mindful = mindful
             store.update(updated)
             store.setFavorite(updated, favorite)
