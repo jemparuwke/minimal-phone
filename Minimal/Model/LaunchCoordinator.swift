@@ -94,18 +94,35 @@ final class LaunchCoordinator: ObservableObject {
 
     // MARK: - Deep links (widget)
 
-    /// `minimal://open/<uuid>` opens an item, `minimal://search` shows search, `minimal://home` just opens the app.
+    /// Deep links (widgets, Shortcuts, Action Button):
+    /// `minimal://open/<uuid or catalog id>`, `minimal://search`, `minimal://shield`,
+    /// `minimal://settings`, `minimal://home`.
     func handle(_ url: URL) {
         guard url.scheme?.lowercased() == SharedConfig.urlScheme else { return }
         switch url.host?.lowercased() {
         case "open":
-            guard let id = UUID(uuidString: url.lastPathComponent), let item = store.item(id: id) else { return }
+            let key = url.lastPathComponent
+            let item = UUID(uuidString: key).flatMap(store.item(id:)) ?? store.item(forCatalogID: key)
+            guard let item else { return }
             sheet = nil
             launch(item)
         case "search":
             sheet = nil
             pausing = nil
             isSearching = true
+        case "shield":
+            pausing = nil
+            sheet = .shield
+        case "settings":
+            pausing = nil
+            sheet = .settings
+        #if DEBUG
+        case "debug-pause":
+            // Used by CI to capture the pause screen.
+            guard let item = store.favorites.first else { return }
+            sheet = nil
+            pausing = item
+        #endif
         default:
             sheet = nil
             isSearching = false

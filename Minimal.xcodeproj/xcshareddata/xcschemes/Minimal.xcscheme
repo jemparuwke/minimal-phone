@@ -28,7 +28,7 @@
             buildForAnalyzing = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "90D64A821955E53C005CE0FB60DA4FAC"
+               BlueprintIdentifier = "269ECA626532ABBCDB642D01F6B199E8"
                BuildableName = "MinimalWidget.appex"
                BlueprintName = "MinimalWidget"
                ReferencedContainer = "container:Minimal.xcodeproj">

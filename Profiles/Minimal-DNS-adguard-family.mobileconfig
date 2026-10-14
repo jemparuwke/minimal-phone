@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PayloadContent</key>
+	<array>
+		<dict>
+			<key>DNSSettings</key>
+			<dict>
+				<key>DNSProtocol</key>
+				<string>HTTPS</string>
+				<key>ServerAddresses</key>
+				<array>
+					<string>94.140.14.15</string>
+					<string>94.140.15.16</string>
+					<string>2a10:50c0::bad1:ff</string>
+					<string>2a10:50c0::bad2:ff</string>
+				</array>
+				<key>ServerURL</key>
+				<string>https://family.adguard-dns.com/dns-query</string>
+			</dict>
+			<key>PayloadDisplayName</key>
+			<string>AdGuard DNS Family (DNS over HTTPS)</string>
+			<key>PayloadIdentifier</key>
+			<string>pl.minimal.dns.adguard-family.dns</string>
+			<key>PayloadType</key>
+			<string>com.apple.dnsSettings.managed</string>
+			<key>PayloadUUID</key>
+			<string>6319E241-7CB3-5255-A827-834868FFD9E5</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+		</dict>
+	</array>
+	<key>PayloadDescription</key>
+	<string>Szyfrowany rodzinny DNS (AdGuard DNS Family) dla całego iPhone’a. Blokuje porno, wymusza bezpieczne wyszukiwanie i tryb ograniczony YouTube.</string>
+	<key>PayloadDisplayName</key>
+	<string>Minimal · filtr DNS (AdGuard DNS Family)</string>
+	<key>PayloadIdentifier</key>
+	<string>pl.minimal.dns.adguard-family</string>
+	<key>PayloadOrganization</key>
+	<string>Minimal</string>
+	<key>PayloadRemovalDisallowed</key>
+	<false/>
+	<key>PayloadType</key>
+	<string>Configuration</string>
+	<key>PayloadUUID</key>
+	<string>4C1F0D35-325A-5929-8DBA-975E424A0B1F</string>
+	<key>PayloadVersion</key>
+	<integer>1</integer>
+</dict>
+</plist>

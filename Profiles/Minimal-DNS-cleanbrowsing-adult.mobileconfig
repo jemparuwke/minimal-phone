@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PayloadContent</key>
+	<array>
+		<dict>
+			<key>DNSSettings</key>
+			<dict>
+				<key>DNSProtocol</key>
+				<string>HTTPS</string>
+				<key>ServerAddresses</key>
+				<array>
+					<string>185.228.168.10</string>
+					<string>185.228.169.11</string>
+					<string>2a0d:2a00:1::1</string>
+					<string>2a0d:2a00:2::1</string>
+				</array>
+				<key>ServerURL</key>
+				<string>https://doh.cleanbrowsing.org/doh/adult-filter/</string>
+			</dict>
+			<key>PayloadDisplayName</key>
+			<string>CleanBrowsing Adult Filter (DNS over HTTPS)</string>
+			<key>PayloadIdentifier</key>
+			<string>pl.minimal.dns.cleanbrowsing-adult.dns</string>
+			<key>PayloadType</key>
+			<string>com.apple.dnsSettings.managed</string>
+			<key>PayloadUUID</key>
+			<string>45CADC79-75CD-5CCB-9416-EE2D113664D5</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+		</dict>
+	</array>
+	<key>PayloadDescription</key>
+	<string>Szyfrowany rodzinny DNS (CleanBrowsing Adult Filter) dla całego iPhone’a. Blokuje porno i wymusza bezpieczne wyszukiwanie w Google i Bing.</string>
+	<key>PayloadDisplayName</key>
+	<string>Minimal · filtr DNS (CleanBrowsing Adult Filter)</string>
+	<key>PayloadIdentifier</key>
+	<string>pl.minimal.dns.cleanbrowsing-adult</string>
+	<key>PayloadOrganization</key>
+	<string>Minimal</string>
+	<key>PayloadRemovalDisallowed</key>
+	<false/>
+	<key>PayloadType</key>
+	<string>Configuration</string>
+	<key>PayloadUUID</key>
+	<string>061577BD-9AD0-55BC-B3DA-82122B967DA1</string>
+	<key>PayloadVersion</key>
+	<integer>1</integer>
+</dict>
+</plist>

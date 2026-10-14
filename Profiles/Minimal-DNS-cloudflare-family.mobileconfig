@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PayloadContent</key>
+	<array>
+		<dict>
+			<key>DNSSettings</key>
+			<dict>
+				<key>DNSProtocol</key>
+				<string>HTTPS</string>
+				<key>ServerAddresses</key>
+				<array>
+					<string>1.1.1.3</string>
+					<string>1.0.0.3</string>
+					<string>2606:4700:4700::1113</string>
+					<string>2606:4700:4700::1003</string>
+				</array>
+				<key>ServerURL</key>
+				<string>https://family.cloudflare-dns.com/dns-query</string>
+			</dict>
+			<key>PayloadDisplayName</key>
+			<string>Cloudflare for Families (DNS over HTTPS)</string>
+			<key>PayloadIdentifier</key>
+			<string>pl.minimal.dns.cloudflare-family.dns</string>
+			<key>PayloadType</key>
+			<string>com.apple.dnsSettings.managed</string>
+			<key>PayloadUUID</key>
+			<string>202A3320-D3E5-5CDA-8599-0539A9EF7D99</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+		</dict>
+	</array>
+	<key>PayloadDescription</key>
+	<string>Szyfrowany rodzinny DNS (Cloudflare for Families) dla całego iPhone’a. Blokuje porno i złośliwe strony.</string>
+	<key>PayloadDisplayName</key>
+	<string>Minimal · filtr DNS (Cloudflare for Families)</string>
+	<key>PayloadIdentifier</key>
+	<string>pl.minimal.dns.cloudflare-family</string>
+	<key>PayloadOrganization</key>
+	<string>Minimal</string>
+	<key>PayloadRemovalDisallowed</key>
+	<false/>
+	<key>PayloadType</key>
+	<string>Configuration</string>
+	<key>PayloadUUID</key>
+	<string>D375F0AB-0F6A-5C9D-8EB4-80E8773CC984</string>
+	<key>PayloadVersion</key>
+	<integer>1</integer>
+</dict>
+</plist>

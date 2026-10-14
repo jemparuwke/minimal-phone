@@ -8,7 +8,7 @@ struct ShieldView: View {
     @EnvironmentObject private var shield: ShieldModel
     @Environment(\.dismiss) private var dismiss
 
-    @State private var provider: DNSProvider = .cleanBrowsingAdult
+    @State private var provider: DNSProvider = .recommended
     @State private var pickerSelection = FamilyActivitySelection()
     @State private var showPicker = false
     @State private var confirmUnlock = false
@@ -44,7 +44,7 @@ struct ShieldView: View {
         }
         .task {
             await shield.refresh()
-            provider = shield.dnsProvider ?? .cleanBrowsingAdult
+            provider = shield.dnsProvider ?? .recommended
         }
         .minimalSheet()
     }

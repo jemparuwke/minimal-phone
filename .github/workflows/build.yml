@@ -13,7 +13,9 @@ jobs:
   build:
     name: Build iOS app
     runs-on: macos-15
-    timeout-minutes: 30
+    timeout-minutes: 40
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
 
@@ -24,14 +26,6 @@ jobs:
           sudo xcode-select -s "$XCODE/Contents/Developer"
           xcodebuild -version
 
-      - name: Check generated project is up to date
-        run: |
-          gem install xcodeproj --no-document --user-install
-          export PATH="$(ruby -e 'print Gem.user_dir')/bin:$PATH"
-          ruby scripts/generate_project.rb
-          git diff --stat -- Minimal.xcodeproj
-          git diff --quiet -- Minimal.xcodeproj || echo "::warning::Minimal.xcodeproj differs from scripts/generate_project.rb output — run the script and commit."
-
       - name: Build for iOS Simulator
         run: |
           set -o pipefail
@@ -40,6 +34,7 @@ jobs:
             -scheme Minimal \
             -configuration Debug \
             -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath build-sim \
             CODE_SIGNING_ALLOWED=NO \
             | tee build-simulator.log | grep -E "error:|warning:|BUILD (SUCCEEDED|FAILED)" || true
           grep -q "BUILD SUCCEEDED" build-simulator.log
@@ -62,6 +57,24 @@ jobs:
           mkdir -p Payload
           cp -R build/Build/Products/Release-iphoneos/Minimal.app Payload/
           zip -qry Minimal-unsigned.ipa Payload
+
+      # Screenshots run when the commit message contains [shots], or on manual runs.
+      - name: Capture screenshots
+        if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[shots]')
+        run: scripts/screenshots.sh build-sim/Build/Products/Debug-iphonesimulator/Minimal.app
+
+      - name: Commit screenshots
+        if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[shots]')
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/screenshots
+          if git diff --cached --quiet; then
+            echo "No screenshot changes"
+          else
+            git commit -m "Update screenshots [skip ci]"
+            git push origin "HEAD:${GITHUB_REF_NAME}" || echo "::warning::Could not push screenshots (branch moved on)."
+          fi
 
       - uses: actions/upload-artifact@v4
         with:

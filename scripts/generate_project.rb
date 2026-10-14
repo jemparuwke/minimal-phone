@@ -11,7 +11,9 @@ require 'fileutils'
 require 'xcodeproj'
 
 ROOT = File.expand_path('..', __dir__)
-PROJECT_PATH = File.join(ROOT, 'Minimal.xcodeproj')
+# Work with relative paths so the output (including UUIDs) is identical on every machine.
+Dir.chdir(ROOT)
+PROJECT_PATH = 'Minimal.xcodeproj'
 DEPLOYMENT_TARGET = '17.0'
 
 FileUtils.rm_rf(PROJECT_PATH)
@@ -46,10 +48,10 @@ shared_refs = []
 widget_refs = []
 config_refs = []
 
-add_tree(project, main_group, File.join(ROOT, 'Minimal'), app_refs)
-add_tree(project, main_group, File.join(ROOT, 'Shared'), shared_refs)
-add_tree(project, main_group, File.join(ROOT, 'MinimalWidget'), widget_refs)
-add_tree(project, main_group, File.join(ROOT, 'Config'), config_refs)
+add_tree(project, main_group, 'Minimal', app_refs)
+add_tree(project, main_group, 'Shared', shared_refs)
+add_tree(project, main_group, 'MinimalWidget', widget_refs)
+add_tree(project, main_group, 'Config', config_refs)
 
 xcconfig = config_refs.find { |ref| ref.path == 'Signing.xcconfig' }
 raise 'Config/Signing.xcconfig missing' unless xcconfig

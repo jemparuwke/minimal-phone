@@ -7,8 +7,16 @@ struct OnboardingView: View {
     }
 
     @AppStorage(Pref.onboarded) private var onboarded = false
-    @State private var step: Step = .welcome
+    @State private var step: Step = OnboardingView.initialStep
     @State private var forward = true
+
+    private static var initialStep: Step {
+        #if DEBUG
+        // CI screenshots: `-debug.onboardingStep 2`
+        if let step = Step(rawValue: UserDefaults.standard.integer(forKey: "debug.onboardingStep")) { return step }
+        #endif
+        return .welcome
+    }
 
     var body: some View {
         ZStack {
@@ -241,7 +249,7 @@ private struct ShieldPage: View {
                             if shield.dnsInstalled {
                                 SystemSettings.open()
                             } else {
-                                Task { await shield.installDNS(.cleanBrowsingAdult) }
+                                Task { await shield.installDNS(.recommended) }
                             }
                         }
                     }

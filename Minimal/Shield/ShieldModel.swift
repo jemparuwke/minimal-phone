@@ -69,6 +69,9 @@ final class ShieldModel: ObservableObject {
 
     private let managed = ManagedSettingsStore()
     private let defaults: UserDefaults
+    /// The system reports `.notDetermined` after every launch until authorization is
+    /// requested again (silently, once granted). We do that once per launch.
+    private var didRestoreAuthorization = false
 
     private enum Key {
         static let webFilter = "shield.webFilter"
@@ -77,6 +80,7 @@ final class ShieldModel: ObservableObject {
         static let dnsProvider = "shield.dnsProvider"
         static let lockDelay = "shield.lockDelay"
         static let unlockRequestedAt = "shield.unlockRequestedAt"
+        static let everAuthorized = "shield.everAuthorized"
     }
 
     init(defaults: UserDefaults = .standard) {
@@ -95,7 +99,13 @@ final class ShieldModel: ObservableObject {
 
     // MARK: - Summary
 
-    var isAuthorized: Bool { authorization == .approved }
+    var isAuthorized: Bool {
+        switch authorization {
+        case .approved: return true
+        case .notDetermined, .denied: return false
+        default: return true // .approvedWithDataAccess (iOS 26.4+)
+        }
+    }
 
     var webFilterActive: Bool { webFilterOn && isAuthorized }
 
@@ -117,6 +127,12 @@ final class ShieldModel: ObservableObject {
 
     func refresh() async {
         authorization = AuthorizationCenter.shared.authorizationStatus
+        if !isAuthorized, !didRestoreAuthorization, defaults.bool(forKey: Key.everAuthorized) {
+            // Already approved earlier: this returns without any prompt and restores the status.
+            didRestoreAuthorization = true
+            try? await AuthorizationCenter.shared.requestAuthorization(for: .individual)
+            authorization = AuthorizationCenter.shared.authorizationStatus
+        }
         if isAuthorized { applyManagedSettings() }
         await refreshDNS()
     }
@@ -177,7 +193,8 @@ final class ShieldModel: ObservableObject {
         do {
             try await manager.loadFromPreferences()
             manager.dnsSettings = provider.makeSettings()
-            manager.localizedDescription = "Minimal · \(provider.name)"
+            manager.localizedDescription = "Minimal"
+            manager.onDemandRules = [NEOnDemandRuleConnect()]
             try await manager.saveToPreferences()
             dnsProvider = provider
             defaults.set(provider.rawValue, forKey: Key.dnsProvider)
@@ -264,11 +281,36 @@ final class ShieldModel: ObservableObject {
         if isAuthorized { return true }
         do {
             try await AuthorizationCenter.shared.requestAuthorization(for: .individual)
+        } catch let error as FamilyControlsError {
+            message = Self.describe(error)
         } catch {
-            message = "Nie udało się włączyć Czasu przed ekranem. Upewnij się, że Czas przed ekranem jest włączony w Ustawieniach, i spróbuj ponownie."
+            message = "Nie udało się uzyskać dostępu do Czasu przed ekranem. Spróbuj ponownie."
         }
         authorization = AuthorizationCenter.shared.authorizationStatus
+        if isAuthorized {
+            didRestoreAuthorization = true
+            defaults.set(true, forKey: Key.everAuthorized)
+        }
         return isAuthorized
+    }
+
+    private static func describe(_ error: FamilyControlsError) -> String? {
+        switch error {
+        case .authorizationCanceled:
+            return nil
+        case .authenticationMethodUnavailable:
+            return "Ustaw kod blokady iPhone’a (Ustawienia → Face ID i kod), a potem spróbuj ponownie."
+        case .restricted:
+            return "Czas przed ekranem jest zablokowany na tym urządzeniu (np. przez zarządzanie rodzinne lub MDM)."
+        case .networkError:
+            return "Brak połączenia z internetem. Spróbuj ponownie za chwilę."
+        case .invalidAccountType:
+            return "To konto nie może używać Czasu przed ekranem dla siebie. Zaloguj się na konto Apple osoby dorosłej."
+        case .unavailable:
+            return "Czas przed ekranem jest teraz niedostępny. Upewnij się, że jest włączony w Ustawieniach."
+        default:
+            return "Nie udało się uzyskać dostępu do Czasu przed ekranem. Spróbuj ponownie."
+        }
     }
 
     private func applyManagedSettings() {

@@ -9,3 +9,4 @@ Payload/
 
 # macOS
 .DS_Store
+build-sim/

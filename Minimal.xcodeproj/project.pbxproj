@@ -11,14 +11,14 @@
 		011A27E59C6078B346F0EFFB36E2E076 /* PauseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F064C4BDB6C673B95D374D851CF145C4 /* PauseView.swift */; };
 		0DE7ACF21EB8310F4A7E591FB1794928 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0620471E1ADC8D60A043EEAFDE42A091 /* Preferences.swift */; };
 		12A018656404029F4AA47319DB712CAC /* LaunchCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19364CA3C0FE4360D4F5D1E0A88696CB /* LaunchCoordinator.swift */; };
-		347CAD91082AF4180C6FF21E39307A02 /* SharedConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6251D9B1D1337CE31493BA1A259BCED7 /* SharedConfig.swift */; };
+		34506EA2391AB46B4E72BCDE36D62B3E /* MinimalWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = A228F6D7EAEBA349AF483E52BBCD8568 /* MinimalWidgets.swift */; };
 		3BEB93594E6E926AE2301D05731A58D3 /* LibraryViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B557D76A35641C0D584A762794B310 /* LibraryViews.swift */; };
 		45B488264240DE5784CD1F14EBD72905 /* GuideViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5929DE8DEBFC27C06D714D4680F05E70 /* GuideViews.swift */; };
+		46BC10131E60C29B537344E879B5403A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDD5530B203D8F1C74F107EC909F7BE5 /* Foundation.framework */; };
 		48254C7E589B3CB1AED806344DABE4A7 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B6F8ADBA3AABF4DB03B1D0BD5086700 /* RootView.swift */; };
 		4948B29A1E6AE474FF26E74CFF75C99E /* ItemEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B01A9B242A94F298229A02EFDC9E39 /* ItemEditorView.swift */; };
 		52FC8CEE87CF99606485E30219A8C4F4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 73216E739B0DE6D537724A1BFD5DF1D4 /* Assets.xcassets */; };
 		61AC57310B3E98514B70FB303F745BEE /* LauncherStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5925A5791DEA124FFBE2F0600F26E3C6 /* LauncherStore.swift */; };
-		62E879DB1AAA5F97ED2BD645F3BC30F2 /* MinimalWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = A228F6D7EAEBA349AF483E52BBCD8568 /* MinimalWidgets.swift */; };
 		677AA95146A9980A38172172E6BC78C1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDD5530B203D8F1C74F107EC909F7BE5 /* Foundation.framework */; };
 		748C7ACFB4316BC65482FFB680C6301D /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C474C5EED388702FD897A7BAE64104D /* HomeView.swift */; };
 		755266FD3739953062D8688921BD3B02 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E302DD9DD2101E6DAEDF694A490CE38 /* SearchView.swift */; };
@@ -30,21 +30,21 @@
 		9B5AB5E703B58DEAA6D627717649C73F /* MinimalWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = AEF46D97581956C6F4A6E4125F022640 /* MinimalWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		AA79DB276C4565CF6339F1CF3F4AA1D9 /* LaunchItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5FD6449CE2107B3619CCA13FEC0D6D /* LaunchItem.swift */; };
 		AFE7BE5975669DE5C21DEBED5CEC2C38 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD8C8379B99D8B2080A1A8785CF5D2A /* Theme.swift */; };
-		C1D632AA0E5FD54F84C84D113B74C4D5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDD5530B203D8F1C74F107EC909F7BE5 /* Foundation.framework */; };
 		C4CE4BA597A0366187BF3611A3CCE29C /* AppCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1DD7E3E7F7F7240A94F5DFFC098A609 /* AppCatalog.swift */; };
 		CB3A1967337B16CFB76D8CB73AC7E82B /* SharedConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6251D9B1D1337CE31493BA1A259BCED7 /* SharedConfig.swift */; };
 		D5B52CA37FB6E8C28B39F96C05955770 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 989CA67AED33E2762055DBE2193A190F /* OnboardingView.swift */; };
-		E046EC3A7FD776B0324FD1DBF449D4D3 /* LaunchItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5FD6449CE2107B3619CCA13FEC0D6D /* LaunchItem.swift */; };
 		E742382E0D6936DA428426590CDB9A23 /* BlockedDomains.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF86A5F42BB6CC1A317BEBF4D2CFA6EE /* BlockedDomains.swift */; };
 		EB7065BC941DA479F2DBAA9DA168567C /* UsageStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79661AEB9EEA431D659294CEBE91C6DF /* UsageStats.swift */; };
+		F09A2689DFB4F6C6AE25AF2B77368362 /* SharedConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6251D9B1D1337CE31493BA1A259BCED7 /* SharedConfig.swift */; };
+		FD20B15EF163BB4EBEA137C660AA9547 /* LaunchItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5FD6449CE2107B3619CCA13FEC0D6D /* LaunchItem.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		F4C87AB3F3524021D770E3D1C1783155 /* PBXContainerItemProxy */ = {
+		020F4A0A47C6AB625B6FF297C62FA025 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FA6A945707468B3837F5C621EE18448A /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 90D64A821955E53C005CE0FB60DA4FAC;
+			remoteGlobalIDString = 269ECA626532ABBCDB642D01F6B199E8;
 			remoteInfo = MinimalWidget;
 		};
 /* End PBXContainerItemProxy section */
@@ -108,11 +108,11 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		85E58D284FD2038F92E8560FF7C87E02 /* Frameworks */ = {
+		E8B419F2E7A5AFC9CC57FBF4354CFC0A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C1D632AA0E5FD54F84C84D113B74C4D5 /* Foundation.framework in Frameworks */,
+				46BC10131E60C29B537344E879B5403A /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -320,13 +320,13 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		90D64A821955E53C005CE0FB60DA4FAC /* MinimalWidget */ = {
+		269ECA626532ABBCDB642D01F6B199E8 /* MinimalWidget */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 377C6FE5A404BBAD8830232F936C4CCD /* Build configuration list for PBXNativeTarget "MinimalWidget" */;
+			buildConfigurationList = 86405D4D5EF50096079205D1A54846AB /* Build configuration list for PBXNativeTarget "MinimalWidget" */;
 			buildPhases = (
-				4828F856BE427F4738A7417A321DD8D3 /* Sources */,
-				85E58D284FD2038F92E8560FF7C87E02 /* Frameworks */,
-				6B2A813ABBC0CF1474CAAFEE32C37F8F /* Resources */,
+				ACEEA2D7DA92FD115C7070181270E6AF /* Sources */,
+				E8B419F2E7A5AFC9CC57FBF4354CFC0A /* Frameworks */,
+				AA3E00A1F3066A5926F101CC73EEA313 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -349,7 +349,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				CBCCC435818A147435CAABC66C753777 /* PBXTargetDependency */,
+				BF1C503F2FFD04E66E13183D1BE4A84B /* PBXTargetDependency */,
 			);
 			name = Minimal;
 			productName = Minimal;
@@ -366,7 +366,7 @@
 				LastSwiftUpdateCheck = 2600;
 				LastUpgradeCheck = 2600;
 				TargetAttributes = {
-					90D64A821955E53C005CE0FB60DA4FAC = {
+					269ECA626532ABBCDB642D01F6B199E8 = {
 						CreatedOnToolsVersion = 26.0;
 					};
 					A1AD82A645A9C8F9E3E5E86538E900CE = {
@@ -391,7 +391,7 @@
 			projectRoot = "";
 			targets = (
 				A1AD82A645A9C8F9E3E5E86538E900CE /* Minimal */,
-				90D64A821955E53C005CE0FB60DA4FAC /* MinimalWidget */,
+				269ECA626532ABBCDB642D01F6B199E8 /* MinimalWidget */,
 			);
 		};
 /* End PBXProject section */
@@ -405,7 +405,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		6B2A813ABBC0CF1474CAAFEE32C37F8F /* Resources */ = {
+		AA3E00A1F3066A5926F101CC73EEA313 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -415,16 +415,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		4828F856BE427F4738A7417A321DD8D3 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				62E879DB1AAA5F97ED2BD645F3BC30F2 /* MinimalWidgets.swift in Sources */,
-				E046EC3A7FD776B0324FD1DBF449D4D3 /* LaunchItem.swift in Sources */,
-				347CAD91082AF4180C6FF21E39307A02 /* SharedConfig.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		95B5F9A636FEC85B3691D0429B0F65DA /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -455,14 +445,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		ACEEA2D7DA92FD115C7070181270E6AF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				34506EA2391AB46B4E72BCDE36D62B3E /* MinimalWidgets.swift in Sources */,
+				FD20B15EF163BB4EBEA137C660AA9547 /* LaunchItem.swift in Sources */,
+				F09A2689DFB4F6C6AE25AF2B77368362 /* SharedConfig.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		CBCCC435818A147435CAABC66C753777 /* PBXTargetDependency */ = {
+		BF1C503F2FFD04E66E13183D1BE4A84B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = MinimalWidget;
-			target = 90D64A821955E53C005CE0FB60DA4FAC /* MinimalWidget */;
-			targetProxy = F4C87AB3F3524021D770E3D1C1783155 /* PBXContainerItemProxy */;
+			target = 269ECA626532ABBCDB642D01F6B199E8 /* MinimalWidget */;
+			targetProxy = 020F4A0A47C6AB625B6FF297C62FA025 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -499,6 +499,37 @@
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
+		};
+		5A9A960E01BB877259FFEA14DE69D44D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_ENTITLEMENTS = MinimalWidget/MinimalWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = MinimalWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(WIDGET_BUNDLE_ID)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
 		};
 		666190F7018EA3882BEF87E3FD840251 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -564,37 +595,6 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-			};
-			name = Debug;
-		};
-		6A31443E1C72DFC0CDBA6E4A97854B16 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = YES;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_ENTITLEMENTS = MinimalWidget/MinimalWidget.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = MinimalWidget/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "$(WIDGET_BUNDLE_ID)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -691,7 +691,7 @@
 			};
 			name = Debug;
 		};
-		E928F5D975C6FAFF26FDE14501212AA7 /* Release */ = {
+		FFBAC11E33DC8FAE23672C0EF5CCE1B0 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
@@ -726,11 +726,11 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		377C6FE5A404BBAD8830232F936C4CCD /* Build configuration list for PBXNativeTarget "MinimalWidget" */ = {
+		86405D4D5EF50096079205D1A54846AB /* Build configuration list for PBXNativeTarget "MinimalWidget" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				E928F5D975C6FAFF26FDE14501212AA7 /* Release */,
-				6A31443E1C72DFC0CDBA6E4A97854B16 /* Debug */,
+				FFBAC11E33DC8FAE23672C0EF5CCE1B0 /* Release */,
+				5A9A960E01BB877259FFEA14DE69D44D /* Debug */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
