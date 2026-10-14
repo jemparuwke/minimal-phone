@@ -20,7 +20,7 @@ struct OpenShieldIntent: AppIntent {
 
     @MainActor
     func perform() async throws -> some IntentResult {
-        LaunchCoordinator.current?.handle(URL(string: "\(SharedConfig.urlScheme)://shield")!)
+        LaunchCoordinator.current?.handle(SharedConfig.shieldURL)
         return .result()
     }
 }

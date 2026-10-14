@@ -7,65 +7,63 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1125F62E20168DF3386986C5E63426C5 /* LaunchCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA27E4023FACB7358CD77CB65007A2B7 /* LaunchCoordinator.swift */; };
-		136F9FB706601D4FF94DFD60AC9C3C14 /* AppCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA902E723447B175DBFE14D012657504 /* AppCatalog.swift */; };
-		1393E054EA2DBDEC27C87C74063B7D4A /* MinimalApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68FF00CA4EF0DA92952F980EA8762246 /* MinimalApp.swift */; };
-		209E55C2AEEA188D07DF36289552DEE0 /* ItemEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C5736285AB9C1643E38C36EEBB27CC /* ItemEditorView.swift */; };
-		2356103B5B0D5CABAED87F00688912F3 /* SharedConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6251D9B1D1337CE31493BA1A259BCED7 /* SharedConfig.swift */; };
-		28DCAD866304931AF4A8E8CBBF4BB820 /* DNSProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331B68C867B454F735B3458447473B95 /* DNSProvider.swift */; };
-		299EBCD810B624763E51A2A7D710D9F7 /* LibraryViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21762B630C7B55E95CCEDC45BABB32F /* LibraryViews.swift */; };
-		29B59C62721B10F4BADC5D83C8A34D41 /* Minimal-DNS-cleanbrowsing-adult.mobileconfig in Resources */ = {isa = PBXBuildFile; fileRef = DCF13CC77E088BEA53F0EE926DA8436D /* Minimal-DNS-cleanbrowsing-adult.mobileconfig */; };
-		2EEA6FBC94B222424770647C49456D71 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DCD31973DB8CBADB980C89792B5BAC /* OnboardingView.swift */; };
-		38ADFA80265835B15D1B7C885F90510B /* Minimal-DNS-cleanbrowsing-family.mobileconfig in Resources */ = {isa = PBXBuildFile; fileRef = CA802EA39CC1222302100643CA54198F /* Minimal-DNS-cleanbrowsing-family.mobileconfig */; };
-		4A2DF777329F55F595E63307B863A814 /* GuideViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6511EE58B2B2A849203D8F077C749AF /* GuideViews.swift */; };
-		4E9FF30FB9070092FA23125C18869E6B /* FreeShieldSections.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A59E87771FAF291F809AC638090FD2 /* FreeShieldSections.swift */; };
-		60685C8764F059B4E907DA4435405554 /* LaunchItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5FD6449CE2107B3619CCA13FEC0D6D /* LaunchItem.swift */; };
-		6B7DD4648D7DE9A88313C99461599099 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 22C66618F2E16699D7B26B9E7F6C26AD /* Assets.xcassets */; };
-		6BF57C3EA093EF4E8A14067409A03BED /* AppShortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FDF651D915BBED2A445403D32283BD3 /* AppShortcuts.swift */; };
-		711D3B974D25DCC9D4801D5DC05452FE /* MinimalWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 571BF3EE982C2874826EF5BE4D05D893 /* MinimalWidgets.swift */; };
-		71301C2ED2BDC8A84BF51FA3DC155298 /* SharedConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6251D9B1D1337CE31493BA1A259BCED7 /* SharedConfig.swift */; };
-		795BA2102AE0F0DE871CEB784C886E9F /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 8E163BD1A371F94E96171D1F41B467B1 /* PrivacyInfo.xcprivacy */; };
-		7A7A03886F9A6B8764F6B35B3401FC62 /* PauseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64A08C5171A77A68755D4597CF50CD4 /* PauseView.swift */; };
-		7B8F3872633B6641F1F12A9712835DCB /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE64DD65981FD235361D80B2A8CF1BC /* SearchView.swift */; };
-		7C3E8410142A2DA3FFCC8B2AB5FDF374 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFC31BAAD58CD6E1D2AC71C5042D132 /* SettingsView.swift */; };
-		7EF51B5036B985F0180F442572A65484 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FE43360CAA8F37C1BC25186ED7B86F1 /* Preferences.swift */; };
-		895FA5535B582BDE60DEA663ADFB945D /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46772870B518B127E0DD98917D343EAC /* Theme.swift */; };
-		9903075D59AA6E52B2C9F7087756533F /* LauncherStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC39E2FB766EEEA941786FA9B330E39E /* LauncherStore.swift */; };
-		9A0C44D5ECF2FBC9F7129C2448C3C411 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDD5530B203D8F1C74F107EC909F7BE5 /* Foundation.framework */; };
-		9AA870FC62E93FBAD8DAC4C6F2BF9333 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59A1DC5066EFAAD0C9CE38A4B9964A4E /* RootView.swift */; };
-		A24820F3F6DBF044ACF2D09686398939 /* Edition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D13E4E69E35697C6F901D96B4BFD937 /* Edition.swift */; };
-		B121C76F43DB87906AA1E958A5200DBE /* Minimal-DNS-adguard-family.mobileconfig in Resources */ = {isa = PBXBuildFile; fileRef = 80806E07B75FCF8ED8DF94133B3EF6ED /* Minimal-DNS-adguard-family.mobileconfig */; };
-		B81D0E59C38F30F346C8773D6B802106 /* ClockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC15764BE70967C05C4C08F8D4760F1B /* ClockView.swift */; };
-		BBCEB37D70B1518A9BE85040F31AC29D /* ShieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E0C4D03D46807C0927A7F134689C82 /* ShieldView.swift */; };
-		C6E071FC0D539735C3B7D84735A30A3B /* ShieldModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527B9B503B045AC8B4363E5FAA5F0AD2 /* ShieldModel.swift */; };
-		C6FAF915F78837D1686A2C614D4714A5 /* MinimalWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = AEF46D97581956C6F4A6E4125F022640 /* MinimalWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		CEA93C340E92B431F51363CD4B5BF76D /* UsageStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230598A949FD5C31664788B85E501F84 /* UsageStats.swift */; };
-		CF02B88E3ED5D37D4390286991B08A3A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDD5530B203D8F1C74F107EC909F7BE5 /* Foundation.framework */; };
-		CF3D4CD9087974E5058D8B5DF999475E /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99EB66D7117CAFB8FE6CF2F65080901E /* HomeView.swift */; };
-		D256F4717FAFE0C3BF98C638CEB78BFD /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 739AEF661019E0E0C3EAFD4BC1D1E6C6 /* PrivacyInfo.xcprivacy */; };
-		E4EF84B4A30BB5B3BCD5D0D81C21BAAF /* LaunchItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5FD6449CE2107B3619CCA13FEC0D6D /* LaunchItem.swift */; };
-		EE5C5616D9ED4CBD816CA71EDBCD7F8C /* Minimal-DNS-cloudflare-family.mobileconfig in Resources */ = {isa = PBXBuildFile; fileRef = 7DFFEC4EE8E8B0CAC9176DC61322CA4F /* Minimal-DNS-cloudflare-family.mobileconfig */; };
-		FB41F85C0E0A8DBD7189B47E8BB87C9D /* BlockedDomains.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AB16D9D8211874DB43FD533F4D4160A /* BlockedDomains.swift */; };
+		017095D78D30FDBABEA886FF8B47ED74 /* ShieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E0C4D03D46807C0927A7F134689C82 /* ShieldView.swift */; };
+		01AE471A8F50727D3C5D5AC809AB993B /* DNSProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331B68C867B454F735B3458447473B95 /* DNSProvider.swift */; };
+		0E8071B9925006DE0012AEA4613A2015 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 739AEF661019E0E0C3EAFD4BC1D1E6C6 /* PrivacyInfo.xcprivacy */; };
+		113CDFB14FF2D727DBC594810AE7E1BF /* GuideViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6511EE58B2B2A849203D8F077C749AF /* GuideViews.swift */; };
+		148D2418483A7F5E1947807386320C99 /* LaunchItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5FD6449CE2107B3619CCA13FEC0D6D /* LaunchItem.swift */; };
+		18DD163BC639C36C01936CB2E934216E /* AppShortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FDF651D915BBED2A445403D32283BD3 /* AppShortcuts.swift */; };
+		1C671B2C0A1238F3379CC7FAD7D2337F /* UsageStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230598A949FD5C31664788B85E501F84 /* UsageStats.swift */; };
+		1F5554682817C68E09FF39084519DDEA /* Minimal-DNS-cleanbrowsing-adult.mobileconfig in Resources */ = {isa = PBXBuildFile; fileRef = DCF13CC77E088BEA53F0EE926DA8436D /* Minimal-DNS-cleanbrowsing-adult.mobileconfig */; };
+		2103B933CCA7DB601D94C65B87ABE958 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE64DD65981FD235361D80B2A8CF1BC /* SearchView.swift */; };
+		222BA5C582118BF8D4C1FF7EA47B628E /* MinimalApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68FF00CA4EF0DA92952F980EA8762246 /* MinimalApp.swift */; };
+		31ECC8DC62DE52CDE2DCBE325F3ECED6 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFC31BAAD58CD6E1D2AC71C5042D132 /* SettingsView.swift */; };
+		3954C1583B9D5D90D461CC247B3C0EAA /* ShieldModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527B9B503B045AC8B4363E5FAA5F0AD2 /* ShieldModel.swift */; };
+		39F970B5946F177C21A78A799813C612 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 8E163BD1A371F94E96171D1F41B467B1 /* PrivacyInfo.xcprivacy */; };
+		439815372DDB56EA8384DB0665483872 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99EB66D7117CAFB8FE6CF2F65080901E /* HomeView.swift */; };
+		45FF953EA2D583E2E65CB62E1882C3D2 /* PauseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64A08C5171A77A68755D4597CF50CD4 /* PauseView.swift */; };
+		52BACE72E24B32CEE6CCFC3536C95452 /* AppCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA902E723447B175DBFE14D012657504 /* AppCatalog.swift */; };
+		5C591AEB04DDC9D46DDBC0E8475F4F13 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59A1DC5066EFAAD0C9CE38A4B9964A4E /* RootView.swift */; };
+		5E19540155D52CAD6EA2CE62202BD8B6 /* SharedConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6251D9B1D1337CE31493BA1A259BCED7 /* SharedConfig.swift */; };
+		61821C21B316BC9A66CB672A7F40CA60 /* SharedConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6251D9B1D1337CE31493BA1A259BCED7 /* SharedConfig.swift */; };
+		6893BDB0597D221636451799EAA6E354 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DCD31973DB8CBADB980C89792B5BAC /* OnboardingView.swift */; };
+		72FB010E9BC39CE3E0DF1250B86CA26A /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46772870B518B127E0DD98917D343EAC /* Theme.swift */; };
+		7336CF2466538BF9AC6AEA0A1B00BE44 /* LaunchItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5FD6449CE2107B3619CCA13FEC0D6D /* LaunchItem.swift */; };
+		751A97EA8C8BB8ADFAD9773639E6C619 /* MinimalWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = AEF46D97581956C6F4A6E4125F022640 /* MinimalWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		8231D2CFF87FE73096BD2FA8326461DC /* LauncherStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC39E2FB766EEEA941786FA9B330E39E /* LauncherStore.swift */; };
+		82C15FCAFFBB36BC8B875A667BD95F32 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FE43360CAA8F37C1BC25186ED7B86F1 /* Preferences.swift */; };
+		8A474A954DB7BD74A38952FA55DCBCFC /* Minimal-DNS-adguard-family.mobileconfig in Resources */ = {isa = PBXBuildFile; fileRef = 80806E07B75FCF8ED8DF94133B3EF6ED /* Minimal-DNS-adguard-family.mobileconfig */; };
+		8A7B0638A271B6A000FCF4F08572443C /* ItemEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C5736285AB9C1643E38C36EEBB27CC /* ItemEditorView.swift */; };
+		8E51CCFADE253EB68ED5649F99A71E72 /* MinimalWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 571BF3EE982C2874826EF5BE4D05D893 /* MinimalWidgets.swift */; };
+		93CEC2D41C6B72B47BF3E153202C4682 /* LibraryViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21762B630C7B55E95CCEDC45BABB32F /* LibraryViews.swift */; };
+		98157A60CA7261E38AAA32B2CAC6C651 /* ClockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC15764BE70967C05C4C08F8D4760F1B /* ClockView.swift */; };
+		BCCDE48BB91480A206A549E61AA23C2E /* Minimal-DNS-cleanbrowsing-family.mobileconfig in Resources */ = {isa = PBXBuildFile; fileRef = CA802EA39CC1222302100643CA54198F /* Minimal-DNS-cleanbrowsing-family.mobileconfig */; };
+		C1226A0CF35DFD5C4A452186E513CC33 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 22C66618F2E16699D7B26B9E7F6C26AD /* Assets.xcassets */; };
+		C77697CB5F2501C4F895F5B7D7EBC63D /* FreeShieldSections.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A59E87771FAF291F809AC638090FD2 /* FreeShieldSections.swift */; };
+		D876A33B189FE249E2B4595AB70EADC0 /* LaunchCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA27E4023FACB7358CD77CB65007A2B7 /* LaunchCoordinator.swift */; };
+		E122772A5A90B1CFDCF7B74323E59605 /* Minimal-DNS-cloudflare-family.mobileconfig in Resources */ = {isa = PBXBuildFile; fileRef = 7DFFEC4EE8E8B0CAC9176DC61322CA4F /* Minimal-DNS-cloudflare-family.mobileconfig */; };
+		E7F2AEADA272EABC9D87130255D85ED4 /* Edition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D13E4E69E35697C6F901D96B4BFD937 /* Edition.swift */; };
+		FEBDB1022DE432D6657063412F84DBB2 /* BlockedDomains.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AB16D9D8211874DB43FD533F4D4160A /* BlockedDomains.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		0C16BCA79E0416FEACD4ABA7C82A99A6 /* PBXContainerItemProxy */ = {
+		F87D0F69883FD41E7EC08974F7C85518 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FA6A945707468B3837F5C621EE18448A /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 29C9A10614065FCED9316DC3EC565D1D;
+			remoteGlobalIDString = F5F76D0540BA9331301C7F7EF1C4E0DE;
 			remoteInfo = MinimalWidget;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		8BC2614DD0419825840A41F43DC53FEF /* Embed Foundation Extensions */ = {
+		9F66BBE661833CB3F3DCEF64BDC5E435 /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				C6FAF915F78837D1686A2C614D4714A5 /* MinimalWidget.appex in Embed Foundation Extensions */,
+				751A97EA8C8BB8ADFAD9773639E6C619 /* MinimalWidget.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -103,7 +101,6 @@
 		C5E0C4D03D46807C0927A7F134689C82 /* ShieldView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ShieldView.swift; sourceTree = "<group>"; };
 		C6511EE58B2B2A849203D8F077C749AF /* GuideViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GuideViews.swift; sourceTree = "<group>"; };
 		CA802EA39CC1222302100643CA54198F /* Minimal-DNS-cleanbrowsing-family.mobileconfig */ = {isa = PBXFileReference; includeInIndex = 1; path = "Minimal-DNS-cleanbrowsing-family.mobileconfig"; sourceTree = "<group>"; };
-		CDD5530B203D8F1C74F107EC909F7BE5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		CFE3972BF5EFF53B7C651B5665A995EA /* Minimal-Free.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; path = "Minimal-Free.entitlements"; sourceTree = "<group>"; };
 		CFFC31BAAD58CD6E1D2AC71C5042D132 /* SettingsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		D21762B630C7B55E95CCEDC45BABB32F /* LibraryViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LibraryViews.swift; sourceTree = "<group>"; };
@@ -119,33 +116,23 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		0736B31D7C3C6397E9828E27D7424320 /* Frameworks */ = {
+		2C5D7A5E21F99CF53905B1A35CFC748A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9A0C44D5ECF2FBC9F7129C2448C3C411 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		E1902A5A9966D86E8413D8A13878AB25 /* Frameworks */ = {
+		941F0C68F30CC72EB9A1E815F4738EA2 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CF02B88E3ED5D37D4390286991B08A3A /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0576ED229739845DA9137A4C4D141403 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				4A203393799E370AA3A0CA9424C1C254 /* iOS */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		08048D921772A1452E91C64ECE536811 /* Support */ = {
 			isa = PBXGroup;
 			children = (
@@ -171,7 +158,6 @@
 		291BCCEA6EEFA74A275D583C5EB94FC8 = {
 			isa = PBXGroup;
 			children = (
-				0576ED229739845DA9137A4C4D141403 /* Frameworks */,
 				5C467F1780CC4C20891E88E0731FB8CA /* Minimal */,
 				89BF494F486969623AEDFA8F7EDA4FE7 /* Shared */,
 				B3DBF4B427E2DEA46EF466924F227C4F /* MinimalWidget */,
@@ -205,14 +191,6 @@
 			);
 			name = Views;
 			path = Views;
-			sourceTree = "<group>";
-		};
-		4A203393799E370AA3A0CA9424C1C254 /* iOS */ = {
-			isa = PBXGroup;
-			children = (
-				CDD5530B203D8F1C74F107EC909F7BE5 /* Foundation.framework */,
-			);
-			name = iOS;
 			sourceTree = "<group>";
 		};
 		53BF8BFC580320C73615AFD00556E94C /* Search */ = {
@@ -358,13 +336,13 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		29C9A10614065FCED9316DC3EC565D1D /* MinimalWidget */ = {
+		F5F76D0540BA9331301C7F7EF1C4E0DE /* MinimalWidget */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 24B95EC42437913FF821AD7B0A98C570 /* Build configuration list for PBXNativeTarget "MinimalWidget" */;
+			buildConfigurationList = EB6FF944CE31126A0C9CC9FD7073378E /* Build configuration list for PBXNativeTarget "MinimalWidget" */;
 			buildPhases = (
-				80DDB2243E5F9B08617C783A3BD7B28D /* Sources */,
-				0736B31D7C3C6397E9828E27D7424320 /* Frameworks */,
-				B876E9DAE5BEE24AB8E58911F934D920 /* Resources */,
+				AA6B2342D65943C9C27ECB7B65685D53 /* Sources */,
+				2C5D7A5E21F99CF53905B1A35CFC748A /* Frameworks */,
+				932B37F73E98D425AF1484AED9D56C07 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -375,19 +353,20 @@
 			productReference = AEF46D97581956C6F4A6E4125F022640 /* MinimalWidget.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
-		94DA496241F903CFEB42B8FFE7148329 /* Minimal */ = {
+		FCC8DAF2C9FE1515AC66B3AB2ACC6E42 /* Minimal */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 07CF239A2B9DF1905218DC1F368625C0 /* Build configuration list for PBXNativeTarget "Minimal" */;
+			buildConfigurationList = BF1A1C9CCAC61AF6F533A713BF8E33BA /* Build configuration list for PBXNativeTarget "Minimal" */;
 			buildPhases = (
-				BB2EC4050B163FA70E08065A356BFB8F /* Sources */,
-				E1902A5A9966D86E8413D8A13878AB25 /* Frameworks */,
-				9C5343136397C8C58ED3AAFC64A0A33D /* Resources */,
-				8BC2614DD0419825840A41F43DC53FEF /* Embed Foundation Extensions */,
+				591B8ADB3D381678C98FB0F63CC246C5 /* Check MINIMAL_EDITION */,
+				4ADC0B60AD3AB85DE77435AF2EACBC08 /* Sources */,
+				941F0C68F30CC72EB9A1E815F4738EA2 /* Frameworks */,
+				E1C22B9ECDD3ACCBE113246411D8ABBF /* Resources */,
+				9F66BBE661833CB3F3DCEF64BDC5E435 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				DF0A66E7C5123C0F14E06C5E81756812 /* PBXTargetDependency */,
+				05654D2352C5E2F07BA94D745EC5F03E /* PBXTargetDependency */,
 			);
 			name = Minimal;
 			productName = Minimal;
@@ -404,10 +383,10 @@
 				LastSwiftUpdateCheck = 2600;
 				LastUpgradeCheck = 2600;
 				TargetAttributes = {
-					29C9A10614065FCED9316DC3EC565D1D = {
+					F5F76D0540BA9331301C7F7EF1C4E0DE = {
 						CreatedOnToolsVersion = 26.0;
 					};
-					94DA496241F903CFEB42B8FFE7148329 = {
+					FCC8DAF2C9FE1515AC66B3AB2ACC6E42 = {
 						CreatedOnToolsVersion = 26.0;
 					};
 				};
@@ -428,88 +407,110 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				94DA496241F903CFEB42B8FFE7148329 /* Minimal */,
-				29C9A10614065FCED9316DC3EC565D1D /* MinimalWidget */,
+				FCC8DAF2C9FE1515AC66B3AB2ACC6E42 /* Minimal */,
+				F5F76D0540BA9331301C7F7EF1C4E0DE /* MinimalWidget */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		9C5343136397C8C58ED3AAFC64A0A33D /* Resources */ = {
+		932B37F73E98D425AF1484AED9D56C07 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6B7DD4648D7DE9A88313C99461599099 /* Assets.xcassets in Resources */,
-				795BA2102AE0F0DE871CEB784C886E9F /* PrivacyInfo.xcprivacy in Resources */,
-				B121C76F43DB87906AA1E958A5200DBE /* Minimal-DNS-adguard-family.mobileconfig in Resources */,
-				29B59C62721B10F4BADC5D83C8A34D41 /* Minimal-DNS-cleanbrowsing-adult.mobileconfig in Resources */,
-				38ADFA80265835B15D1B7C885F90510B /* Minimal-DNS-cleanbrowsing-family.mobileconfig in Resources */,
-				EE5C5616D9ED4CBD816CA71EDBCD7F8C /* Minimal-DNS-cloudflare-family.mobileconfig in Resources */,
+				0E8071B9925006DE0012AEA4613A2015 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		B876E9DAE5BEE24AB8E58911F934D920 /* Resources */ = {
+		E1C22B9ECDD3ACCBE113246411D8ABBF /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D256F4717FAFE0C3BF98C638CEB78BFD /* PrivacyInfo.xcprivacy in Resources */,
+				C1226A0CF35DFD5C4A452186E513CC33 /* Assets.xcassets in Resources */,
+				39F970B5946F177C21A78A799813C612 /* PrivacyInfo.xcprivacy in Resources */,
+				8A474A954DB7BD74A38952FA55DCBCFC /* Minimal-DNS-adguard-family.mobileconfig in Resources */,
+				1F5554682817C68E09FF39084519DDEA /* Minimal-DNS-cleanbrowsing-adult.mobileconfig in Resources */,
+				BCCDE48BB91480A206A549E61AA23C2E /* Minimal-DNS-cleanbrowsing-family.mobileconfig in Resources */,
+				E122772A5A90B1CFDCF7B74323E59605 /* Minimal-DNS-cloudflare-family.mobileconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		591B8ADB3D381678C98FB0F63CC246C5 /* Check MINIMAL_EDITION */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Check MINIMAL_EDITION";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "case \"$MINIMAL_EDITION\" in\n  Full|Free) ;;\n  *) echo \"error: MINIMAL_EDITION must be Full or Free (Config/Signing.xcconfig), got '$MINIMAL_EDITION'\"; exit 1 ;;\nesac\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
-		80DDB2243E5F9B08617C783A3BD7B28D /* Sources */ = {
+		4ADC0B60AD3AB85DE77435AF2EACBC08 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				711D3B974D25DCC9D4801D5DC05452FE /* MinimalWidgets.swift in Sources */,
-				E4EF84B4A30BB5B3BCD5D0D81C21BAAF /* LaunchItem.swift in Sources */,
-				2356103B5B0D5CABAED87F00688912F3 /* SharedConfig.swift in Sources */,
+				222BA5C582118BF8D4C1FF7EA47B628E /* MinimalApp.swift in Sources */,
+				52BACE72E24B32CEE6CCFC3536C95452 /* AppCatalog.swift in Sources */,
+				18DD163BC639C36C01936CB2E934216E /* AppShortcuts.swift in Sources */,
+				D876A33B189FE249E2B4595AB70EADC0 /* LaunchCoordinator.swift in Sources */,
+				8231D2CFF87FE73096BD2FA8326461DC /* LauncherStore.swift in Sources */,
+				1C671B2C0A1238F3379CC7FAD7D2337F /* UsageStats.swift in Sources */,
+				FEBDB1022DE432D6657063412F84DBB2 /* BlockedDomains.swift in Sources */,
+				01AE471A8F50727D3C5D5AC809AB993B /* DNSProvider.swift in Sources */,
+				3954C1583B9D5D90D461CC247B3C0EAA /* ShieldModel.swift in Sources */,
+				E7F2AEADA272EABC9D87130255D85ED4 /* Edition.swift in Sources */,
+				82C15FCAFFBB36BC8B875A667BD95F32 /* Preferences.swift in Sources */,
+				72FB010E9BC39CE3E0DF1250B86CA26A /* Theme.swift in Sources */,
+				8A7B0638A271B6A000FCF4F08572443C /* ItemEditorView.swift in Sources */,
+				93CEC2D41C6B72B47BF3E153202C4682 /* LibraryViews.swift in Sources */,
+				98157A60CA7261E38AAA32B2CAC6C651 /* ClockView.swift in Sources */,
+				439815372DDB56EA8384DB0665483872 /* HomeView.swift in Sources */,
+				6893BDB0597D221636451799EAA6E354 /* OnboardingView.swift in Sources */,
+				45FF953EA2D583E2E65CB62E1882C3D2 /* PauseView.swift in Sources */,
+				5C591AEB04DDC9D46DDBC0E8475F4F13 /* RootView.swift in Sources */,
+				2103B933CCA7DB601D94C65B87ABE958 /* SearchView.swift in Sources */,
+				113CDFB14FF2D727DBC594810AE7E1BF /* GuideViews.swift in Sources */,
+				31ECC8DC62DE52CDE2DCBE325F3ECED6 /* SettingsView.swift in Sources */,
+				C77697CB5F2501C4F895F5B7D7EBC63D /* FreeShieldSections.swift in Sources */,
+				017095D78D30FDBABEA886FF8B47ED74 /* ShieldView.swift in Sources */,
+				7336CF2466538BF9AC6AEA0A1B00BE44 /* LaunchItem.swift in Sources */,
+				5E19540155D52CAD6EA2CE62202BD8B6 /* SharedConfig.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		BB2EC4050B163FA70E08065A356BFB8F /* Sources */ = {
+		AA6B2342D65943C9C27ECB7B65685D53 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1393E054EA2DBDEC27C87C74063B7D4A /* MinimalApp.swift in Sources */,
-				136F9FB706601D4FF94DFD60AC9C3C14 /* AppCatalog.swift in Sources */,
-				6BF57C3EA093EF4E8A14067409A03BED /* AppShortcuts.swift in Sources */,
-				1125F62E20168DF3386986C5E63426C5 /* LaunchCoordinator.swift in Sources */,
-				9903075D59AA6E52B2C9F7087756533F /* LauncherStore.swift in Sources */,
-				CEA93C340E92B431F51363CD4B5BF76D /* UsageStats.swift in Sources */,
-				FB41F85C0E0A8DBD7189B47E8BB87C9D /* BlockedDomains.swift in Sources */,
-				28DCAD866304931AF4A8E8CBBF4BB820 /* DNSProvider.swift in Sources */,
-				C6E071FC0D539735C3B7D84735A30A3B /* ShieldModel.swift in Sources */,
-				A24820F3F6DBF044ACF2D09686398939 /* Edition.swift in Sources */,
-				7EF51B5036B985F0180F442572A65484 /* Preferences.swift in Sources */,
-				895FA5535B582BDE60DEA663ADFB945D /* Theme.swift in Sources */,
-				209E55C2AEEA188D07DF36289552DEE0 /* ItemEditorView.swift in Sources */,
-				299EBCD810B624763E51A2A7D710D9F7 /* LibraryViews.swift in Sources */,
-				B81D0E59C38F30F346C8773D6B802106 /* ClockView.swift in Sources */,
-				CF3D4CD9087974E5058D8B5DF999475E /* HomeView.swift in Sources */,
-				2EEA6FBC94B222424770647C49456D71 /* OnboardingView.swift in Sources */,
-				7A7A03886F9A6B8764F6B35B3401FC62 /* PauseView.swift in Sources */,
-				9AA870FC62E93FBAD8DAC4C6F2BF9333 /* RootView.swift in Sources */,
-				7B8F3872633B6641F1F12A9712835DCB /* SearchView.swift in Sources */,
-				4A2DF777329F55F595E63307B863A814 /* GuideViews.swift in Sources */,
-				7C3E8410142A2DA3FFCC8B2AB5FDF374 /* SettingsView.swift in Sources */,
-				4E9FF30FB9070092FA23125C18869E6B /* FreeShieldSections.swift in Sources */,
-				BBCEB37D70B1518A9BE85040F31AC29D /* ShieldView.swift in Sources */,
-				60685C8764F059B4E907DA4435405554 /* LaunchItem.swift in Sources */,
-				71301C2ED2BDC8A84BF51FA3DC155298 /* SharedConfig.swift in Sources */,
+				8E51CCFADE253EB68ED5649F99A71E72 /* MinimalWidgets.swift in Sources */,
+				148D2418483A7F5E1947807386320C99 /* LaunchItem.swift in Sources */,
+				61821C21B316BC9A66CB672A7F40CA60 /* SharedConfig.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		DF0A66E7C5123C0F14E06C5E81756812 /* PBXTargetDependency */ = {
+		05654D2352C5E2F07BA94D745EC5F03E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = MinimalWidget;
-			target = 29C9A10614065FCED9316DC3EC565D1D /* MinimalWidget */;
-			targetProxy = 0C16BCA79E0416FEACD4ABA7C82A99A6 /* PBXContainerItemProxy */;
+			target = F5F76D0540BA9331301C7F7EF1C4E0DE /* MinimalWidget */;
+			targetProxy = F87D0F69883FD41E7EC08974F7C85518 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -581,7 +582,7 @@
 			};
 			name = Debug;
 		};
-		9327AAE8B694F83FDFF4CDD8754800F5 /* Release */ = {
+		8B082CE06AF68260FE7208B85DD95D43 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
@@ -613,7 +614,7 @@
 			};
 			name = Release;
 		};
-		9F687342E627B5410290525AE7AE2D1E /* Debug */ = {
+		AF76C55C7BB92FCA39ED061CC48E9E8E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
@@ -705,39 +706,7 @@
 			};
 			name = Release;
 		};
-		BDBB04F48376F9D4252A47FA56FD1014 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_ENTITLEMENTS = "Minimal/Minimal-$(MINIMAL_EDITION).entitlements";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = Minimal/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "$(APP_BUNDLE_ID)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
-			};
-			name = Debug;
-		};
-		E34DC14F9792603324F039E8930C9727 /* Release */ = {
+		DD3E2B641DB1CCB00CA36C07256853A5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -770,32 +739,64 @@
 			};
 			name = Release;
 		};
+		E58392BFC90B32F0069770B6A914AC45 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_ENTITLEMENTS = "Minimal/Minimal-$(MINIMAL_EDITION).entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Minimal/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(APP_BUNDLE_ID)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		07CF239A2B9DF1905218DC1F368625C0 /* Build configuration list for PBXNativeTarget "Minimal" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				E34DC14F9792603324F039E8930C9727 /* Release */,
-				BDBB04F48376F9D4252A47FA56FD1014 /* Debug */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		24B95EC42437913FF821AD7B0A98C570 /* Build configuration list for PBXNativeTarget "MinimalWidget" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				9327AAE8B694F83FDFF4CDD8754800F5 /* Release */,
-				9F687342E627B5410290525AE7AE2D1E /* Debug */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		8DE87E597250F478C480862E48B6AF29 /* Build configuration list for PBXProject "Minimal" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				666190F7018EA3882BEF87E3FD840251 /* Debug */,
 				B25619B7864F53BE84A21681FAE1BF18 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BF1A1C9CCAC61AF6F533A713BF8E33BA /* Build configuration list for PBXNativeTarget "Minimal" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DD3E2B641DB1CCB00CA36C07256853A5 /* Release */,
+				E58392BFC90B32F0069770B6A914AC45 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EB6FF944CE31126A0C9CC9FD7073378E /* Build configuration list for PBXNativeTarget "MinimalWidget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8B082CE06AF68260FE7208B85DD95D43 /* Release */,
+				AF76C55C7BB92FCA39ED061CC48E9E8E /* Debug */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

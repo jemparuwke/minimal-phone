@@ -1,15 +1,17 @@
 // ─────────────────────────────────────────────────────────────
 //  Minimal — podpisywanie aplikacji
 //
-//  1. DEVELOPMENT_TEAM: Twój Team ID (Xcode → Settings → Accounts
-//     → wybierz konto → Team ID), np. ABCDE12345.
-//     Możesz też zostawić puste i wybrać zespół w Xcode
-//     (target Minimal → Signing & Capabilities → Team).
+//  Najprościej: w Xcode wybierz swój zespół (Team) w karcie
+//  Signing & Capabilities targetów Minimal i MinimalWidget.
+//  Identyfikatory aplikacji utworzą się same z Twojego Team ID.
 //
-//  2. BUNDLE_ID_PREFIX: dowolny unikalny prefiks, np. com.jankowalski.
-//     Identyfikatory aplikacji muszą być unikalne na całym świecie.
+//  Zamiast tego możesz utworzyć plik Config/Signing.local.xcconfig
+//  (nie trafia do gita) i wpisać w nim np.:
 //
-//  3. MINIMAL_EDITION:
+//      DEVELOPMENT_TEAM = ABCDE12345
+//      MINIMAL_EDITION = Free
+//
+//  MINIMAL_EDITION:
 //     Full — płatne konto Apple Developer (99 USD/rok): pełna tarcza
 //            (filtr Apple, filtr DNS, blokada aplikacji).
 //     Free — darmowe konto Apple: wszystko poza automatyczną tarczą;
@@ -18,8 +20,12 @@
 // ─────────────────────────────────────────────────────────────
 
 DEVELOPMENT_TEAM =
-BUNDLE_ID_PREFIX = pl.jemparuwke
 MINIMAL_EDITION = Full
+
+// Unikalny prefiks identyfikatorów — domyślnie oparty na Team ID.
+BUNDLE_ID_PREFIX = pl.minimal.$(DEVELOPMENT_TEAM)
+
+#include? "Signing.local.xcconfig"
 
 // Nie zmieniaj poniższych linii.
 APP_BUNDLE_ID = $(BUNDLE_ID_PREFIX).minimal

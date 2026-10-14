@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "94DA496241F903CFEB42B8FFE7148329"
+               BlueprintIdentifier = "FCC8DAF2C9FE1515AC66B3AB2ACC6E42"
                BuildableName = "Minimal.app"
                BlueprintName = "Minimal"
                ReferencedContainer = "container:Minimal.xcodeproj">
@@ -28,7 +28,7 @@
             buildForAnalyzing = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "29C9A10614065FCED9316DC3EC565D1D"
+               BlueprintIdentifier = "F5F76D0540BA9331301C7F7EF1C4E0DE"
                BuildableName = "MinimalWidget.appex"
                BlueprintName = "MinimalWidget"
                ReferencedContainer = "container:Minimal.xcodeproj">
@@ -44,7 +44,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "94DA496241F903CFEB42B8FFE7148329"
+            BlueprintIdentifier = "FCC8DAF2C9FE1515AC66B3AB2ACC6E42"
             BuildableName = "Minimal.app"
             BlueprintName = "Minimal"
             ReferencedContainer = "container:Minimal.xcodeproj">
@@ -54,7 +54,7 @@
       </Testables>
    </TestAction>
    <LaunchAction
-      buildConfiguration = "Debug"
+      buildConfiguration = "Release"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
@@ -67,7 +67,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "94DA496241F903CFEB42B8FFE7148329"
+            BlueprintIdentifier = "FCC8DAF2C9FE1515AC66B3AB2ACC6E42"
             BuildableName = "Minimal.app"
             BlueprintName = "Minimal"
             ReferencedContainer = "container:Minimal.xcodeproj">
@@ -84,7 +84,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "94DA496241F903CFEB42B8FFE7148329"
+            BlueprintIdentifier = "FCC8DAF2C9FE1515AC66B3AB2ACC6E42"
             BuildableName = "Minimal.app"
             BlueprintName = "Minimal"
             ReferencedContainer = "container:Minimal.xcodeproj">

@@ -39,7 +39,9 @@ jobs:
             | tee build-simulator.log | grep -E "error:|warning:|BUILD (SUCCEEDED|FAILED)" || true
           grep -q "BUILD SUCCEEDED" build-simulator.log
 
-      - name: Build for iPhone (unsigned)
+      # The unsigned IPA is the Free edition: it is the only one a re-signer with a
+      # free Apple account (e.g. Sideloadly) can install.
+      - name: Build for iPhone (unsigned, Free edition)
         run: |
           set -o pipefail
           xcodebuild build \
@@ -48,6 +50,7 @@ jobs:
             -configuration Release \
             -destination 'generic/platform=iOS' \
             -derivedDataPath build \
+            MINIMAL_EDITION=Free \
             CODE_SIGNING_ALLOWED=NO \
             | tee build-device.log | grep -E "error:|warning:|BUILD (SUCCEEDED|FAILED)" || true
           grep -q "BUILD SUCCEEDED" build-device.log
@@ -56,7 +59,7 @@ jobs:
         run: |
           mkdir -p Payload
           cp -R build/Build/Products/Release-iphoneos/Minimal.app Payload/
-          zip -qry Minimal-unsigned.ipa Payload
+          zip -qry Minimal-Free-unsigned.ipa Payload
 
       # Screenshots run when the commit message contains [shots], or on manual runs.
       - name: Capture screenshots
@@ -80,8 +83,8 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: Minimal-unsigned-ipa
-          path: Minimal-unsigned.ipa
+          name: Minimal-Free-unsigned-ipa
+          path: Minimal-Free-unsigned.ipa
 
       - uses: actions/upload-artifact@v4
         if: always()

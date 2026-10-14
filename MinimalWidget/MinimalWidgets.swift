@@ -9,32 +9,63 @@ struct MinimalWidgetBundle: WidgetBundle {
     }
 }
 
+private let polish = Locale(identifier: "pl_PL")
+
 // MARK: - Timeline
 
 struct FavoritesEntry: TimelineEntry {
+    enum State {
+        case ready
+        /// The App Group is not provisioned, so the widget cannot see the app's data.
+        case noAppGroup
+        /// Minimal has not been opened yet (or has no favorites).
+        case empty
+    }
+
     let date: Date
     let items: [LaunchItem]
+    let state: State
 }
 
 struct FavoritesProvider: TimelineProvider {
     func placeholder(in context: Context) -> FavoritesEntry {
-        FavoritesEntry(date: Date(), items: Self.sample)
+        FavoritesEntry(date: Date(), items: Self.sample, state: .ready)
     }
 
     func getSnapshot(in context: Context, completion: @escaping (FavoritesEntry) -> Void) {
-        let items = LauncherData.load()?.favorites ?? []
-        completion(FavoritesEntry(date: Date(), items: context.isPreview && items.isEmpty ? Self.sample : items))
+        let entry = makeEntry(at: Date())
+        if context.isPreview, entry.state != .ready {
+            completion(FavoritesEntry(date: Date(), items: Self.sample, state: .ready))
+        } else {
+            completion(entry)
+        }
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<FavoritesEntry>) -> Void) {
         let now = Date()
-        let entry = FavoritesEntry(date: now, items: LauncherData.load()?.favorites ?? [])
-        // The app reloads timelines whenever favorites change; refresh at midnight for the date.
-        let midnight = Calendar.current.startOfDay(for: now).addingTimeInterval(86_400 + 60)
-        completion(Timeline(entries: [entry], policy: .after(midnight)))
+        let calendar = Calendar.current
+        let midnight = calendar.date(byAdding: .day, value: 1, to: calendar.startOfDay(for: now)) ?? now.addingTimeInterval(86_400)
+        let current = makeEntry(at: now)
+
+        guard current.state == .ready else {
+            // Nothing to show yet: look again soon (the app also reloads us when it opens).
+            completion(Timeline(entries: [current], policy: .after(now.addingTimeInterval(15 * 60))))
+            return
+        }
+        // A second entry flips the date exactly at midnight; the app reloads us on every edit.
+        let tomorrow = FavoritesEntry(date: midnight, items: current.items, state: .ready)
+        completion(Timeline(entries: [current, tomorrow], policy: .after(midnight)))
     }
 
-    static let sample: [LaunchItem] = ["Telefon", "Wiadomości", "Mapy", "Muzyka", "Kalendarz", "Notatki"]
+    private func makeEntry(at date: Date) -> FavoritesEntry {
+        guard SharedConfig.isAppGroupAvailable else {
+            return FavoritesEntry(date: date, items: [], state: .noAppGroup)
+        }
+        let favorites = LauncherData.load()?.favorites ?? []
+        return FavoritesEntry(date: date, items: favorites, state: favorites.isEmpty ? .empty : .ready)
+    }
+
+    static let sample: [LaunchItem] = ["Telefon", "Wiadomości", "Aparat", "Mapy", "Muzyka", "Kalendarz"]
         .map { LaunchItem(name: $0, target: .url("")) }
 }
 
@@ -42,7 +73,7 @@ struct FavoritesProvider: TimelineProvider {
 
 struct FavoritesWidget: Widget {
     var body: some WidgetConfiguration {
-        StaticConfiguration(kind: "pl.minimal.favorites", provider: FavoritesProvider()) { entry in
+        StaticConfiguration(kind: SharedConfig.favoritesWidgetKind, provider: FavoritesProvider()) { entry in
             FavoritesWidgetView(entry: entry)
         }
         .configurationDisplayName("Ulubione")
@@ -57,7 +88,7 @@ struct FavoritesWidgetView: View {
 
     private static let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "pl_PL")
+        formatter.locale = polish
         formatter.dateFormat = "EEEE, d MMMM"
         return formatter
     }()
@@ -71,34 +102,31 @@ struct FavoritesWidgetView: View {
         }
     }
 
-    private var maxItems: Int { family == .systemLarge ? 8 : 4 }
-    private var fontSize: CGFloat { family == .systemLarge ? 25 : 21 }
+    // MARK: Home Screen
 
     private var homeScreen: some View {
-        VStack(alignment: .leading, spacing: family == .systemLarge ? 9 : 6) {
+        VStack(alignment: .leading, spacing: 0) {
             if family == .systemLarge {
                 Text(Self.dateFormatter.string(from: entry.date))
                     .font(.system(size: 13, weight: .medium))
-                    .foregroundStyle(.white.opacity(0.5))
-                    .padding(.bottom, 6)
+                    .foregroundStyle(.white.opacity(0.6))
+                    .padding(.bottom, 8)
             }
 
-            if entry.items.isEmpty {
-                Text("Otwórz Minimal i wybierz ulubione.")
-                    .font(.system(size: 15, weight: .regular))
-                    .foregroundStyle(.white.opacity(0.5))
-            }
-
-            ForEach(entry.items.prefix(maxItems)) { item in
-                Link(destination: SharedConfig.openURL(for: item.id)) {
-                    Text(item.name.lowercased(with: Locale(identifier: "pl_PL")))
-                        .font(.system(size: fontSize, weight: .light))
-                        .foregroundStyle(.white)
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.7)
-                        .frame(maxWidth: .infinity, alignment: .leading)
+            switch entry.state {
+            case .ready:
+                if family == .systemMedium, entry.items.count > 4 {
+                    HStack(alignment: .top, spacing: 12) {
+                        column(Array(entry.items.prefix(4)))
+                        column(Array(entry.items.dropFirst(4).prefix(4)))
+                    }
+                } else {
+                    column(Array(entry.items.prefix(family == .systemLarge ? 8 : 4)))
                 }
-                .widgetAccentable()
+            case .empty:
+                message("Otwórz Minimal i\u{00a0}wybierz ulubione.")
+            case .noAppGroup:
+                message("Widżet nie widzi danych Minimal. Sprawdź App Group w\u{00a0}Xcode (README).")
             }
 
             Spacer(minLength: 0)
@@ -108,16 +136,50 @@ struct FavoritesWidgetView: View {
         .widgetURL(SharedConfig.homeURL)
     }
 
+    private var rowHeight: CGFloat { family == .systemLarge ? 36 : 31 }
+    private var fontSize: CGFloat { family == .systemLarge ? 25 : 21 }
+
+    /// Rows tile the height with no gaps, so every tap lands on an app, never on "nothing".
+    private func column(_ items: [LaunchItem]) -> some View {
+        VStack(alignment: .leading, spacing: 0) {
+            ForEach(items) { item in
+                Link(destination: SharedConfig.openURL(for: item.id)) {
+                    Text(item.name.lowercased(with: polish))
+                        .font(.system(size: fontSize, weight: .light))
+                        .foregroundStyle(.white)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.6)
+                        .frame(maxWidth: .infinity, maxHeight: rowHeight, alignment: .leading)
+                        .contentShape(Rectangle())
+                }
+                .widgetAccentable()
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    private func message(_ text: String) -> some View {
+        Text(text)
+            .font(.system(size: 15, weight: .regular))
+            .foregroundStyle(.white.opacity(0.6))
+            .fixedSize(horizontal: false, vertical: true)
+    }
+
+    // MARK: Lock Screen
+
     private var lockScreen: some View {
         VStack(alignment: .leading, spacing: 0) {
             if entry.items.isEmpty {
                 Text("minimal")
                     .font(.headline)
-            }
-            ForEach(entry.items.prefix(3)) { item in
-                Text(item.name.lowercased(with: Locale(identifier: "pl_PL")))
-                    .font(.system(size: 15, weight: .medium))
-                    .lineLimit(1)
+                Text("Dodaj ulubione w\u{00a0}aplikacji")
+                    .font(.caption)
+            } else {
+                ForEach(entry.items.prefix(3)) { item in
+                    Text(item.name.lowercased(with: polish))
+                        .font(.system(.body, weight: .medium))
+                        .lineLimit(1)
+                }
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -146,7 +208,7 @@ struct SearchProvider: TimelineProvider {
 
 struct SearchWidget: Widget {
     var body: some WidgetConfiguration {
-        StaticConfiguration(kind: "pl.minimal.search", provider: SearchProvider()) { _ in
+        StaticConfiguration(kind: SharedConfig.searchWidgetKind, provider: SearchProvider()) { _ in
             SearchWidgetView()
         }
         .configurationDisplayName("Szukaj")
@@ -159,6 +221,15 @@ struct SearchWidgetView: View {
     @Environment(\.widgetFamily) private var family
 
     var body: some View {
+        content
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel("Szukaj w Minimal")
+            .accessibilityAddTraits(.isButton)
+            .widgetURL(SharedConfig.searchURL)
+    }
+
+    @ViewBuilder
+    private var content: some View {
         switch family {
         case .accessoryCircular:
             ZStack {
@@ -167,13 +238,11 @@ struct SearchWidgetView: View {
                     .font(.system(size: 20, weight: .medium))
             }
             .containerBackground(for: .widget) { Color.clear }
-            .widgetURL(SharedConfig.searchURL)
-            .accessibilityLabel("Szukaj w Minimal")
         default:
             VStack(alignment: .leading) {
                 Text("minimal")
                     .font(.system(size: 15, weight: .medium))
-                    .foregroundStyle(.white.opacity(0.5))
+                    .foregroundStyle(.white.opacity(0.6))
                 Spacer()
                 HStack(spacing: 8) {
                     Image(systemName: "magnifyingglass")
@@ -186,7 +255,6 @@ struct SearchWidgetView: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
             .containerBackground(for: .widget) { Color.black }
-            .widgetURL(SharedConfig.searchURL)
         }
     }
 }

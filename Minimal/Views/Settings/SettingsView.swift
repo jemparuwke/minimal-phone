@@ -22,6 +22,15 @@ struct SettingsView: View {
             Form {
                 header
 
+                if !SharedConfig.isAppGroupAvailable {
+                    Section {
+                        Label("Widżet nie widzi Twoich ulubionych. W Xcode dodaj App Group „\(SharedConfig.appGroup)” do obu targetów (Signing & Capabilities) i zainstaluj ponownie.", systemImage: "exclamationmark.triangle")
+                            .font(.footnote)
+                            .foregroundStyle(Theme.warning)
+                    }
+                    .minimalRow()
+                }
+
                 Section {
                     NavigationLink {
                         ShieldView()

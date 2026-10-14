@@ -10,3 +10,4 @@ Payload/
 # macOS
 .DS_Store
 build-sim/
+Config/Signing.local.xcconfig

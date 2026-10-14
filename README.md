@@ -36,7 +36,7 @@
 ### Czego potrzebujesz
 
 - **iPhone** z iOS 17 lub nowszym (zalecany iOS 26).
-- **Mac** z aplikacją **Xcode**, darmową z App Store.
+- **Mac** z najnowszą aplikacją **Xcode** (darmowa w App Store; Xcode 26 wymaga macOS 15.6 lub nowszego).
 - **Konto Apple**:
   - **płatne Apple Developer** (99 USD/rok): pełna, automatyczna tarcza, a aplikacja działa cały rok bez odświeżania. **Polecane.**
   - **zwykłe, darmowe konto Apple**: wszystko działa, ale tarczę ustawiasz ręcznie, prowadzi Cię przewodnik w aplikacji. Aplikację trzeba odświeżać co 7 dni. Szczegóły w sekcji [Wersja Free](#wersja-free-darmowe-konto-apple).
@@ -44,27 +44,27 @@
 ### Krok po kroku
 
 1. **Pobierz projekt.** Na GitHubie kliknij zielony przycisk **Code → Download ZIP** i rozpakuj plik. Możesz też wpisać w Terminalu `git clone`.
-2. **Ustaw swój identyfikator.** Otwórz plik `Config/Signing.xcconfig` w dowolnym edytorze i zmień:
-   ```
-   BUNDLE_ID_PREFIX = com.twojeimie
-   ```
-   Prefiks musi być unikalny na świecie, np. `com.jankowalski`.
+2. **Tylko przy darmowym koncie Apple:** otwórz plik `Config/Signing.xcconfig` w dowolnym edytorze i zmień `MINIMAL_EDITION = Full` na `MINIMAL_EDITION = Free`. Z płatnym kontem pomiń ten krok.
 3. **Otwórz `Minimal.xcodeproj`** (dwuklik).
 4. **Zaloguj się w Xcode:** **Xcode → Settings → Accounts → ＋ → Apple Account**.
-5. **Wybierz zespół:** w lewym panelu kliknij niebieską ikonę **Minimal**, potem target **Minimal**, kartę **Signing & Capabilities** i w polu **Team** wybierz swoje konto. Powtórz to samo dla targetu **MinimalWidget**.
+5. **Wybierz zespół:** w lewym panelu kliknij niebieską ikonę **Minimal**, potem target **Minimal**, kartę **Signing & Capabilities** i w polu **Team** wybierz swoje konto. Powtórz to samo dla targetu **MinimalWidget**. Identyfikatory aplikacji utworzą się same z Twojego Team ID.
 6. **Podłącz iPhone’a** kablem i odblokuj go. Jeśli zapyta „Ufać temu komputerowi?”, stuknij **Ufaj**.
 7. **Włącz tryb dewelopera** na iPhonie: **Ustawienia → Prywatność i ochrona → Tryb dewelopera → Włącz**. iPhone uruchomi się ponownie.
 8. **Wybierz iPhone’a** na górnym pasku Xcode i naciśnij **▶︎** (⌘R).
 9. **Darmowe konto Apple?** Przy pierwszym uruchomieniu iPhone poprosi o zaufanie deweloperowi: **Ustawienia → Ogólne → VPN i urządzenia zarządzane → Aplikacja dewelopera → [Twoje konto] → Ufaj**.
 10. **Gotowe.** Minimal przeprowadzi Cię przez resztę: wybór aplikacji, tarczę i ustawienie ekranu.
 
+> Wolisz nie klikać w Xcode? Utwórz plik `Config/Signing.local.xcconfig` z jedną linią `DEVELOPMENT_TEAM = TWÓJ_TEAM_ID` (znajdziesz go w **Xcode → Settings → Accounts**). Ten plik nie trafia do gita, a zespół ustawia się wtedy w obu targetach naraz.
+
 ### Gdy Xcode pokaże błąd
 
 | Komunikat | Co zrobić |
 |---|---|
-| **Failed to register bundle identifier** / **No profiles for … were found** | Prefiks z kroku 2 jest zajęty albo nie wybrano zespołu w kroku 5. Zmień prefiks i spróbuj ponownie. |
+| **Failed to register bundle identifier** / **No profiles for … were found** | Nie wybrano zespołu w kroku 5 (w obu targetach). |
+| **…maximum App ID limit…** / **…maximum number of apps for free development profiles…** | Darmowe konto pozwala na 10 identyfikatorów na 7 dni i 3 aplikacje na iPhonie. Usuń inną aplikację z Xcode albo odczekaj. |
+| **iOS … is not installed** | Xcode → Settings → Components → pobierz platformę iOS. |
 | **Personal development teams … do not support the Family Controls** (albo **Network Extensions**) | Masz darmowe konto Apple. Ustaw `MINIMAL_EDITION = Free` w `Config/Signing.xcconfig` (patrz [Wersja Free](#wersja-free-darmowe-konto-apple)). |
-| **Provisioning profile doesn't include the App Groups entitlement** | W **Signing & Capabilities → App Groups** stuknij ↻ albo zaznacz grupę `group.<prefiks>.minimal`. Zrób to dla obu targetów. |
+| **Provisioning profile doesn't include the App Groups entitlement** | W **Signing & Capabilities → App Groups** stuknij ↻ albo zaznacz grupę `group.pl.minimal.<Team ID>.minimal`. Zrób to dla obu targetów. |
 | **Developer Mode disabled** / iPhone nie pojawia się w Xcode | Krok 7: włącz Tryb dewelopera i odblokuj iPhone’a. |
 | **Untrusted Developer** | Krok 9: zaufaj deweloperowi w Ustawieniach. |
 
@@ -155,5 +155,5 @@ scripts/            generator projektu Xcode, ikona, profile, zrzuty ekranu
 
 - Projekt Xcode jest generowany skryptem: `gem install xcodeproj && ruby scripts/generate_project.rb`. Uruchom go po dodaniu lub usunięciu plików.
 - Przy każdym pushu CI (GitHub Actions, macOS) buduje aplikację na symulator i na iPhone’a oraz tworzy niepodpisany plik `.ipa`. Commit z `[shots]` w opisie dodatkowo odświeża zrzuty ekranu w `docs/screenshots`.
-- Deep linki: `minimal://search`, `minimal://shield`, `minimal://settings`, `minimal://open/<id lub id-z-katalogu>`. Przydają się w Skrótach i pod przyciskiem czynności.
+- Deep linki: `minimalphone://search`, `minimalphone://shield`, `minimalphone://settings`, `minimalphone://open/<id lub id-z-katalogu>`. Przydają się w Skrótach i pod przyciskiem czynności.
 - Aplikacja jest przeznaczona do instalacji z Xcode na własnym iPhonie. Publikacja w App Store wymagałaby osobnej zgody Apple na uprawnienie Family Controls (Distribution) i rezygnacji z niepublicznego adresu `prefs:` (otwieranie Ustawień).

@@ -1,5 +1,6 @@
 import SwiftUI
 import UIKit
+import WidgetKit
 
 /// Routes taps, widget links and the mindful pause, and owns which sheet is on screen.
 @MainActor
@@ -120,8 +121,8 @@ final class LaunchCoordinator: ObservableObject {
     // MARK: - Deep links (widget)
 
     /// Deep links (widgets, Shortcuts, Action Button):
-    /// `minimal://open/<uuid or catalog id>`, `minimal://search`, `minimal://shield`,
-    /// `minimal://settings`, `minimal://home`.
+    /// `minimalphone://open/<uuid or catalog id>`, `minimalphone://search`, `minimalphone://shield`,
+    /// `minimalphone://settings`, `minimalphone://home`.
     func handle(_ url: URL) {
         guard url.scheme?.lowercased() == SharedConfig.urlScheme else { return }
         // Nothing can be presented over the welcome screens; ignore links until setup is done.
@@ -164,6 +165,8 @@ final class LaunchCoordinator: ObservableObject {
         switch phase {
         case .active:
             isActive = true
+            // Cheap while in the foreground; keeps the widget in sync after installs and edits.
+            WidgetCenter.shared.reloadTimelines(ofKind: SharedConfig.favoritesWidgetKind)
             if let item = pendingItem {
                 pendingItem = nil
                 // Opening another app while the scene is still settling can be dropped.

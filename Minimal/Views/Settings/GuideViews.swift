@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 /// One step of a guide: what to do, and where in iOS Settings to do it.
 struct GuideStep: Identifiable {
@@ -7,6 +8,8 @@ struct GuideStep: Identifiable {
     let title: String
     let text: String
     var path: String? = nil
+    /// When the app can tell, whether the user already did this.
+    var isDone: (() -> Bool)? = nil
 }
 
 /// How to turn an iPhone into a calm, minimal phone around Minimal.
@@ -32,7 +35,8 @@ struct SetupGuideView: View {
                   path: "Ustawienia → Tapeta → Dodaj nową tapetę → Kolor"),
         GuideStep(icon: "camera.filters", title: "Skala szarości jednym gestem",
                   text: "Szary ekran jest zaskakująco nudny — i o to chodzi. Ustaw skrót: trzykrotne kliknięcie bocznego przycisku włącza i wyłącza szarość.",
-                  path: "Ustawienia → Dostępność → Ekran i wielkość tekstu → Filtry barwne → Skala szarości, potem Dostępność → Skróty dostępności → Filtry barwne"),
+                  path: "Ustawienia → Dostępność → Ekran i wielkość tekstu → Filtry barwne → Skala szarości, potem Dostępność → Skróty dostępności → Filtry barwne",
+                  isDone: { UIAccessibility.isGrayscaleEnabled }),
         GuideStep(icon: "moon", title: "Tryb skupienia",
                   text: "Utwórz tryb skupienia, który przepuszcza tylko ważne osoby i aplikacje. Możesz go włączać automatycznie o stałych porach.",
                   path: "Ustawienia → Tryb skupienia"),
@@ -43,10 +47,20 @@ struct SetupGuideView: View {
                   text: "W Minimal przytrzymaj nazwę aplikacji i wybierz „Pauza przed otwarciem”. Kilka sekund wystarczy, by impuls minął."),
     ]
 
+    private let limits: [GuideStep] = [
+        GuideStep(icon: "iphone", title: "Ekranu głównego nie da się podmienić",
+                  text: "iOS nie pozwala żadnej aplikacji zastąpić ekranu głównego. Dlatego Minimal działa przez widżet, Dock i wyszukiwanie."),
+        GuideStep(icon: "list.bullet", title: "Aplikacje nie widzą listy aplikacji",
+                  text: "Minimal nie może sam odczytać, co masz zainstalowane. Zaznacz swoje aplikacje w katalogu, a resztę dodaj przez Skróty."),
+        GuideStep(icon: "circle.lefthalf.filled", title: "Szarości nie włączy żadna aplikacja",
+                  text: "Skalę szarości i bibliotekę aplikacji zmieniasz tylko w Ustawieniach — przewodnik powyżej prowadzi krok po kroku."),
+    ]
+
     var body: some View {
         List {
             GuideSection(title: "Ekran główny iPhone’a", steps: homeScreen)
             GuideSection(title: "Spokój", steps: calm)
+            GuideSection(title: "Czego iOS nie pozwala", steps: limits)
         }
         .navigationTitle("Przewodnik")
         .navigationBarTitleDisplayMode(.inline)
@@ -69,6 +83,9 @@ struct ShieldGuideView: View {
         GuideStep(icon: "eye.slash", title: "Ostrzeżenia o treściach wymagających dyskrecji",
                   text: "iPhone rozmywa nagie zdjęcia i wideo w Wiadomościach, AirDropie, FaceTimie i części aplikacji, zanim je zobaczysz.",
                   path: "Ustawienia → Prywatność i ochrona → Ostrzeżenia dotyczące treści wymagających dyskrecji"),
+        GuideStep(icon: "icloud", title: "Przekazywanie prywatne iCloud",
+                  text: "Gdy jest włączone, Safari może pytać o adresy stron serwery Apple, omijając filtr DNS. Filtr Apple (warstwa 1) działa nadal, ale dla pełnej ochrony je wyłącz.",
+                  path: "Ustawienia → [Twoje imię] → iCloud → Przekazywanie prywatne"),
         GuideStep(icon: "network.badge.shield.half.filled", title: "Bez nowych aplikacji i VPN-ów",
                   text: "Aplikacje VPN i proxy mogą ominąć filtr DNS, a usunięcie Minimal wyłącza tarczę. Zablokuj instalowanie i usuwanie aplikacji — zmieni to tylko osoba z kodem.",
                   path: "Ograniczaj treść i prywatność → Zakupy w iTunes Store i App Store → Instalowanie aplikacji i Usuwanie aplikacji: Nie pozwalaj"),
@@ -104,9 +121,18 @@ struct GuideSection: View {
                         .frame(width: 26)
                         .padding(.top, 2)
                     VStack(alignment: .leading, spacing: 5) {
-                        Text(step.title)
-                            .font(.callout.weight(.semibold))
-                            .foregroundStyle(Theme.primary)
+                        HStack(alignment: .firstTextBaseline) {
+                            Text(step.title)
+                                .font(.callout.weight(.semibold))
+                                .foregroundStyle(Theme.primary)
+                            if step.isDone?() == true {
+                                Spacer(minLength: 8)
+                                Label("Włączone", systemImage: "checkmark.circle.fill")
+                                    .labelStyle(.titleAndIcon)
+                                    .font(.footnote.weight(.medium))
+                                    .foregroundStyle(Theme.good)
+                            }
+                        }
                         Text(step.text)
                             .font(.subheadline)
                             .foregroundStyle(Theme.secondary)

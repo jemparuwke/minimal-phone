@@ -23,6 +23,7 @@ final class LauncherStore: ObservableObject {
             }
             data = AppCatalog.starterData()
             data.save(to: defaults)
+            WidgetCenter.shared.reloadTimelines(ofKind: SharedConfig.favoritesWidgetKind)
         }
     }
 
@@ -130,6 +131,6 @@ final class LauncherStore: ObservableObject {
         guard copy != data else { return }
         data = copy
         copy.save(to: defaults)
-        WidgetCenter.shared.reloadAllTimelines()
+        WidgetCenter.shared.reloadTimelines(ofKind: SharedConfig.favoritesWidgetKind)
     }
 }

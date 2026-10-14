@@ -29,6 +29,7 @@ struct RootView: View {
         .animation(.spring(response: 0.38, dampingFraction: 0.9), value: coordinator.isSearching)
         .animation(.easeInOut(duration: 0.25), value: coordinator.pausing?.id)
         .statusBarHidden(hideStatusBar && !coordinator.isSearching)
+        .persistentSystemOverlays(hideStatusBar && !coordinator.isSearching ? .hidden : .automatic)
         .preferredColorScheme(.dark)
         .sheet(item: $coordinator.sheet) { sheet in
             sheetContent(sheet)

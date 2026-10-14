@@ -99,6 +99,25 @@ end
 app = project.new_target(:application, 'Minimal', :ios, DEPLOYMENT_TARGET)
 widget = project.new_target(:app_extension, 'MinimalWidget', :ios, DEPLOYMENT_TARGET)
 
+# System frameworks are linked automatically through Swift imports; drop the explicit
+# Foundation.framework reference the template adds (it points at an SDK-relative path).
+[app, widget].each do |target|
+  target.frameworks_build_phase.files.to_a.each(&:remove_from_project)
+end
+frameworks_group = project.main_group.children.find { |child| child.display_name == 'Frameworks' }
+frameworks_group&.remove_from_project
+
+# Fail early with a clear message when the edition is misspelled.
+check = app.new_shell_script_build_phase('Check MINIMAL_EDITION')
+check.shell_script = <<~SH
+  case "$MINIMAL_EDITION" in
+    Full|Free) ;;
+    *) echo "error: MINIMAL_EDITION must be Full or Free (Config/Signing.xcconfig), got '$MINIMAL_EDITION'"; exit 1 ;;
+  esac
+SH
+check.always_out_of_date = '1'
+app.build_phases.move(check, 0)
+
 app.add_file_references((app_refs + shared_refs).select { |ref| source?(ref) })
 (app_refs + profile_refs).select { |ref| resource?(ref) }.each { |ref| app.resources_build_phase.add_file_reference(ref) }
 widget.add_file_references((widget_refs + shared_refs).select { |ref| source?(ref) })
@@ -177,7 +196,8 @@ scheme = Xcodeproj::XCScheme.new
 scheme.add_build_target(app)
 scheme.add_build_target(widget, false)
 scheme.set_launch_target(app)
-scheme.launch_action.build_configuration = 'Debug'
+# Installing from Xcode should give people the fast, optimised build.
+scheme.launch_action.build_configuration = 'Release'
 scheme.archive_action.build_configuration = 'Release'
 scheme.save_as(PROJECT_PATH, 'Minimal', true)
 
