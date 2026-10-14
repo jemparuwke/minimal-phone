@@ -37,6 +37,27 @@ struct ItemEditorView: View {
     @State private var catalogQuery: String
     @State private var confirmDelete = false
     @State private var testFailed = false
+    @State private var confirmDiscard = false
+    @State private var initialSnapshot: Snapshot?
+
+    /// Everything the user can change, to know whether closing would lose edits.
+    private struct Snapshot: Equatable {
+        var kind: Kind
+        var name: String
+        var shortcutName: String
+        var urlString: String
+        var mindful: Bool
+        var favorite: Bool
+    }
+
+    private var snapshot: Snapshot {
+        Snapshot(kind: kind, name: name, shortcutName: shortcutName, urlString: urlString, mindful: mindful, favorite: favorite)
+    }
+
+    private var hasChanges: Bool {
+        guard let initialSnapshot else { return false }
+        return initialSnapshot != snapshot && !(isNew && kind == .catalog)
+    }
 
     init(mode: Mode, showsCancel: Bool = true) {
         self.mode = mode
@@ -148,7 +169,13 @@ struct ItemEditorView: View {
         .toolbar {
             if showsCancel {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Anuluj") { dismiss() }
+                    Button("Anuluj") {
+                        if hasChanges { confirmDiscard = true } else { dismiss() }
+                    }
+                    .confirmationDialog("Odrzucić zmiany?", isPresented: $confirmDiscard, titleVisibility: .visible) {
+                        Button("Odrzuć zmiany", role: .destructive) { dismiss() }
+                        Button("Edytuj dalej", role: .cancel) {}
+                    }
                 }
             }
             if !(isNew && kind == .catalog) {
@@ -160,8 +187,15 @@ struct ItemEditorView: View {
             }
         }
         .onAppear {
-            if case .edit(let item) = mode { favorite = store.isFavorite(item) }
+            guard initialSnapshot == nil else { return }
+            var start = snapshot
+            if case .edit(let item) = mode {
+                start.favorite = store.isFavorite(item)
+                favorite = start.favorite
+            }
+            initialSnapshot = start
         }
+        .interactiveDismissDisabled(hasChanges)
         .alert("Nie udało się otworzyć", isPresented: $testFailed) {
             Button("OK", role: .cancel) {}
         } message: {

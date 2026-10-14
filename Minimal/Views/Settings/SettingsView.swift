@@ -38,7 +38,7 @@ struct SettingsView: View {
                         SettingsRow(icon: shield.isProtecting ? "checkmark.shield.fill" : "shield",
                                     color: shield.isProtecting ? Theme.good : Theme.warning,
                                     title: "Tarcza",
-                                    value: shield.isProtecting ? "Włączona" : "Wyłączona")
+                                    value: shield.isProtecting ? "Wł." : "Wył.")
                     }
                     NavigationLink {
                         SetupGuideView()
@@ -116,9 +116,10 @@ struct SettingsView: View {
                     } label: {
                         Text("Przywróć domyślną listę aplikacji")
                     }
-                    .confirmationDialog("Przywrócić domyślną listę? Twoje własne skróty zostaną usunięte.",
-                                        isPresented: $confirmReset, titleVisibility: .visible) {
+                    .confirmationDialog("Przywrócić domyślną listę?", isPresented: $confirmReset, titleVisibility: .visible) {
                         Button("Przywróć", role: .destructive) { store.resetToStarter() }
+                    } message: {
+                        Text("Twoje własne skróty i adresy zostaną usunięte.")
                     }
                 } footer: {
                     Text(footerText)
@@ -174,6 +175,7 @@ struct SettingsRow: View {
                 .minimalFont(16, weight: .regular)
                 .foregroundStyle(color)
                 .frame(width: 24)
+                .accessibilityHidden(true)
             Text(title)
                 .foregroundStyle(Theme.primary)
             if let value {

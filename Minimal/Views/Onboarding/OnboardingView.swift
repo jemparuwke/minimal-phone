@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 /// First run: welcome → pick your apps → shield → make it your home screen.
 struct OnboardingView: View {
@@ -7,6 +8,7 @@ struct OnboardingView: View {
     }
 
     @AppStorage(Pref.onboarded) private var onboarded = false
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var step: Step = OnboardingView.initialStep
     @State private var forward = true
 
@@ -30,11 +32,20 @@ struct OnboardingView: View {
                 case .homeScreen: HomeScreenPage(finish: finish)
                 }
             }
-            .transition(.asymmetric(
+            .transition(reduceMotion ? .opacity : .asymmetric(
                 insertion: .move(edge: forward ? .trailing : .leading).combined(with: .opacity),
                 removal: .move(edge: forward ? .leading : .trailing).combined(with: .opacity)
             ))
         }
+        // Swipe right goes back a page, like a navigation stack.
+        .simultaneousGesture(
+            DragGesture(minimumDistance: 30)
+                .onEnded { value in
+                    if value.translation.width > 80, abs(value.translation.height) < 60, step != .welcome {
+                        go(to: Step(rawValue: step.rawValue - 1) ?? .welcome)
+                    }
+                }
+        )
         .overlay(alignment: .top) {
             if step != .welcome {
                 HStack {
@@ -66,7 +77,11 @@ struct OnboardingView: View {
 
     private func go(to target: Step) {
         forward = target.rawValue > step.rawValue
-        withAnimation(.spring(response: 0.45, dampingFraction: 0.9)) { step = target }
+        withAnimation(reduceMotion ? .easeInOut(duration: 0.2) : .spring(response: 0.45, dampingFraction: 0.9)) {
+            step = target
+        }
+        // Let VoiceOver start reading the new page from the top.
+        UIAccessibility.post(notification: .screenChanged, argument: nil)
     }
 
     private func finish() {
@@ -114,6 +129,7 @@ private struct OnboardingPage<Content: View, Buttons: View>: View {
 
 private struct WelcomePage: View {
     let next: () -> Void
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var appeared = false
 
     private let features: [(icon: String, title: String, text: String)] = [
@@ -141,6 +157,7 @@ private struct WelcomePage: View {
                             HStack(alignment: .top, spacing: 18) {
                                 Image(systemName: feature.icon)
                                     .minimalFont(26, weight: .light)
+                                    .accessibilityHidden(true)
                                     .foregroundStyle(Theme.primary)
                                     .frame(width: 36)
                                 VStack(alignment: .leading, spacing: 3) {
@@ -154,7 +171,7 @@ private struct WelcomePage: View {
                                 }
                             }
                             .opacity(appeared ? 1 : 0)
-                            .offset(y: appeared ? 0 : 12)
+                            .offset(y: appeared || reduceMotion ? 0 : 12)
                             .animation(.easeOut(duration: 0.5).delay(0.15 + Double(index) * 0.08), value: appeared)
                         }
                     }
@@ -262,7 +279,7 @@ private struct ShieldPage: View {
             NavigationStack { ShieldView(showsDone: true) }
         }
         .task { await shield.refresh() }
-        .alert("Tarcza", isPresented: Binding(get: { shield.message != nil }, set: { if !$0 { shield.message = nil } })) {
+        .alert(shield.messageTitle, isPresented: Binding(get: { shield.message != nil }, set: { if !$0 { shield.message = nil } })) {
             Button("OK", role: .cancel) {}
         } message: {
             Text(shield.message ?? "")
@@ -348,6 +365,7 @@ private struct ShieldStepCard: View {
                             .padding(.horizontal, 18)
                             .frame(minHeight: 36)
                             .background(Theme.primary, in: Capsule())
+                            .padding(.vertical, 4)
                     }
                     .buttonStyle(.dim)
                     .padding(.top, 8)
@@ -408,6 +426,7 @@ struct PageTitle: View {
             Text(title)
                 .font(.largeTitle.bold())
                 .foregroundStyle(Theme.primary)
+                .accessibilityAddTraits(.isHeader)
             Text(subtitle)
                 .font(.body)
                 .foregroundStyle(Theme.secondary)

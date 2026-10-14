@@ -119,6 +119,7 @@ struct GuideSection: View {
                         .minimalFont(18, weight: .regular)
                         .foregroundStyle(Theme.primary)
                         .frame(width: 26)
+                        .accessibilityHidden(true)
                         .padding(.top, 2)
                     VStack(alignment: .leading, spacing: 5) {
                         HStack(alignment: .firstTextBaseline) {
@@ -127,7 +128,7 @@ struct GuideSection: View {
                                 .foregroundStyle(Theme.primary)
                             if step.isDone?() == true {
                                 Spacer(minLength: 8)
-                                Label("Włączone", systemImage: "checkmark.circle.fill")
+                                Label("Wł.", systemImage: "checkmark.circle.fill")
                                     .labelStyle(.titleAndIcon)
                                     .font(.footnote.weight(.medium))
                                     .foregroundStyle(Theme.good)

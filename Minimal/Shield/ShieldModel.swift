@@ -72,7 +72,15 @@ final class ShieldModel: ObservableObject {
     @Published private(set) var lockDelay: LockDelay
     @Published private(set) var unlockRequestedAt: Date?
 
+    /// Alert shown by the shield screens: a short title saying what happened, plus details.
     @Published var message: String?
+    @Published private(set) var messageTitle = "Tarcza"
+
+    private func report(_ title: String, _ body: String?) {
+        guard let body else { return }
+        messageTitle = title
+        message = body
+    }
     @Published private(set) var isWorking = false
 
     /// Free edition: steps the user confirmed doing in iOS Settings (see `FreeStep`).
@@ -245,7 +253,7 @@ final class ShieldModel: ObservableObject {
             dnsProvider = provider
             defaults.set(provider.rawValue, forKey: Key.dnsProvider)
         } catch {
-            message = "Nie udało się zainstalować filtra DNS. \(error.localizedDescription)"
+            report("Nie udało się zainstalować filtra DNS", error.localizedDescription)
         }
         await refreshDNS()
     }
@@ -261,7 +269,7 @@ final class ShieldModel: ObservableObject {
             dnsProvider = nil
             defaults.removeObject(forKey: Key.dnsProvider)
         } catch {
-            message = "Nie udało się usunąć filtra DNS. \(error.localizedDescription)"
+            report("Nie udało się usunąć filtra DNS", error.localizedDescription)
         }
         await refreshDNS()
     }
@@ -345,9 +353,9 @@ final class ShieldModel: ObservableObject {
     private func requireUnlocked() -> Bool {
         if canWeaken { return true }
         if case .waiting(let until) = lockState() {
-            message = "Tarcza odblokuje się za \(Formatters.duration(until.timeIntervalSinceNow)). Wtedy przez 30 minut możesz ją osłabić."
+            report("Tarcza jest jeszcze zablokowana", "Odblokuje się za \(Formatters.duration(until.timeIntervalSinceNow)). Wtedy przez 30\u{00a0}minut możesz ją osłabić.")
         } else {
-            message = "Tarcza jest zablokowana. Poproś o odblokowanie w sekcji „Zobowiązanie” i odczekaj \(lockDelay.waitLabel)."
+            report("Tarcza jest zablokowana", "Poproś o odblokowanie w sekcji „Zobowiązanie” i odczekaj \(lockDelay.waitLabel).")
         }
         return false
     }
@@ -357,9 +365,9 @@ final class ShieldModel: ObservableObject {
         do {
             try await AuthorizationCenter.shared.requestAuthorization(for: .individual)
         } catch let error as FamilyControlsError {
-            message = Self.describe(error)
+            report("Brak dostępu do Czasu przed ekranem", Self.describe(error))
         } catch {
-            message = "Nie udało się uzyskać dostępu do Czasu przed ekranem. Spróbuj ponownie."
+            report("Brak dostępu do Czasu przed ekranem", "Spróbuj ponownie za chwilę.")
         }
         authorization = AuthorizationCenter.shared.authorizationStatus
         if isAuthorized {

@@ -11,6 +11,7 @@ struct RootView: View {
     var body: some View {
         ZStack {
             HomeView()
+                .accessibilityHidden(coordinator.isSearching || coordinator.pausing != nil)
 
             if coordinator.isSearching {
                 SearchView()

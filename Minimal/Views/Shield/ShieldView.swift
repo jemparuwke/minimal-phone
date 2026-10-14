@@ -31,6 +31,12 @@ struct ShieldView: View {
             case .dns: return "Usuń filtr DNS"
             }
         }
+        var consequence: String {
+            switch self {
+            case .webFilter: return "Safari i inne przeglądarki przestaną blokować strony dla dorosłych."
+            case .dns: return "Strony dla dorosłych znów będą się otwierać w aplikacjach, o ile nie zablokuje ich inna warstwa."
+            }
+        }
     }
 
     var body: some View {
@@ -61,41 +67,7 @@ struct ShieldView: View {
             guard !presented else { return }
             Task { pickerSelection = await shield.updateBlocked(pickerSelection) }
         }
-        .confirmationDialog(
-            "Każde osłabienie tarczy będzie wymagało odczekania \(pendingDelay?.waitLabel ?? ""). Skrócić ten czas można tylko po odczekaniu.",
-            isPresented: pendingDelayBinding,
-            titleVisibility: .visible
-        ) {
-            Button("Ustaw \(pendingDelay?.label.lowercased() ?? "")") {
-                if let delay = pendingDelay { shield.setLockDelay(delay) }
-                pendingDelay = nil
-            }
-        }
-        .confirmationDialog(
-            "Dopóki ta opcja jest włączona, nie usuniesz z iPhone’a żadnej aplikacji — także Minimal.",
-            isPresented: $confirmPreventRemoval,
-            titleVisibility: .visible
-        ) {
-            Button("Blokuj usuwanie aplikacji") {
-                Task { await shield.setPreventAppRemoval(true) }
-            }
-        }
-        .confirmationDialog(
-            pendingWeaken?.title ?? "",
-            isPresented: Binding(get: { pendingWeaken != nil }, set: { if !$0 { pendingWeaken = nil } }),
-            titleVisibility: .visible,
-            presenting: pendingWeaken
-        ) { action in
-            Button(action.button, role: .destructive) {
-                switch action {
-                case .webFilter: shield.disableWebFilter()
-                case .dns: Task { await shield.removeDNS() }
-                }
-            }
-        } message: { _ in
-            Text("Strony dla dorosłych znów będą dostępne w tej warstwie.")
-        }
-        .alert("Tarcza", isPresented: messageBinding) {
+        .alert(shield.messageTitle, isPresented: messageBinding) {
             Button("OK", role: .cancel) {}
         } message: {
             Text(shield.message ?? "")
@@ -114,6 +86,7 @@ struct ShieldView: View {
             VStack(spacing: 14) {
                 Image(systemName: shield.isProtecting ? "checkmark.shield.fill" : "shield.slash")
                     .minimalFont(60, weight: .light)
+                    .accessibilityHidden(true)
                     .symbolRenderingMode(.hierarchical)
                     .foregroundStyle(shield.isProtecting ? Theme.good : Theme.warning)
                     .contentTransition(.symbolEffect(.replace))
@@ -121,6 +94,8 @@ struct ShieldView: View {
                 Text(heroTitle)
                     .font(.title.weight(.semibold))
                     .foregroundStyle(Theme.primary)
+                    .multilineTextAlignment(.center)
+                    .accessibilityAddTraits(.isHeader)
                 Text(heroSubtitle)
                     .font(.subheadline)
                     .foregroundStyle(Theme.secondary)
@@ -168,7 +143,7 @@ struct ShieldView: View {
                         detail: "Wbudowany filtr Apple. Blokuje strony dla dorosłych w Safari, innych przeglądarkach i aplikacjach oraz wyłącza przeglądanie prywatne.",
                         isActive: shield.webFilterActive)
             if shield.webFilterActive {
-                weakenButton("Wyłącz filtr") { pendingWeaken = .webFilter }
+                weakenButton(.webFilter)
             } else {
                 Button {
                     Task { await shield.enableWebFilter() }
@@ -226,7 +201,7 @@ struct ShieldView: View {
             }
 
             if shield.dnsInstalled {
-                weakenButton("Usuń filtr DNS") { pendingWeaken = .dns }
+                weakenButton(.dns)
             }
         } footer: {
             Text("Po instalacji włącz filtr w Ustawieniach: Ogólne → VPN i urządzenia zarządzane → DNS → Minimal. Włączona aplikacja VPN omija filtr DNS — filtr Apple (warstwa 1) działa nadal.")
@@ -266,7 +241,24 @@ struct ShieldView: View {
                     Text(delay.label).tag(delay)
                 }
             }
+            .confirmationDialog("Ustawić opóźnienie: \(pendingDelay?.label.lowercased() ?? "")?",
+                                isPresented: pendingDelayBinding, titleVisibility: .visible) {
+                Button("Ustaw \(pendingDelay?.label.lowercased() ?? "")") {
+                    if let delay = pendingDelay { shield.setLockDelay(delay) }
+                    pendingDelay = nil
+                }
+            } message: {
+                Text("Każde osłabienie tarczy będzie wymagało odczekania \(pendingDelay?.waitLabel ?? ""). Skrócić ten czas można dopiero po odczekaniu.")
+            }
             Toggle("Blokuj usuwanie aplikacji", isOn: preventRemovalBinding)
+                .confirmationDialog("Zablokować usuwanie aplikacji?", isPresented: $confirmPreventRemoval,
+                                    titleVisibility: .visible) {
+                    Button("Blokuj usuwanie aplikacji") {
+                        Task { await shield.setPreventAppRemoval(true) }
+                    }
+                } message: {
+                    Text("Dopóki ta opcja jest włączona, nie usuniesz z iPhone’a żadnej aplikacji — także Minimal.")
+                }
             TimelineView(.periodic(from: .now, by: 1)) { context in
                 lockRow(shield.lockState(at: context.date))
             }
@@ -290,9 +282,10 @@ struct ShieldView: View {
             } label: {
                 Label("Poproś o odblokowanie", systemImage: "lock")
             }
-            .confirmationDialog("Odblokowanie nastąpi za \(shield.lockDelay.waitLabel). Potem przez 30 minut możesz osłabić tarczę.",
-                                isPresented: $confirmUnlock, titleVisibility: .visible) {
+            .confirmationDialog("Poprosić o odblokowanie?", isPresented: $confirmUnlock, titleVisibility: .visible) {
                 Button("Rozpocznij odliczanie") { shield.requestUnlock() }
+            } message: {
+                Text("Odblokowanie nastąpi za \(shield.lockDelay.waitLabel). Potem przez 30 minut możesz osłabić tarczę.")
             }
         case .waiting(let until):
             HStack {
@@ -338,13 +331,28 @@ struct ShieldView: View {
 
     // MARK: - Helpers
 
-    /// A destructive button that is replaced by a lock hint while the shield is locked.
+    /// A destructive button (with its own confirmation) that is replaced by a lock hint
+    /// while the shield is locked.
     @ViewBuilder
-    private func weakenButton(_ title: String, action: @escaping () -> Void) -> some View {
+    private func weakenButton(_ action: WeakenAction) -> some View {
         if shield.canWeaken {
-            Button(title, role: .destructive, action: action)
+            Button(action.button, role: .destructive) { pendingWeaken = action }
+                .confirmationDialog(
+                    action.title,
+                    isPresented: Binding(get: { pendingWeaken == action }, set: { if !$0 { pendingWeaken = nil } }),
+                    titleVisibility: .visible
+                ) {
+                    Button(action.button, role: .destructive) {
+                        switch action {
+                        case .webFilter: shield.disableWebFilter()
+                        case .dns: Task { await shield.removeDNS() }
+                        }
+                    }
+                } message: {
+                    Text(action.consequence)
+                }
         } else {
-            Label("\(title) — zablokowane", systemImage: "lock")
+            Label("\(action.button) — zablokowane", systemImage: "lock")
                 .foregroundStyle(Theme.tertiary)
         }
     }
@@ -382,6 +390,8 @@ struct LayerHeader: View {
     let detail: String
     let isActive: Bool
 
+    @Environment(\.dynamicTypeSize) private var typeSize
+
     var body: some View {
         HStack(alignment: .top, spacing: 14) {
             ZStack {
@@ -398,16 +408,22 @@ struct LayerHeader: View {
                 }
             }
             .frame(width: 30, height: 30)
+            .accessibilityHidden(true)
 
             VStack(alignment: .leading, spacing: 5) {
-                HStack(alignment: .firstTextBaseline) {
+                // At accessibility sizes the status goes under the title instead of squeezing it.
+                let layout = typeSize.isAccessibilitySize
+                    ? AnyLayout(VStackLayout(alignment: .leading, spacing: 2))
+                    : AnyLayout(HStackLayout(alignment: .firstTextBaseline))
+                layout {
                     Text(title)
                         .font(.headline)
                         .foregroundStyle(Theme.primary)
-                    Spacer(minLength: 8)
-                    Text(isActive ? "Aktywna" : "Wyłączona")
+                    if !typeSize.isAccessibilitySize { Spacer(minLength: 8) }
+                    Text(isActive ? "Wł." : "Wył.")
                         .font(.footnote.weight(.medium))
                         .foregroundStyle(isActive ? Theme.good : Theme.tertiary)
+                        .accessibilityLabel(isActive ? "włączona" : "wyłączona")
                 }
                 Text(detail)
                     .font(.subheadline)
@@ -443,6 +459,7 @@ struct ActivationSteps: View {
                         .font(.subheadline)
                         .foregroundStyle(Theme.primary)
                 }
+                .accessibilityElement(children: .combine)
             }
         }
         .padding(.vertical, 6)

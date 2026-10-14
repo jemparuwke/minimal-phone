@@ -68,6 +68,7 @@ struct HomeView: View {
                 }
                 .buttonStyle(.dim)
                 .contextMenu { ItemMenu(item: item) }
+                .accessibilityActions { ItemMenu(item: item) }
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)

@@ -36,6 +36,7 @@ struct SearchView: View {
                             }
                             .buttonStyle(.dim)
                             .contextMenu { ItemMenu(item: item) }
+                            .accessibilityActions { ItemMenu(item: item) }
                         }
                         sectionLabel("Wszystkie")
                             .padding(.top, 12)
@@ -50,6 +51,7 @@ struct SearchView: View {
                         }
                         .buttonStyle(.dim)
                         .contextMenu { ItemMenu(item: item) }
+                        .accessibilityActions { ItemMenu(item: item) }
                     }
 
                     if !trimmed.isEmpty {
@@ -62,10 +64,18 @@ struct SearchView: View {
             }
             .scrollDismissesKeyboard(.interactively)
             .scrollIndicators(.hidden)
-
-            footer
+            // The list scrolls under the footer and fades out instead of ending in a hard edge.
+            .safeAreaInset(edge: .bottom, spacing: 0) {
+                footer
+                    .background {
+                        LinearGradient(colors: [Theme.background.opacity(0), Theme.background],
+                                       startPoint: .top, endPoint: .center)
+                            .ignoresSafeArea()
+                    }
+            }
         }
         .background(Theme.background.ignoresSafeArea())
+        .accessibilityAction(.escape) { close() }
         .onAppear {
             DispatchQueue.main.async { focused = true }
         }
@@ -84,11 +94,15 @@ struct SearchView: View {
                 .onSubmit(openBestMatch)
                 .accessibilityLabel("Szukaj aplikacji")
 
-            Button("Anuluj") { close() }
-                .font(.body)
-                .foregroundStyle(Theme.secondary)
-                .frame(minWidth: 44, minHeight: 44)
-                .buttonStyle(.dim)
+            Button {
+                close()
+            } label: {
+                Text("Anuluj")
+                    .font(.body)
+                    .foregroundStyle(Theme.secondary)
+                    .frame(minWidth: 44, minHeight: 44)
+            }
+            .buttonStyle(.dim)
         }
         .padding(.horizontal, Theme.gutter)
         .padding(.top, 24)
@@ -134,6 +148,7 @@ struct SearchView: View {
             Image(systemName: icon)
                 .minimalFont(16, weight: .light)
                 .frame(width: 22)
+                .accessibilityHidden(true)
             Text(text)
                 .font(.title3)
                 .lineLimit(1)
@@ -149,6 +164,7 @@ struct SearchView: View {
                 coordinator.sheet = .catalog
             } label: {
                 Label("Twoje aplikacje", systemImage: "square.grid.2x2")
+                    .frame(minHeight: 44)
             }
             Spacer()
             Button {
@@ -156,15 +172,16 @@ struct SearchView: View {
                 coordinator.sheet = .newItem(prefill: "")
             } label: {
                 Label("Dodaj", systemImage: "plus")
+                    .frame(minWidth: 44, minHeight: 44)
             }
         }
         .labelStyle(.titleAndIcon)
         .font(.subheadline)
-        .frame(minHeight: 44)
         .foregroundStyle(Theme.tertiary)
         .buttonStyle(.dim)
         .padding(.horizontal, Theme.gutter)
-        .padding(.vertical, 12)
+        .padding(.top, 20)
+        .padding(.bottom, 8)
     }
 
     private func openBestMatch() {

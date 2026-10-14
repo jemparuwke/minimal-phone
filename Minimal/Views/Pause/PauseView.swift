@@ -43,6 +43,8 @@ struct PauseView: View {
                     .font(.subheadline)
                     .foregroundStyle(Theme.tertiary)
                     .contentTransition(.opacity)
+                    // A short crossfade for the word, independent of the 4 s breathing animation.
+                    .transaction { $0.animation = reduceMotion ? nil : .easeInOut(duration: 0.35) }
                 Text(item.name)
                     .minimalFont(34)
                     .foregroundStyle(Theme.primary)
@@ -63,17 +65,10 @@ struct PauseView: View {
             Spacer()
 
             VStack(spacing: 6) {
-                Button {
+                Button("Nie teraz") {
                     coordinator.resist()
-                } label: {
-                    Text("Nie teraz")
-                        .font(.headline)
-                        .foregroundStyle(.black)
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 54)
-                        .background(Theme.primary, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
                 }
-                .buttonStyle(.dim)
+                .buttonStyle(.primary)
 
                 Button {
                     coordinator.open(item)
@@ -81,8 +76,7 @@ struct PauseView: View {
                     Text(remaining > 0 ? "Otwórz za \(remaining) s" : "Otwórz")
                         .font(.body)
                         .foregroundStyle(remaining > 0 ? Theme.tertiary : Theme.secondary)
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 54)
+                        .frame(maxWidth: .infinity, minHeight: 50)
                         .contentTransition(.numericText(countsDown: true))
                 }
                 .buttonStyle(.dim)
@@ -94,6 +88,7 @@ struct PauseView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Theme.background.ignoresSafeArea())
         .accessibilityAddTraits(.isModal)
+        .accessibilityAction(.escape) { coordinator.resist() }
         .task {
             while remaining > 0 {
                 try? await Task.sleep(for: .seconds(1))

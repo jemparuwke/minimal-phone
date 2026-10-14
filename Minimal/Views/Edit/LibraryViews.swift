@@ -63,6 +63,7 @@ struct LibraryView: View {
             .minimalRow()
         }
         .navigationTitle("Twoje aplikacje")
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             if showsDone {
                 ToolbarItem(placement: .confirmationAction) {
@@ -111,6 +112,7 @@ struct FavoritesEditorView: View {
                     } label: {
                         HStack(spacing: 12) {
                             Image(systemName: "plus.circle.fill")
+                                .accessibilityHidden(true)
                                 .minimalFont(20, weight: .regular)
                                 .foregroundStyle(store.canAddFavorite ? Theme.good : Theme.tertiary)
                             Text(item.name)
@@ -184,12 +186,13 @@ struct CatalogRow: View {
                     .foregroundStyle(Theme.primary)
                 Spacer()
                 Image(systemName: included ? "checkmark.circle.fill" : "circle")
+                    .accessibilityHidden(true)
                     .minimalFont(21, weight: .regular)
                     .foregroundStyle(included ? Theme.primary : Theme.tertiary)
                     .contentTransition(.symbolEffect(.replace))
             }
         }
         .accessibilityAddTraits(included ? .isSelected : [])
-        .accessibilityHint(included ? "Stuknij, aby usunąć z listy" : "Stuknij, aby dodać do listy")
+        .accessibilityHint(included ? "Usuwa z listy" : "Dodaje do listy")
     }
 }

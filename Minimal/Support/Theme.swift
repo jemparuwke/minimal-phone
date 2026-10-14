@@ -4,16 +4,24 @@ import UIKit
 enum Theme {
     static let background = Color.black
     static let primary = Color.white
-    // Secondary ≈ 7:1 and tertiary ≈ 4.7:1 contrast on black (WCAG AA for text).
-    static let secondary = Color.white.opacity(0.62)
-    static let tertiary = Color.white.opacity(0.47)
-    static let hairline = Color.white.opacity(0.12)
-    static let surface = Color.white.opacity(0.07)
-    static let good = Color(red: 0.40, green: 0.86, blue: 0.58)
-    static let warning = Color(red: 1.00, green: 0.76, blue: 0.32)
-    static let bad = Color(red: 1.00, green: 0.42, blue: 0.40)
+    // Secondary ≈ 7:1 and tertiary ≈ 4.7:1 contrast on black (WCAG AA for text);
+    // both get brighter with Settings → Accessibility → Increase Contrast.
+    static let secondary = white(0.62, increased: 0.80)
+    static let tertiary = white(0.47, increased: 0.66)
+    static let hairline = white(0.12, increased: 0.30)
+    static let surface = white(0.07, increased: 0.14)
+    // System colors adapt to Increase Contrast and match the rest of iOS.
+    static let good = Color(uiColor: .systemGreen)
+    static let warning = Color(uiColor: .systemYellow)
+    static let bad = Color(uiColor: .systemRed)
 
     static let gutter: CGFloat = 32
+
+    private static func white(_ alpha: CGFloat, increased: CGFloat) -> Color {
+        Color(uiColor: UIColor { traits in
+            UIColor(white: 1, alpha: traits.accessibilityContrast == .high ? increased : alpha)
+        })
+    }
 }
 
 /// System font at a designer-chosen size that still follows Dynamic Type.
@@ -69,10 +77,19 @@ enum TextScale: String, CaseIterable, Identifiable {
     }
 }
 
-/// Plain button that dims while pressed — no chrome, just text.
+/// Plain button that dims while pressed — no chrome, just text. Shows a subtle shape when
+/// Settings → Accessibility → Button Shapes is on.
 struct DimOnPressStyle: ButtonStyle {
+    @Environment(\.accessibilityShowButtonShapes) private var showButtonShapes
+
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
+            .padding(.horizontal, showButtonShapes ? 8 : 0)
+            .background {
+                if showButtonShapes {
+                    RoundedRectangle(cornerRadius: 8, style: .continuous).fill(Theme.surface)
+                }
+            }
             .contentShape(Rectangle())
             .opacity(configuration.isPressed ? 0.35 : 1)
             .animation(.easeOut(duration: 0.12), value: configuration.isPressed)
@@ -114,7 +131,7 @@ struct PrimaryButtonStyle: ButtonStyle {
             .multilineTextAlignment(.center)
             .padding(.vertical, 14)
             .frame(maxWidth: .infinity, minHeight: 52)
-            .background(Color.white.opacity(isEnabled ? 1 : 0.4), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+            .background(Color.white.opacity(isEnabled ? 1 : 0.4), in: Capsule())
             .scaleEffect(configuration.isPressed ? 0.98 : 1)
             .opacity(configuration.isPressed ? 0.8 : 1)
             .animation(.easeOut(duration: 0.12), value: configuration.isPressed)

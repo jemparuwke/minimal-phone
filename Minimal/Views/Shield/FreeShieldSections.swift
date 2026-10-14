@@ -22,7 +22,7 @@ struct FreeShieldSections: View {
             } label: {
                 Text("Otwórz Ustawienia").fontWeight(.semibold)
             }
-            DoneToggle(step: .webFilter)
+            DoneToggle(step: .webFilter, title: "Filtr stron dla dorosłych")
         }
         .minimalRow()
 
@@ -50,7 +50,7 @@ struct FreeShieldSections: View {
                         .fontWeight(.semibold)
                 }
             }
-            DoneToggle(step: .dnsProfile)
+            DoneToggle(step: .dnsProfile, title: "Filtr DNS")
         } footer: {
             Text("Profil możesz też przesłać na iPhone’a AirDropem z folderu Profiles w projekcie.")
         }
@@ -66,7 +66,7 @@ struct FreeShieldSections: View {
                 "Wybierz aplikacje i ustaw limit 1 minuty.",
                 "Włącz „Blokuj po osiągnięciu limitu” (opcja pojawia się po ustawieniu kodu Czasu przed ekranem).",
             ])
-            DoneToggle(step: .appLimits)
+            DoneToggle(step: .appLimits, title: "Blokada wybranych aplikacji")
         } footer: {
             Text("Z płatnym kontem Apple Developer tarcza włącza się w Minimal jednym stuknięciem — instrukcja jest w pliku README projektu.")
         }
@@ -90,6 +90,7 @@ private struct StepList: View {
                         .foregroundStyle(Theme.primary)
                         .fixedSize(horizontal: false, vertical: true)
                 }
+                .accessibilityElement(children: .combine)
             }
         }
         .padding(.vertical, 4)
@@ -98,6 +99,7 @@ private struct StepList: View {
 
 private struct DoneToggle: View {
     let step: ShieldModel.FreeStep
+    let title: String
     @EnvironmentObject private var shield: ShieldModel
 
     var body: some View {
@@ -105,6 +107,6 @@ private struct DoneToggle: View {
             get: { shield.isFreeStepDone(step) },
             set: { shield.setFreeStep(step, done: $0) }
         ))
-        .tint(Theme.good)
+        .accessibilityLabel("Zrobione: \(title)")
     }
 }
